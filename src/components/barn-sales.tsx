@@ -3,9 +3,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { barnTotals, useBarn } from "@/lib/store";
+import { useStripeSync } from "@/lib/use-stripe-sync";
 import { money } from "@/lib/utils";
 
 export function BarnSales({ kitId, defaultAmount }: { kitId: string; defaultAmount: number }) {
+  useStripeSync();
   const sales = useBarn((s) => s.sales);
   const addSale = useBarn((s) => s.addSale);
   const removeSale = useBarn((s) => s.removeSale);
@@ -26,7 +28,7 @@ export function BarnSales({ kitId, defaultAmount }: { kitId: string; defaultAmou
         <p className="font-mono text-3xl tabular-nums tracking-tight">{money(totals.amount)}</p>
         <p className="mt-1 text-sm text-muted">
           {totals.count === 0
-            ? "No sales logged yet."
+            ? "No sales yet. Stripe fills this when a session is paid."
             : `${totals.count} sale${totals.count === 1 ? "" : "s"} in this stall.`}
         </p>
       </div>

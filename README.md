@@ -2,14 +2,16 @@
 
 A 24-hour digital-product launch kit. Forge a named file, list it tonight, sell it in a day.
 
-**Shop** is the public stall. **Till** holds your Gumroad / PayPal / Stripe link and the ten people you will message. **Go live** starts the 24-hour clock, copies the sales URL, and keeps the due hour on the operator page. It will not post, charge a card, or log a sale you did not make.
+**Shop** is the public stall. **Live** starts the 24-hour clock the first time you open it, shows the due hour, and posts/emails for that hour. Stripe Checkout is the till. Paid sessions sync into the barn every 30 seconds — no extra button.
+
 
 ## Earn in a day
 
-1. Open **Till**. Paste the public product URL where you already take money.
-2. Paste ten emails of people who already trust you.
-3. **Go live** on a stall (Ash Cow is $29 and ready).
-4. Use **Post on X** and **Open emails** for the due hour. Log the barn when money actually hits.
+1. Set `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`.
+2. Open **Live**. The clock starts.
+3. Do the hour on screen (post or email).
+4. Stripe Checkout on **Shop** is the till. Paid sessions appear in the barn on their own.
+
 
 Optional env on Vercel:
 
@@ -28,7 +30,8 @@ Listen locally:
 stripe listen --forward-to localhost:8080/api/stripe/webhook
 ```
 
-Dashboard: add `checkout.session.completed` and `checkout.session.async_payment_succeeded`. Unsigned requests return 400. Till → **Sync paid sessions** writes Stripe Checkout into the barn (idempotent on session id).
+Dashboard: add `checkout.session.completed` and `checkout.session.async_payment_succeeded`. Unsigned requests return 400. Live and the stall barn pull paid sessions every 30 seconds.
+
 
 
 ## Stack

@@ -19,16 +19,16 @@ export function Shell({ children, trailer }: { children: ReactNode; trailer?: Re
               Barn
             </Link>
             <Link
+              to="/till"
+              className="inline-flex h-11 items-center rounded-md px-3 text-muted hover:text-fg"
+            >
+              Live
+            </Link>
+            <Link
               to="/shop"
               className="inline-flex h-11 items-center rounded-md px-3 text-muted hover:text-fg"
             >
               Shop
-            </Link>
-            <Link
-              to="/till"
-              className="inline-flex h-11 items-center rounded-md px-3 text-muted hover:text-fg"
-            >
-              Till
             </Link>
             <Link
               to="/forge"

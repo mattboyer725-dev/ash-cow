@@ -2,7 +2,16 @@ import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import { test } from "node:test";
 import { Nango } from "@nangohq/node";
+import { CHECKOUT_SESSIONS_SYNC, STRIPE_SYNC_CATALOG } from "./nango-config.ts";
 import { saleFromCheckoutRecord } from "./stripe-events.ts";
+
+test("Stripe checkout-sessions template is the default sync", () => {
+  assert.equal(CHECKOUT_SESSIONS_SYNC.name, "checkout-sessions");
+  assert.equal(CHECKOUT_SESSIONS_SYNC.model, "CheckoutSession");
+  assert.equal(CHECKOUT_SESSIONS_SYNC.frequency, "every hour");
+  assert.equal(CHECKOUT_SESSIONS_SYNC.autoStart, true);
+  assert.ok(STRIPE_SYNC_CATALOG.some((row) => row.name === "checkout-sessions"));
+});
 
 test("saleFromCheckoutRecord maps a Nango CheckoutSession", () => {
   const sale = saleFromCheckoutRecord({

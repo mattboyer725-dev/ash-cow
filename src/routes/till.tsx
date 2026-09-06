@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { currentBeat, nextBeat } from "@/lib/live";
 import { READY_COWS } from "@/lib/ready-cows";
-import { stripeStatus } from "@/lib/stripe-checkout";
+import { inspectNango, stripeStatus } from "@/lib/stripe-checkout";
 import { useBarn } from "@/lib/store";
 import { useStripeSync } from "@/lib/use-stripe-sync";
 import { outreachMailto, parseEmails, shopHref, tweetIntent, useTill } from "@/lib/till";
@@ -30,6 +30,7 @@ function TillPage() {
     nangoReady: boolean;
     nangoWebhookReady: boolean;
   } | null>(null);
+  const [inspect, setInspect] = useState<Awaited<ReturnType<typeof inspectNango>> | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [mounted, setMounted] = useState(false);
 
@@ -41,6 +42,7 @@ function TillPage() {
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     void stripeStatus().then(setStripe);
+    void inspectNango().then(setInspect);
   }, []);
   useEffect(() => {
     const id = window.setInterval(() => setNow(Date.now()), 1000);
@@ -90,6 +92,43 @@ function TillPage() {
             {" · "}
             {stripe?.nangoWebhookReady ? "Nango webhook on" : "Set NANGO_WEBHOOK_SIGNING_KEY"}
           </p>
+          {inspect ? (
+            <dl className="mt-4 grid gap-2 font-mono text-xs text-subtle">
+              <div className="flex justify-between gap-4">
+                <dt>Sync</dt>
+                <dd className="text-fg">
+                  {inspect.expected.syncName} → {inspect.expected.model}
+                </dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt>Cadence</dt>
+                <dd className="text-fg">{inspect.expected.frequency}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt>Connection</dt>
+                <dd className="text-fg">
+                  {inspect.expected.integrationId}/{inspect.expected.connectionId}
+                </dd>
+              </div>
+              {inspect.syncs
+                .filter((row) => row.name === inspect.expected.syncName)
+                .map((row) => (
+                  <div key={row.name} className="flex justify-between gap-4">
+                    <dt>Status</dt>
+                    <dd className="text-fg">
+                      {row.status}
+                      {row.records ? ` · ${row.records} records` : ""}
+                    </dd>
+                  </div>
+                ))}
+              {inspect.functions.length > 0 ? (
+                <div className="flex justify-between gap-4">
+                  <dt>Deployed</dt>
+                  <dd className="text-right text-fg">{inspect.functions.join(", ")}</dd>
+                </div>
+              ) : null}
+            </dl>
+          ) : null}
         </div>
 
         {beat ? (

@@ -111,6 +111,11 @@ export const listStripeSales = createServerFn({ method: "GET" }).handler(async (
   return { ok: true as const, sales, notices: recentNotices(), via: "stripe" as const };
 });
 
+export const inspectNango = createServerFn({ method: "GET" }).handler(async () => {
+  const { inspectNangoSyncs } = await import("./nango.server");
+  return inspectNangoSyncs();
+});
+
 export const kickNangoSync = createServerFn({ method: "POST" }).handler(async () => {
   const { kickNangoCheckoutSync } = await import("./nango.server");
   try {

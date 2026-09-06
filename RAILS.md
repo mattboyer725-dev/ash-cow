@@ -1,8 +1,8 @@
 # Vercel rails — ash-cow
 
-Git remote: `https://github.com/mattboyer725-dev/ash-cow.git`  
+Git remote: `https://github.com/mattboyer725-dev/ash-cow.git` (main is current)  
 Team: `mattboyer725-4868s-projects` (`team_hmdMyBfWSwV5QTQ9S7fS6okN`)  
-No Vercel project is linked yet (no `.vercel/project.json`; no `ash-cow` project on the team).
+Vercel GitHub App does not yet have this repo. Grant [Vercel GitHub](https://github.com/apps/vercel/installations/select_target) access to `mattboyer725-dev/ash-cow`, then Import that repo in Vercel. Project names `ash-cow` / `highland-ash-cow` already collide on the account.
 
 Framework: TanStack Start + Nitro (`preset: "vercel"` in `vite.config.ts`).  
 `vercel.json` sets `framework: "tanstack-start"`. Keep `buildCommand: "npm run build"` so `vite build` **and** `db:migrate` run on every deploy.

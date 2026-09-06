@@ -34,6 +34,8 @@ type StripeFlags = {
 
 type RailsUrls = {
   origin: string;
+  shop: string;
+  stall: string;
   stripeWebhook: string;
   nangoWebhook: string;
 };
@@ -56,7 +58,13 @@ function RailsUrlRow({ label, url }: { label: string; url: string }) {
     <div className="flex items-start gap-3">
       <div className="min-w-0 flex-1">
         <p className="font-mono text-xs tracking-[0.18em] text-subtle uppercase">{label}</p>
-        <p className="mt-1 break-all font-mono text-xs text-fg">{url || "resolving…"}</p>
+        {url ? (
+          <a href={url} className="mt-1 block break-all font-mono text-xs text-fg hover:text-accent">
+            {url}
+          </a>
+        ) : (
+          <p className="mt-1 font-mono text-xs text-fg">resolving…</p>
+        )}
       </div>
       {url ? <CopyButton text={url} className="shrink-0" /> : null}
     </div>
@@ -202,6 +210,8 @@ function TillPage() {
             stay on the server.
           </p>
           <div className="mt-4 grid gap-4">
+            <RailsUrlRow label="Shop" url={rails?.shop ?? ""} />
+            <RailsUrlRow label="This stall" url={rails?.stall ?? ""} />
             <RailsUrlRow label="Stripe webhook" url={rails?.stripeWebhook ?? ""} />
             <RailsUrlRow label="Nango webhook" url={rails?.nangoWebhook ?? ""} />
           </div>

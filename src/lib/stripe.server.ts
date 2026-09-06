@@ -110,8 +110,19 @@ export function publicOrigin(passedOrigin?: string | null) {
 
 export function railsWebhookUrls(origin: string) {
   const base = cleanOrigin(origin);
+  if (!base) {
+    return {
+      origin: "",
+      shop: "",
+      stall: "",
+      stripeWebhook: "",
+      nangoWebhook: "",
+    };
+  }
   return {
     origin: base,
+    shop: `${base}/shop`,
+    stall: `${base}/s/ready-ash-cow`,
     stripeWebhook: `${base}/api/stripe/webhook`,
     nangoWebhook: `${base}/api/nango/webhook`,
   };

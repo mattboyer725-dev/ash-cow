@@ -1,10 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { BuyButton } from "@/components/buy-button";
+import { CopyButton } from "@/components/copy-button";
 import { Shell } from "@/components/shell";
 import { Button } from "@/components/ui/button";
 import { READY_COWS } from "@/lib/ready-cows";
 import { useBarn } from "@/lib/store";
+import { shopHref } from "@/lib/till";
 import { money } from "@/lib/utils";
 
 export const Route = createFileRoute("/s/$id")({ component: StallPage });
@@ -47,6 +49,7 @@ function StallPage() {
         <p className="mt-6 font-mono text-3xl tabular-nums">{money(cow.price)}</p>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
           {mounted ? <BuyButton cow={cow} className="w-full sm:w-auto" /> : null}
+          {mounted ? <CopyButton text={shopHref(cow.id)} label="Copy link" className="w-full sm:w-auto" /> : null}
         </div>
         <div className="mt-10 flex flex-col gap-5 text-base leading-relaxed">
           <p>{page.problem}</p>

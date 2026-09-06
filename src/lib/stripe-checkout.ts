@@ -51,7 +51,7 @@ export const railsEndpoints = createServerFn({ method: "GET" })
     try {
       return railsWebhookUrls(publicOrigin(data.origin));
     } catch {
-      return { origin: "", stripeWebhook: "", nangoWebhook: "" };
+      return railsWebhookUrls("");
     }
   });
 

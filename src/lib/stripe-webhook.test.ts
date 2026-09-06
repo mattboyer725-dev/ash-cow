@@ -132,6 +132,8 @@ test("resolvePublicOrigin prefers PUBLIC_ORIGIN then Origin header", () => {
 test("railsWebhookUrls uses this deploy origin", () => {
   assert.deepEqual(railsWebhookUrls("https://ash.example.com/"), {
     origin: "https://ash.example.com",
+    shop: "https://ash.example.com/shop",
+    stall: "https://ash.example.com/s/ready-ash-cow",
     stripeWebhook: "https://ash.example.com/api/stripe/webhook",
     nangoWebhook: "https://ash.example.com/api/nango/webhook",
   });

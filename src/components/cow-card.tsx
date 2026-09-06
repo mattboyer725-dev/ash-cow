@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { money } from "@/lib/utils";
@@ -23,9 +24,14 @@ export function CowCard({
       </div>
       <p className="mt-4 text-sm leading-relaxed text-muted">{cow.oneLiner}</p>
       <p className="mt-3 text-xs tracking-wide text-subtle">For {cow.who}</p>
-      <div className="mt-5">
+      <div className="mt-5 flex flex-col gap-2">
         <Button type="button" className="w-full" onClick={onAction}>
           {actionLabel}
+        </Button>
+        <Button asChild variant="secondary" className="w-full">
+          <Link to="/s/$id" params={{ id: cow.id }}>
+            Sales page
+          </Link>
         </Button>
       </div>
     </article>

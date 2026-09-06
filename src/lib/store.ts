@@ -13,6 +13,7 @@ type BarnState = {
   adoptCow: (cow: CashCow) => CashCow;
   removeCow: (id: string) => void;
   addSale: (kitId: string, amount: number) => void;
+  recordPaidSale: (sale: Sale) => boolean;
   removeSale: (id: string) => void;
   startLaunch: (kitId: string) => void;
   resetLaunch: (kitId: string) => void;
@@ -43,10 +44,15 @@ export const useBarn = create<BarnState>()(
       addSale: (kitId, amount) =>
         set({
           sales: [
-            { id: uid("sale"), kitId, amount, at: new Date().toISOString() },
+            { id: uid("sale"), kitId, amount, at: new Date().toISOString(), source: "manual" },
             ...get().sales,
           ],
         }),
+      recordPaidSale: (sale) => {
+        if (get().sales.some((row) => row.id === sale.id)) return false;
+        set({ sales: [sale, ...get().sales] });
+        return true;
+      },
       removeSale: (id) => set({ sales: get().sales.filter((s) => s.id !== id) }),
       startLaunch: (kitId) =>
         set({ launches: { ...get().launches, [kitId]: Date.now() } }),

@@ -70,4 +70,5 @@ export type Sale = {
   kitId: string;
   amount: number;
   at: string;
+  source?: "manual" | "stripe";
 };

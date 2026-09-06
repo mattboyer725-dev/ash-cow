@@ -11,7 +11,25 @@ A 24-hour digital-product launch kit. Forge a named file, list it tonight, sell 
 3. **Go live** on a stall (Ash Cow is $29 and ready).
 4. Use **Post on X** and **Open emails** for the due hour. Log the barn when money actually hits.
 
-Optional env on Vercel: `VITE_PAY_URL` so buyers on other devices still get a working Buy button.
+Optional env on Vercel:
+
+```
+VITE_AUTH_ENABLED=false
+VITE_PAY_URL=                # fallback if Stripe is off
+STRIPE_SECRET_KEY=sk_live_…  # server only
+STRIPE_WEBHOOK_SECRET=whsec_…
+```
+
+Webhook URL: `https://<your-domain>/api/stripe/webhook`
+
+Listen locally:
+
+```bash
+stripe listen --forward-to localhost:8080/api/stripe/webhook
+```
+
+Dashboard: add `checkout.session.completed` and `checkout.session.async_payment_succeeded`. Unsigned requests return 400. Till → **Sync paid sessions** writes Stripe Checkout into the barn (idempotent on session id).
+
 
 ## Stack
 

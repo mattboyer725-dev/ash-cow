@@ -51,6 +51,7 @@ export function BarnSales({ kitId, defaultAmount }: { kitId: string; defaultAmou
           >
             <span className="font-mono text-sm tabular-nums">{money(row.amount)}</span>
             <span className="text-xs text-subtle">
+              {row.source === "stripe" ? "Stripe · " : ""}
               {new Date(row.at).toLocaleString()}
             </span>
             <button

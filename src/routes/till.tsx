@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Shell } from "@/components/shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { currentBeat, nextBeat } from "@/lib/live";
 import { READY_COWS } from "@/lib/ready-cows";
+import { listStripeSales, stripeStatus } from "@/lib/stripe-checkout";
 import { useBarn } from "@/lib/store";
 import { outreachMailto, parseEmails, shopHref, tweetIntent, useTill } from "@/lib/till";
 import { money } from "@/lib/utils";
@@ -25,10 +27,17 @@ function TillPage() {
   const launches = useBarn((s) => s.launches);
   const cows = useBarn((s) => s.cows);
   const startLaunch = useBarn((s) => s.startLaunch);
+  const recordPaidSale = useBarn((s) => s.recordPaidSale);
+  const [stripe, setStripe] = useState<{ checkoutReady: boolean; webhookReady: boolean } | null>(null);
+  const [notices, setNotices] = useState<{ id: string; type: string; detail: string; ok: boolean }[]>([]);
+  const [syncing, setSyncing] = useState(false);
   const [now, setNow] = useState(() => Date.now());
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    void stripeStatus().then(setStripe);
+  }, []);
   useEffect(() => {
     const id = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(id);
@@ -103,6 +112,70 @@ function TillPage() {
               </p>
             </div>
           </div>
+        </section>
+
+        <section className="mt-8 rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
+          <h2 className="font-display text-xl tracking-tight">Stripe webhooks</h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
+            Endpoint: <span className="font-mono text-fg">/api/stripe/webhook</span>. Events:{" "}
+            <span className="font-mono">checkout.session.completed</span>,{" "}
+            <span className="font-mono">checkout.session.async_payment_succeeded</span>. Unsigned
+            posts are rejected.
+          </p>
+          <dl className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div>
+              <dt className="text-sm text-muted">Checkout</dt>
+              <dd className="font-mono text-sm">
+                {stripe?.checkoutReady ? "STRIPE_SECRET_KEY set" : "Missing STRIPE_SECRET_KEY"}
+              </dd>
+            </div>
+            <div>
+              <dt className="text-sm text-muted">Webhook</dt>
+              <dd className="font-mono text-sm">
+                {stripe?.webhookReady ? "STRIPE_WEBHOOK_SECRET set" : "Missing STRIPE_WEBHOOK_SECRET"}
+              </dd>
+            </div>
+          </dl>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Button
+              type="button"
+              variant="secondary"
+              disabled={syncing || !stripe?.checkoutReady}
+              onClick={() => {
+                setSyncing(true);
+                void listStripeSales()
+                  .then((res) => {
+                    if (!res.ok) return;
+                    let added = 0;
+                    for (const sale of res.sales) {
+                      if (recordPaidSale(sale)) added += 1;
+                    }
+                    setNotices(res.notices);
+                    toast(
+                      added === 0
+                        ? "Stripe is current. No new paid sessions."
+                        : `Logged ${added} Stripe sale${added === 1 ? "" : "s"} in the barn.`,
+                    );
+                  })
+                  .finally(() => setSyncing(false));
+              }}
+            >
+              {syncing ? "Syncing…" : "Sync paid sessions"}
+            </Button>
+          </div>
+          {notices.length > 0 ? (
+            <ul className="mt-4 flex flex-col gap-2">
+              {notices.slice(0, 8).map((row) => (
+                <li key={row.id} className="text-sm text-muted">
+                  <span className="font-mono text-fg">{row.type}</span> — {row.detail}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-4 text-sm text-subtle">
+              Local: <span className="font-mono">stripe listen --forward-to localhost:8080/api/stripe/webhook</span>
+            </p>
+          )}
         </section>
 
         <section className="mt-8 flex flex-col gap-4">

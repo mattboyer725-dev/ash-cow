@@ -11,11 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ForgeRouteImport } from './routes/forge'
+import { Route as PaidRouteImport } from './routes/paid'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as TillRouteImport } from './routes/till'
 import { Route as TruthRouteImport } from './routes/truth'
 import { Route as CowIdRouteImport } from './routes/cow.$id'
 import { Route as SIdRouteImport } from './routes/s.$id'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -25,6 +27,11 @@ const IndexRoute = IndexRouteImport.update({
 const ForgeRoute = ForgeRouteImport.update({
   id: '/forge',
   path: '/forge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaidRoute = PaidRouteImport.update({
+  id: '/paid',
+  path: '/paid',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShopRoute = ShopRouteImport.update({
@@ -52,60 +59,92 @@ const SIdRoute = SIdRouteImport.update({
   path: '/s/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe/webhook',
+  path: '/api/stripe/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/forge': typeof ForgeRoute
+  '/paid': typeof PaidRoute
   '/shop': typeof ShopRoute
   '/till': typeof TillRoute
   '/truth': typeof TruthRoute
   '/cow/$id': typeof CowIdRoute
   '/s/$id': typeof SIdRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/forge': typeof ForgeRoute
+  '/paid': typeof PaidRoute
   '/shop': typeof ShopRoute
   '/till': typeof TillRoute
   '/truth': typeof TruthRoute
   '/cow/$id': typeof CowIdRoute
   '/s/$id': typeof SIdRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/forge': typeof ForgeRoute
+  '/paid': typeof PaidRoute
   '/shop': typeof ShopRoute
   '/till': typeof TillRoute
   '/truth': typeof TruthRoute
   '/cow/$id': typeof CowIdRoute
   '/s/$id': typeof SIdRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/forge' | '/shop' | '/till' | '/truth' | '/cow/$id' | '/s/$id'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forge' | '/shop' | '/till' | '/truth' | '/cow/$id' | '/s/$id'
-  id:
-    | '__root__'
     | '/'
     | '/forge'
+    | '/paid'
     | '/shop'
     | '/till'
     | '/truth'
     | '/cow/$id'
     | '/s/$id'
+    | '/api/stripe/webhook'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/forge'
+    | '/paid'
+    | '/shop'
+    | '/till'
+    | '/truth'
+    | '/cow/$id'
+    | '/s/$id'
+    | '/api/stripe/webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/forge'
+    | '/paid'
+    | '/shop'
+    | '/till'
+    | '/truth'
+    | '/cow/$id'
+    | '/s/$id'
+    | '/api/stripe/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ForgeRoute: typeof ForgeRoute
+  PaidRoute: typeof PaidRoute
   ShopRoute: typeof ShopRoute
   TillRoute: typeof TillRoute
   TruthRoute: typeof TruthRoute
   CowIdRoute: typeof CowIdRoute
   SIdRoute: typeof SIdRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -122,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/forge'
       fullPath: '/forge'
       preLoaderRoute: typeof ForgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paid': {
+      id: '/paid'
+      path: '/paid'
+      fullPath: '/paid'
+      preLoaderRoute: typeof PaidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shop': {
@@ -159,17 +205,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stripe/webhook': {
+      id: '/api/stripe/webhook'
+      path: '/api/stripe/webhook'
+      fullPath: '/api/stripe/webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ForgeRoute: ForgeRoute,
+  PaidRoute: PaidRoute,
   ShopRoute: ShopRoute,
   TillRoute: TillRoute,
   TruthRoute: TruthRoute,
   CowIdRoute: CowIdRoute,
   SIdRoute: SIdRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

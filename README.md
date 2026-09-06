@@ -8,7 +8,7 @@ A 24-hour digital-product launch kit. The animal is a Highland cow. Forge a name
 
 ## Earn in a day
 
-1. Set `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`.
+1. Set `STRIPE_SECRET_KEY` (`sk_` or restricted `rk_`) and `STRIPE_WEBHOOK_SECRET` (`whsec_`) on the server — never `VITE_`.
 2. In [Nango](https://app.nango.dev): Stripe integration `stripe`, connection `ash-cow`, enable the `checkout-sessions` sync (model `CheckoutSession`).
 3. Set `NANGO_API_KEY` and `NANGO_WEBHOOK_SIGNING_KEY`. Point Nango webhooks at `https://<your-domain>/api/nango/webhook`.
 4. Open **Live**. The clock starts. Nango kicks the sync; paid sessions land in the barn.

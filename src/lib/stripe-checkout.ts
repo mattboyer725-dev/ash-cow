@@ -33,6 +33,10 @@ export const stripeStatus = createServerFn({ method: "GET" }).handler(async () =
   return {
     checkoutReady: s.checkoutReady,
     webhookReady: s.webhookReady,
+    mode: s.mode,
+    leakedToClient: s.leakedToClient,
+    secretKind: s.secretKind,
+    webhookKind: s.webhookKind,
     nangoReady: n.ready,
     nangoWebhookReady: n.webhookReady,
     operatorLocked: operatorLocked(),

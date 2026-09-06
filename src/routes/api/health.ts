@@ -16,6 +16,8 @@ export const Route = createFileRoute("/api/health")({
           operatorLocked: operatorLocked(),
           checkout: stripe.checkoutReady,
           stripeWebhook: stripe.webhookReady,
+          stripeMode: stripe.mode,
+          stripeLeakedToClient: stripe.leakedToClient,
           nango: nango.ready,
           nangoWebhook: nango.webhookReady,
           nangoSync: {

@@ -28,8 +28,8 @@ Do **not** prefix server secrets with `VITE_`. `VITE_*` is inlined into the brow
 
 | Name | Where it lives | Notes |
 | --- | --- | --- |
-| `STRIPE_SECRET_KEY` | server | Checkout. Empty → `/api/health` `checkout: false`. |
-| `STRIPE_WEBHOOK_SECRET` | server | Stripe dashboard webhook signing secret. |
+| `STRIPE_SECRET_KEY` | server | `sk_test_` / `sk_live_` or restricted `rk_*`. Never `pk_*`. Never `VITE_`. Health reports `stripeMode` only. |
+| `STRIPE_WEBHOOK_SECRET` | server | Must start with `whsec_`. Do not reuse the secret key. |
 | `NANGO_API_KEY` | server | Nango environment API key. Alias: `NANGO_SECRET_KEY`. |
 | `NANGO_WEBHOOK_SIGNING_KEY` | server | Nango Environment Settings → Webhooks. |
 

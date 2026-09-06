@@ -1,20 +1,26 @@
 import Stripe from "stripe";
 import { getRequest } from "@tanstack/react-start/server";
+import { inspectStripeEnv, type StripeSecretReport } from "./stripe-keys.ts";
 
-export function stripeSecrets() {
+export function stripeSecrets(): StripeSecretReport & { secret: string; webhook: string } {
   const secret = process.env.STRIPE_SECRET_KEY?.trim() ?? "";
   const webhook = process.env.STRIPE_WEBHOOK_SECRET?.trim() ?? "";
-  return {
+  const report = inspectStripeEnv({
     secret,
     webhook,
-    checkoutReady: secret.length > 0,
-    webhookReady: webhook.length > 0,
+    viteSecret: process.env.VITE_STRIPE_SECRET_KEY,
+    viteWebhook: process.env.VITE_STRIPE_WEBHOOK_SECRET,
+  });
+  return {
+    ...report,
+    secret: report.checkoutReady ? secret : "",
+    webhook: report.webhookReady ? webhook : "",
   };
 }
 
 export function getStripe() {
-  const { secret } = stripeSecrets();
-  if (!secret) return null;
+  const { secret, checkoutReady } = stripeSecrets();
+  if (!checkoutReady || !secret) return null;
   return new Stripe(secret);
 }
 

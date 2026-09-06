@@ -22,6 +22,10 @@ const DEFAULT_ID = "ready-ash-cow";
 type StripeFlags = {
   checkoutReady: boolean;
   webhookReady: boolean;
+  mode: "off" | "test" | "live" | "invalid";
+  leakedToClient: boolean;
+  secretKind: string;
+  webhookKind: string;
   nangoReady: boolean;
   nangoWebhookReady: boolean;
   operatorLocked: boolean;
@@ -36,7 +40,11 @@ type RailsUrls = {
 
 function envFlag(name: (typeof RAILS_ENV_KEYS)[number], stripe: StripeFlags | null) {
   if (!stripe) return "…";
-  if (name === "STRIPE_SECRET_KEY") return stripe.checkoutReady ? "set" : "missing";
+  if (name === "STRIPE_SECRET_KEY") {
+    if (stripe.leakedToClient) return "leaked";
+    if (stripe.mode === "invalid") return "invalid";
+    return stripe.checkoutReady ? stripe.mode : "missing";
+  }
   if (name === "STRIPE_WEBHOOK_SECRET") return stripe.webhookReady ? "set" : "missing";
   if (name === "NANGO_API_KEY") return stripe.nangoReady ? "set" : "missing";
   if (name === "NANGO_WEBHOOK_SIGNING_KEY") return stripe.nangoWebhookReady ? "set" : "missing";
@@ -124,7 +132,11 @@ function TillPage() {
             {stripeTotal.count ? ` · ${stripeTotal.count} paid` : " · waiting"}
           </p>
           <p className="mt-1 font-mono text-xs text-subtle">
-            {stripe?.checkoutReady ? "Checkout on" : "Set STRIPE_SECRET_KEY"}
+            {stripe?.leakedToClient
+              ? "Stripe keys leaked into VITE_ — checkout off"
+              : stripe?.checkoutReady
+                ? `Checkout ${stripe.mode}`
+                : "Set STRIPE_SECRET_KEY"}
             {" · "}
             {stripe?.webhookReady ? "Stripe webhook on" : "Set STRIPE_WEBHOOK_SECRET"}
             {" · "}

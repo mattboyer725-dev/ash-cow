@@ -11,7 +11,7 @@ export function Shell({ children, trailer }: { children: ReactNode; trailer?: Re
             <CowMark className="size-8" />
             <span className="font-display text-lg tracking-tight">Ash Cow</span>
           </Link>
-          <nav className="flex items-center gap-1 text-sm">
+          <nav className="flex items-center gap-1 overflow-x-auto text-sm">
             <Link
               to="/"
               className="inline-flex h-11 items-center rounded-md px-3 text-muted hover:text-fg"
@@ -19,10 +19,16 @@ export function Shell({ children, trailer }: { children: ReactNode; trailer?: Re
               Barn
             </Link>
             <Link
-              to="/truth"
+              to="/shop"
               className="inline-flex h-11 items-center rounded-md px-3 text-muted hover:text-fg"
             >
-              Truth
+              Shop
+            </Link>
+            <Link
+              to="/till"
+              className="inline-flex h-11 items-center rounded-md px-3 text-muted hover:text-fg"
+            >
+              Till
             </Link>
             <Link
               to="/forge"

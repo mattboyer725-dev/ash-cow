@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ForgeRouteImport } from './routes/forge'
+import { Route as ShopRouteImport } from './routes/shop'
+import { Route as TillRouteImport } from './routes/till'
 import { Route as TruthRouteImport } from './routes/truth'
 import { Route as CowIdRouteImport } from './routes/cow.$id'
+import { Route as SIdRouteImport } from './routes/s.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,6 +25,16 @@ const IndexRoute = IndexRouteImport.update({
 const ForgeRoute = ForgeRouteImport.update({
   id: '/forge',
   path: '/forge',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TillRoute = TillRouteImport.update({
+  id: '/till',
+  path: '/till',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TruthRoute = TruthRouteImport.update({
@@ -34,39 +47,65 @@ const CowIdRoute = CowIdRouteImport.update({
   path: '/cow/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SIdRoute = SIdRouteImport.update({
+  id: '/s/$id',
+  path: '/s/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/forge': typeof ForgeRoute
+  '/shop': typeof ShopRoute
+  '/till': typeof TillRoute
   '/truth': typeof TruthRoute
   '/cow/$id': typeof CowIdRoute
+  '/s/$id': typeof SIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/forge': typeof ForgeRoute
+  '/shop': typeof ShopRoute
+  '/till': typeof TillRoute
   '/truth': typeof TruthRoute
   '/cow/$id': typeof CowIdRoute
+  '/s/$id': typeof SIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/forge': typeof ForgeRoute
+  '/shop': typeof ShopRoute
+  '/till': typeof TillRoute
   '/truth': typeof TruthRoute
   '/cow/$id': typeof CowIdRoute
+  '/s/$id': typeof SIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/forge' | '/truth' | '/cow/$id'
+  fullPaths:
+    '/' | '/forge' | '/shop' | '/till' | '/truth' | '/cow/$id' | '/s/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/forge' | '/truth' | '/cow/$id'
-  id: '__root__' | '/' | '/forge' | '/truth' | '/cow/$id'
+  to: '/' | '/forge' | '/shop' | '/till' | '/truth' | '/cow/$id' | '/s/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/forge'
+    | '/shop'
+    | '/till'
+    | '/truth'
+    | '/cow/$id'
+    | '/s/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ForgeRoute: typeof ForgeRoute
+  ShopRoute: typeof ShopRoute
+  TillRoute: typeof TillRoute
   TruthRoute: typeof TruthRoute
   CowIdRoute: typeof CowIdRoute
+  SIdRoute: typeof SIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,6 +124,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/till': {
+      id: '/till'
+      path: '/till'
+      fullPath: '/till'
+      preLoaderRoute: typeof TillRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/truth': {
       id: '/truth'
       path: '/truth'
@@ -99,14 +152,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CowIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/s/$id': {
+      id: '/s/$id'
+      path: '/s/$id'
+      fullPath: '/s/$id'
+      preLoaderRoute: typeof SIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ForgeRoute: ForgeRoute,
+  ShopRoute: ShopRoute,
+  TillRoute: TillRoute,
   TruthRoute: TruthRoute,
   CowIdRoute: CowIdRoute,
+  SIdRoute: SIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

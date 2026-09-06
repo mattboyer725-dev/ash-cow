@@ -62,13 +62,13 @@ function Home() {
           </p>
           <div className="stagger-in mt-8 flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">
-              <Link to="/forge">
-                Forge a cow
+              <Link to="/shop">
+                Open the shop
                 <ArrowRight />
               </Link>
             </Button>
             <Button asChild size="lg" variant="paper">
-              <Link to="/truth">See the three ledgers</Link>
+              <Link to="/till">Set the till</Link>
             </Button>
           </div>
         </div>

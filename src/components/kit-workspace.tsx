@@ -1,5 +1,6 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, Link } from "@tanstack/react-router";
 import { Printer, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { CopyButton } from "@/components/copy-button";
 import { DeliveryPaper } from "@/components/delivery-paper";
 import { LaunchClock } from "@/components/clock";
@@ -19,6 +20,7 @@ import {
   postsText,
 } from "@/lib/kit-text";
 import { useBarn } from "@/lib/store";
+import { shopHref, tweetIntent } from "@/lib/till";
 import type { CashCow } from "@/lib/types";
 import { money } from "@/lib/utils";
 
@@ -58,10 +60,32 @@ export function KitWorkspace({ cow }: { cow: CashCow }) {
                 Reset clock
               </Button>
             ) : (
-              <Button type="button" onClick={() => startLaunch(cow.id)}>
-                Start 24 hours
+              <Button
+                type="button"
+                onClick={() => {
+                  startLaunch(cow.id);
+                  const href = shopHref(cow.id);
+                  void navigator.clipboard.writeText(href);
+                  toast("Live. Sales page copied.");
+                }}
+              >
+                Go live
               </Button>
             )}
+            <Button asChild variant="secondary">
+              <Link to="/s/$id" params={{ id: cow.id }}>
+                Sales page
+              </Link>
+            </Button>
+            <Button asChild variant="secondary">
+              <a
+                href={tweetIntent(`${cow.posts[0]?.copy ?? cow.oneLiner}\n${shopHref(cow.id)}`)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Post on X
+              </a>
+            </Button>
             <Button type="button" variant="secondary" onClick={() => window.print()}>
               <Printer />
               Print file

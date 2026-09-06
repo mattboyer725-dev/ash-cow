@@ -30,7 +30,8 @@ NANGO_CONNECTION_ID=ash-cow
 Stripe webhook: `https://<your-domain>/api/stripe/webhook`  
 Nango webhook: `https://<your-domain>/api/nango/webhook` (`X-Nango-Hmac-Sha256`)
 
-Enable Stripe’s `checkout-sessions` sync in Nango (`autoStart: true`, default `every hour`, model `CheckoutSession`). Live reads that config, starts the schedule, and can override cadence with `NANGO_SYNC_FREQUENCY` (vercel/ms, min 30s). Other Stripe templates (customers, invoices, payment-intents, refunds, subscriptions) are listed but not consumed.
+Paid sessions are written to a `sales` table (PGLite in preview, Neon when deployed). Tokens unlock `/d/<token>` and `/api/download/<token>`. Refunds mark the row and kill the file. Operator kick/inspect require `OPERATOR_SECRET` when it is set.
+
 
 
 

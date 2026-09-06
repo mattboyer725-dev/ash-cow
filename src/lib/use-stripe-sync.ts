@@ -1,24 +1,26 @@
 import { useEffect } from "react";
-import { kickNangoSync, listStripeSales } from "@/lib/stripe-checkout";
+import { kickNangoSync, listLedger } from "@/lib/stripe-checkout";
 import { useBarn } from "@/lib/store";
+import { useTill } from "@/lib/till";
 
 export function useStripeSync() {
   const recordPaidSale = useBarn((s) => s.recordPaidSale);
+  const operatorKey = useTill((s) => s.operatorKey);
 
   useEffect(() => {
     let cancelled = false;
 
     async function pull() {
       try {
-        const res = await listStripeSales();
+        const res = await listLedger();
         if (cancelled || !res.ok) return;
         for (const sale of res.sales) recordPaidSale(sale);
       } catch {
-        // Nango/Stripe unset or network — barn stays as-is.
+        // Ledger unset or network — barn stays as-is.
       }
     }
 
-    void kickNangoSync();
+    void kickNangoSync({ data: { key: operatorKey } });
     void pull();
     const id = window.setInterval(() => void pull(), 30_000);
     const onFocus = () => {
@@ -30,5 +32,5 @@ export function useStripeSync() {
       window.clearInterval(id);
       window.removeEventListener("visibilitychange", onFocus);
     };
-  }, [recordPaidSale]);
+  }, [recordPaidSale, operatorKey]);
 }

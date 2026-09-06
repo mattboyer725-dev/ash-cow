@@ -8,9 +8,14 @@ const checkoutInput = z.object({
   price: z.number().min(9).max(99).optional(),
 });
 
+const operatorInput = z.object({
+  key: z.string().max(200).optional(),
+});
+
 export const stripeStatus = createServerFn({ method: "GET" }).handler(async () => {
   const { stripeSecrets } = await import("./stripe.server");
   const { nangoConfig } = await import("./nango.server");
+  const { operatorLocked } = await import("./operator.server");
   const s = stripeSecrets();
   const n = nangoConfig();
   return {
@@ -18,6 +23,8 @@ export const stripeStatus = createServerFn({ method: "GET" }).handler(async () =
     webhookReady: s.webhookReady,
     nangoReady: n.ready,
     nangoWebhookReady: n.webhookReady,
+    operatorLocked: operatorLocked(),
+    ledger: true,
   };
 });
 
@@ -68,61 +75,112 @@ export const readCheckout = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     const { getStripe } = await import("./stripe.server");
-    const { saleFromSession } = await import("./stripe-events");
+    const { paymentIntentOf, asSessionSlice, saleFromSession } = await import("./stripe-events");
+    const { upsertPaidSale } = await import("./sales.server");
     const stripe = getStripe();
     if (!stripe) {
       return { ok: false as const, error: "Stripe is not configured." };
     }
     const session = await stripe.checkout.sessions.retrieve(data.sessionId);
-    const sale = saleFromSession(session);
+    const sale = saleFromSession(asSessionSlice(session));
     if (!sale) {
       return { ok: false as const, error: "That session is not paid." };
+    }
+    const stored = await upsertPaidSale({
+      id: sale.id,
+      kitId: sale.kitId,
+      amount: sale.amount,
+      paymentIntent: paymentIntentOf(session),
+    });
+    if (stored.status === "refunded") {
+      return { ok: false as const, error: "That payment was refunded." };
     }
     return {
       ok: true as const,
       sale,
-      email: session.customer_details?.email ?? null,
+      token: stored.token,
       name: session.metadata?.kitName ?? sale.kitId,
     };
   });
 
-export const listStripeSales = createServerFn({ method: "GET" }).handler(async () => {
-  const { recentNotices } = await import("./stripe-events");
-  const { nangoConfig, listNangoSales } = await import("./nango.server");
-  const nango = nangoConfig();
-  if (nango.ready) {
-    try {
-      const sales = await listNangoSales();
-      return { ok: true as const, sales, notices: recentNotices(), via: "nango" as const };
-    } catch {
-      // Fall through to Stripe list if Nango is unreachable.
+export const listLedger = createServerFn({ method: "GET" }).handler(async () => {
+  const { listLedgerSales } = await import("./sales.server");
+  const sales = await listLedgerSales();
+  return { ok: true as const, sales };
+});
+
+export const fulfillByToken = createServerFn({ method: "POST" })
+  .validator((raw: { token: string }) => z.object({ token: z.string().min(8).max(80) }).parse(raw))
+  .handler(async ({ data }) => {
+    const { saleByToken } = await import("./sales.server");
+    const sale = await saleByToken(data.token);
+    if (!sale) return { ok: false as const, error: "Unknown download." };
+    if (sale.status === "refunded") return { ok: false as const, error: "That payment was refunded." };
+    return { ok: true as const, sale: { id: sale.id, kitId: sale.kitId, amount: sale.amount, at: sale.at } };
+  });
+
+function gate(key?: string) {
+  return import("./operator.server").then(({ operatorAllowed }) => {
+    if (!operatorAllowed(key)) {
+      return { ok: false as const, error: "Operator key required." };
     }
-  }
-  const { getStripe } = await import("./stripe.server");
-  const { saleFromSession } = await import("./stripe-events");
-  const stripe = getStripe();
-  if (!stripe) {
-    return { ok: false as const, error: "No Nango or Stripe sync configured.", sales: [], notices: [] };
-  }
-  const listed = await stripe.checkout.sessions.list({ limit: 40, status: "complete" });
-  const sales = listed.data
-    .map(saleFromSession)
-    .filter((row): row is NonNullable<typeof row> => Boolean(row));
-  return { ok: true as const, sales, notices: recentNotices(), via: "stripe" as const };
-});
+    return null;
+  });
+}
 
-export const inspectNango = createServerFn({ method: "GET" }).handler(async () => {
-  const { inspectNangoSyncs } = await import("./nango.server");
-  return inspectNangoSyncs();
-});
+export const inspectNango = createServerFn({ method: "POST" })
+  .validator((raw: z.input<typeof operatorInput>) => operatorInput.parse(raw ?? {}))
+  .handler(async ({ data }) => {
+    const blocked = await gate(data.key);
+    if (blocked) return { ...blocked, expected: null, functions: [], syncs: [] };
+    const { inspectNangoSyncs } = await import("./nango.server");
+    return inspectNangoSyncs();
+  });
 
-export const kickNangoSync = createServerFn({ method: "POST" }).handler(async () => {
-  const { kickNangoCheckoutSync } = await import("./nango.server");
-  try {
-    return await kickNangoCheckoutSync();
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Nango sync failed to start.";
-    return { ok: false as const, error: message };
-  }
-});
+export const kickNangoSync = createServerFn({ method: "POST" })
+  .validator((raw: z.input<typeof operatorInput>) => operatorInput.parse(raw ?? {}))
+  .handler(async ({ data }) => {
+    const blocked = await gate(data.key);
+    if (blocked) return blocked;
+    const { kickNangoCheckoutSync } = await import("./nango.server");
+    try {
+      return await kickNangoCheckoutSync();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Nango sync failed to start.";
+      return { ok: false as const, error: message };
+    }
+  });
 
+export const ingestRemoteSales = createServerFn({ method: "POST" })
+  .validator((raw: z.input<typeof operatorInput>) => operatorInput.parse(raw ?? {}))
+  .handler(async ({ data }) => {
+    const blocked = await gate(data.key);
+    if (blocked) return { ...blocked, added: 0 };
+    const { upsertPaidSale } = await import("./sales.server");
+    const { nangoConfig, listNangoSales } = await import("./nango.server");
+    let added = 0;
+    if (nangoConfig().ready) {
+      try {
+        const sales = await listNangoSales();
+        for (const sale of sales) {
+          await upsertPaidSale({ id: sale.id, kitId: sale.kitId, amount: sale.amount });
+          added += 1;
+        }
+      } catch {
+        // Stripe fallback below.
+      }
+    }
+    const { getStripe } = await import("./stripe.server");
+    const { asSessionSlice, saleFromSession } = await import("./stripe-events");
+    const stripe = getStripe();
+    if (stripe) {
+      const listed = await stripe.checkout.sessions.list({ limit: 40, status: "complete" });
+      for (const session of listed.data) {
+        const sale = saleFromSession(asSessionSlice(session));
+        if (!sale) continue;
+        await upsertPaidSale({ id: sale.id, kitId: sale.kitId, amount: sale.amount });
+        added += 1;
+      }
+    }
+    return { ok: true as const, added };
+  });

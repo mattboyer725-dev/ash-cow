@@ -6,10 +6,12 @@ type TillState = {
   payLabel: string;
   contact: string;
   emails: string;
+  operatorKey: string;
   setPayUrl: (v: string) => void;
   setPayLabel: (v: string) => void;
   setContact: (v: string) => void;
   setEmails: (v: string) => void;
+  setOperatorKey: (v: string) => void;
 };
 
 export const useTill = create<TillState>()(
@@ -19,10 +21,12 @@ export const useTill = create<TillState>()(
       payLabel: "Gumroad",
       contact: "",
       emails: "",
+      operatorKey: "",
       setPayUrl: (payUrl) => set({ payUrl }),
       setPayLabel: (payLabel) => set({ payLabel }),
       setContact: (contact) => set({ contact }),
       setEmails: (emails) => set({ emails }),
+      setOperatorKey: (operatorKey) => set({ operatorKey }),
     }),
     { name: "ash-cow-till" },
   ),

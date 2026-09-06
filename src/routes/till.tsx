@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import { LaunchClock } from "@/components/clock";
 import { Shell } from "@/components/shell";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { currentBeat, nextBeat } from "@/lib/live";
 import { READY_COWS } from "@/lib/ready-cows";
 import { inspectNango, stripeStatus } from "@/lib/stripe-checkout";
-import { useBarn } from "@/lib/store";
+import { barnTotals, useBarn } from "@/lib/store";
 import { useStripeSync } from "@/lib/use-stripe-sync";
 import { outreachMailto, parseEmails, shopHref, tweetIntent, useTill } from "@/lib/till";
 import { money } from "@/lib/utils";
@@ -21,6 +22,8 @@ function TillPage() {
   useStripeSync();
   const emails = useTill((s) => s.emails);
   const setEmails = useTill((s) => s.setEmails);
+  const operatorKey = useTill((s) => s.operatorKey);
+  const setOperatorKey = useTill((s) => s.setOperatorKey);
   const launches = useBarn((s) => s.launches);
   const startLaunch = useBarn((s) => s.startLaunch);
   const sales = useBarn((s) => s.sales);
@@ -29,6 +32,8 @@ function TillPage() {
     webhookReady: boolean;
     nangoReady: boolean;
     nangoWebhookReady: boolean;
+    operatorLocked: boolean;
+    ledger: boolean;
   } | null>(null);
   const [inspect, setInspect] = useState<Awaited<ReturnType<typeof inspectNango>> | null>(null);
   const [now, setNow] = useState(() => Date.now());
@@ -36,14 +41,13 @@ function TillPage() {
 
   const cow = READY_COWS.find((c) => c.id === DEFAULT_ID)!;
   const startedAt = launches[cow.id];
-  const stripeSales = sales.filter((s) => s.source === "stripe" && s.kitId === cow.id);
-  const stripeTotal = stripeSales.reduce((sum, s) => sum + s.amount, 0);
+  const stripeTotal = barnTotals(sales, cow.id);
 
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     void stripeStatus().then(setStripe);
-    void inspectNango().then(setInspect);
-  }, []);
+    void inspectNango({ data: { key: operatorKey } }).then(setInspect);
+  }, [operatorKey]);
   useEffect(() => {
     const id = window.setInterval(() => setNow(Date.now()), 1000);
     return () => window.clearInterval(id);
@@ -82,17 +86,17 @@ function TillPage() {
         <div className="mt-8 rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
           <LaunchClock startedAt={startedAt} />
           <p className="mt-4 font-mono text-sm tabular-nums text-muted">
-            {money(stripeTotal)} from Stripe
-            {stripeSales.length ? ` · ${stripeSales.length} paid` : " · waiting"}
+            {money(stripeTotal.amount)} from Stripe
+            {stripeTotal.count ? ` · ${stripeTotal.count} paid` : " · waiting"}
           </p>
           <p className="mt-1 font-mono text-xs text-subtle">
             {stripe?.checkoutReady ? "Checkout on" : "Set STRIPE_SECRET_KEY"}
             {" · "}
             {stripe?.nangoReady ? "Nango sync on" : "Set NANGO_API_KEY"}
             {" · "}
-            {stripe?.nangoWebhookReady ? "Nango webhook on" : "Set NANGO_WEBHOOK_SIGNING_KEY"}
+            {stripe?.operatorLocked ? "Operator locked" : "Operator open"}
           </p>
-          {inspect ? (
+          {inspect?.expected ? (
             <dl className="mt-4 grid gap-2 font-mono text-xs text-subtle">
               <div className="flex justify-between gap-4">
                 <dt>Sync</dt>
@@ -111,7 +115,7 @@ function TillPage() {
                 </dd>
               </div>
               {inspect.syncs
-                .filter((row) => row.name === inspect.expected.syncName)
+                .filter((row) => row.name === inspect.expected?.syncName)
                 .map((row) => (
                   <div key={row.name} className="flex justify-between gap-4">
                     <dt>Status</dt>
@@ -179,6 +183,21 @@ function TillPage() {
           />
           <p className="mt-2 text-sm text-subtle">
             Hour 8 opens a mailto. Nothing is sent until you hit send.
+          </p>
+        </section>
+
+        <section className="mt-6">
+          <Label htmlFor="operator-key">Operator key</Label>
+          <Input
+            id="operator-key"
+            className="mt-1.5"
+            type="password"
+            autoComplete="off"
+            value={mounted ? operatorKey : ""}
+            onChange={(e) => setOperatorKey(e.target.value)}
+          />
+          <p className="mt-2 text-sm text-subtle">
+            Matches OPERATOR_SECRET on the server. Empty is fine in preview.
           </p>
         </section>
       </main>

@@ -71,4 +71,5 @@ export type Sale = {
   amount: number;
   at: string;
   source?: "manual" | "stripe";
+  status?: "paid" | "refunded";
 };

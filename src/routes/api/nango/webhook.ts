@@ -11,6 +11,7 @@ export const Route = createFileRoute("/api/nango/webhook")({
           nangoConfig,
         } = await import("@/lib/nango.server");
         const { rememberNotice } = await import("@/lib/stripe-events");
+        const { upsertPaidSale } = await import("@/lib/sales.server");
 
         const cfg = nangoConfig();
         const nango = getNango();
@@ -28,7 +29,6 @@ export const Route = createFileRoute("/api/nango/webhook")({
           type?: string;
           success?: boolean;
           syncName?: string;
-          model?: string;
           modifiedAfter?: string;
         };
         try {
@@ -39,6 +39,9 @@ export const Route = createFileRoute("/api/nango/webhook")({
 
         if (body.type === "sync" && body.success) {
           const sales = await listNangoSales(body.modifiedAfter);
+          for (const sale of sales) {
+            await upsertPaidSale({ id: sale.id, kitId: sale.kitId, amount: sale.amount });
+          }
           rememberNotice({
             id: `nango-${body.syncName ?? "sync"}-${body.modifiedAfter ?? Date.now()}`,
             type: `nango.${body.syncName ?? "sync"}`,

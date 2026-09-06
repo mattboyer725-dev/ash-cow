@@ -37,8 +37,66 @@ export type SessionSlice = {
   status?: string | null;
   amount_total?: number | null;
   created?: number | null;
+  payment_intent?: string | null;
   metadata?: Record<string, string> | null;
 };
+
+export const PAID_TYPES = new Set([
+  "checkout.session.completed",
+  "checkout.session.async_payment_succeeded",
+]);
+
+export const REFUND_TYPES = new Set([
+  "charge.refunded",
+  "charge.dispute.created",
+  "refund.updated",
+  "checkout.session.async_payment_failed",
+]);
+
+export function paymentIntentOf(object: {
+  id?: string;
+  payment_intent?: unknown;
+  paymentIntent?: unknown;
+}): string | null {
+  const pi = object.payment_intent ?? object.paymentIntent;
+  if (typeof pi === "string" && pi.length > 0) return pi;
+  if (pi && typeof pi === "object" && "id" in pi) {
+    const id = (pi as { id?: unknown }).id;
+    if (typeof id === "string" && id.length > 0) return id;
+  }
+  if (typeof object.id === "string" && object.id.startsWith("pi_")) return object.id;
+  return null;
+}
+
+export function asSessionSlice(object: {
+  id?: string;
+  payment_status?: string | null;
+  status?: string | null;
+  amount_total?: number | null;
+  created?: number | null;
+  payment_intent?: unknown;
+  metadata?: Record<string, string> | null;
+}): SessionSlice {
+  return {
+    id: object.id ?? "",
+    payment_status: object.payment_status,
+    status: object.status,
+    amount_total: object.amount_total,
+    created: object.created,
+    payment_intent: paymentIntentOf(object),
+    metadata: object.metadata ?? null,
+  };
+}
+
+export function refundRefOf(object: {
+  id?: string;
+  payment_intent?: unknown;
+}): string | null {
+  const pi = paymentIntentOf(object);
+  if (pi) return pi;
+  if (typeof object.id === "string" && object.id.startsWith("cs_")) return object.id;
+  return null;
+}
 
 export function saleFromCheckoutRecord(row: {
   id: string;
@@ -78,7 +136,7 @@ export function handleStripeEvent(event: {
   id: string;
   type: string;
   created: number;
-  data: { object: SessionSlice };
+  data: { object: SessionSlice & { payment_intent?: string | null } };
 }): StripeNotice {
   const base = {
     id: event.id,
@@ -86,18 +144,11 @@ export function handleStripeEvent(event: {
     at: new Date(event.created * 1000).toISOString(),
   };
 
-  if (
-    event.type === "checkout.session.completed" ||
-    event.type === "checkout.session.async_payment_succeeded"
-  ) {
-    const session = event.data.object as SessionSlice;
+  if (PAID_TYPES.has(event.type)) {
+    const session = event.data.object;
     const sale = saleFromSession(session);
     if (!sale) {
-      return {
-        ...base,
-        ok: false,
-        detail: "Session was not paid or had no kitId.",
-      };
+      return { ...base, ok: false, detail: "Session was not paid or had no kitId." };
     }
     return {
       ...base,
@@ -108,9 +159,14 @@ export function handleStripeEvent(event: {
     };
   }
 
-  return {
-    ...base,
-    ok: true,
-    detail: "Acknowledged.",
-  };
+  if (REFUND_TYPES.has(event.type)) {
+    const ref = refundRefOf(event.data.object);
+    return {
+      ...base,
+      ok: Boolean(ref),
+      detail: ref ? `Refund against ${ref}.` : "Refund event had no payment intent.",
+    };
+  }
+
+  return { ...base, ok: true, detail: "Acknowledged." };
 }

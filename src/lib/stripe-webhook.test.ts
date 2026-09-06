@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import Stripe from "stripe";
-import { handleStripeEvent, saleFromSession } from "./stripe-events.ts";
+import { handleStripeEvent, refundRefOf, saleFromSession } from "./stripe-events.ts";
 
 test("saleFromSession only accepts paid sessions with kitId", () => {
   const paid = saleFromSession({
@@ -66,4 +66,16 @@ test("checkout.session.completed yields a paid notice", () => {
   assert.equal(notice.ok, true);
   assert.equal(notice.amount, 29);
   assert.equal(notice.kitId, "ready-ash-cow");
+});
+
+test("charge.refunded yields a refund notice", () => {
+  const notice = handleStripeEvent({
+    id: "evt_ref",
+    type: "charge.refunded",
+    created: 1_700_000_100,
+    data: { object: { id: "ch_1", payment_intent: "pi_1" } },
+  });
+  assert.equal(notice.ok, true);
+  assert.match(notice.detail, /pi_1/);
+  assert.equal(refundRefOf({ payment_intent: "pi_1" }), "pi_1");
 });

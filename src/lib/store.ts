@@ -49,8 +49,8 @@ export const useBarn = create<BarnState>()(
           ],
         }),
       recordPaidSale: (sale) => {
-        if (get().sales.some((row) => row.id === sale.id)) return false;
-        set({ sales: [sale, ...get().sales] });
+        const rest = get().sales.filter((row) => row.id !== sale.id);
+        set({ sales: [sale, ...rest] });
         return true;
       },
       removeSale: (id) => set({ sales: get().sales.filter((s) => s.id !== id) }),
@@ -76,7 +76,9 @@ export const useBarn = create<BarnState>()(
 );
 
 export function barnTotals(sales: Sale[], kitId?: string) {
-  const rows = kitId ? sales.filter((s) => s.kitId === kitId) : sales;
+  const rows = (kitId ? sales.filter((s) => s.kitId === kitId) : sales).filter(
+    (row) => row.status !== "refunded",
+  );
   return {
     count: rows.length,
     amount: rows.reduce((sum, s) => sum + s.amount, 0),

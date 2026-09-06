@@ -16,9 +16,12 @@ import { Route as ShopRouteImport } from './routes/shop'
 import { Route as TillRouteImport } from './routes/till'
 import { Route as TruthRouteImport } from './routes/truth'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ApiSalesRouteImport } from './routes/api/sales'
 import { Route as ApiStallsRouteImport } from './routes/api/stalls'
 import { Route as CowIdRouteImport } from './routes/cow.$id'
+import { Route as DTokenRouteImport } from './routes/d.$token'
 import { Route as SIdRouteImport } from './routes/s.$id'
+import { Route as ApiDownloadTokenRouteImport } from './routes/api/download.$token'
 import { Route as ApiNangoWebhookRouteImport } from './routes/api/nango/webhook'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 
@@ -57,6 +60,11 @@ const ApiHealthRoute = ApiHealthRouteImport.update({
   path: '/api/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSalesRoute = ApiSalesRouteImport.update({
+  id: '/api/sales',
+  path: '/api/sales',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStallsRoute = ApiStallsRouteImport.update({
   id: '/api/stalls',
   path: '/api/stalls',
@@ -67,9 +75,19 @@ const CowIdRoute = CowIdRouteImport.update({
   path: '/cow/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DTokenRoute = DTokenRouteImport.update({
+  id: '/d/$token',
+  path: '/d/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SIdRoute = SIdRouteImport.update({
   id: '/s/$id',
   path: '/s/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiDownloadTokenRoute = ApiDownloadTokenRouteImport.update({
+  id: '/api/download/$token',
+  path: '/api/download/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiNangoWebhookRoute = ApiNangoWebhookRouteImport.update({
@@ -91,9 +109,12 @@ export interface FileRoutesByFullPath {
   '/till': typeof TillRoute
   '/truth': typeof TruthRoute
   '/api/health': typeof ApiHealthRoute
+  '/api/sales': typeof ApiSalesRoute
   '/api/stalls': typeof ApiStallsRoute
   '/cow/$id': typeof CowIdRoute
+  '/d/$token': typeof DTokenRoute
   '/s/$id': typeof SIdRoute
+  '/api/download/$token': typeof ApiDownloadTokenRoute
   '/api/nango/webhook': typeof ApiNangoWebhookRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
@@ -105,9 +126,12 @@ export interface FileRoutesByTo {
   '/till': typeof TillRoute
   '/truth': typeof TruthRoute
   '/api/health': typeof ApiHealthRoute
+  '/api/sales': typeof ApiSalesRoute
   '/api/stalls': typeof ApiStallsRoute
   '/cow/$id': typeof CowIdRoute
+  '/d/$token': typeof DTokenRoute
   '/s/$id': typeof SIdRoute
+  '/api/download/$token': typeof ApiDownloadTokenRoute
   '/api/nango/webhook': typeof ApiNangoWebhookRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
@@ -120,9 +144,12 @@ export interface FileRoutesById {
   '/till': typeof TillRoute
   '/truth': typeof TruthRoute
   '/api/health': typeof ApiHealthRoute
+  '/api/sales': typeof ApiSalesRoute
   '/api/stalls': typeof ApiStallsRoute
   '/cow/$id': typeof CowIdRoute
+  '/d/$token': typeof DTokenRoute
   '/s/$id': typeof SIdRoute
+  '/api/download/$token': typeof ApiDownloadTokenRoute
   '/api/nango/webhook': typeof ApiNangoWebhookRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
@@ -136,9 +163,12 @@ export interface FileRouteTypes {
     | '/till'
     | '/truth'
     | '/api/health'
+    | '/api/sales'
     | '/api/stalls'
     | '/cow/$id'
+    | '/d/$token'
     | '/s/$id'
+    | '/api/download/$token'
     | '/api/nango/webhook'
     | '/api/stripe/webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -150,9 +180,12 @@ export interface FileRouteTypes {
     | '/till'
     | '/truth'
     | '/api/health'
+    | '/api/sales'
     | '/api/stalls'
     | '/cow/$id'
+    | '/d/$token'
     | '/s/$id'
+    | '/api/download/$token'
     | '/api/nango/webhook'
     | '/api/stripe/webhook'
   id:
@@ -164,9 +197,12 @@ export interface FileRouteTypes {
     | '/till'
     | '/truth'
     | '/api/health'
+    | '/api/sales'
     | '/api/stalls'
     | '/cow/$id'
+    | '/d/$token'
     | '/s/$id'
+    | '/api/download/$token'
     | '/api/nango/webhook'
     | '/api/stripe/webhook'
   fileRoutesById: FileRoutesById
@@ -179,9 +215,12 @@ export interface RootRouteChildren {
   TillRoute: typeof TillRoute
   TruthRoute: typeof TruthRoute
   ApiHealthRoute: typeof ApiHealthRoute
+  ApiSalesRoute: typeof ApiSalesRoute
   ApiStallsRoute: typeof ApiStallsRoute
   CowIdRoute: typeof CowIdRoute
+  DTokenRoute: typeof DTokenRoute
   SIdRoute: typeof SIdRoute
+  ApiDownloadTokenRoute: typeof ApiDownloadTokenRoute
   ApiNangoWebhookRoute: typeof ApiNangoWebhookRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
@@ -237,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/sales': {
+      id: '/api/sales'
+      path: '/api/sales'
+      fullPath: '/api/sales'
+      preLoaderRoute: typeof ApiSalesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stalls': {
       id: '/api/stalls'
       path: '/api/stalls'
@@ -251,11 +297,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CowIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/d/$token': {
+      id: '/d/$token'
+      path: '/d/$token'
+      fullPath: '/d/$token'
+      preLoaderRoute: typeof DTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/s/$id': {
       id: '/s/$id'
       path: '/s/$id'
       fullPath: '/s/$id'
       preLoaderRoute: typeof SIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/download/$token': {
+      id: '/api/download/$token'
+      path: '/api/download/$token'
+      fullPath: '/api/download/$token'
+      preLoaderRoute: typeof ApiDownloadTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/nango/webhook': {
@@ -283,9 +343,12 @@ const rootRouteChildren: RootRouteChildren = {
   TillRoute: TillRoute,
   TruthRoute: TruthRoute,
   ApiHealthRoute: ApiHealthRoute,
+  ApiSalesRoute: ApiSalesRoute,
   ApiStallsRoute: ApiStallsRoute,
   CowIdRoute: CowIdRoute,
+  DTokenRoute: DTokenRoute,
   SIdRoute: SIdRoute,
+  ApiDownloadTokenRoute: ApiDownloadTokenRoute,
   ApiNangoWebhookRoute: ApiNangoWebhookRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }

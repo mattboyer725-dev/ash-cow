@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-bg: #0c0b0a;
+  --color-surface: #151311;
+  --color-raised: #1c1916;
+  --color-fg: #f0e8dc;
+  --color-muted: #9c948a;
+  --color-subtle: #6f6860;
+  --color-accent: #d4cdc3;
+  --color-accent-fg: #0c0b0a;
+  --color-border: color-mix(in oklab, #f0e8dc 12%, transparent);
+  --color-ring: #d4cdc3;
+  --color-paper: #f3eee4;
+  --color-ink: #1c1814;
+  --color-ink-muted: #5c564e;
+  --color-sage: #8a9a86;
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --shadow-border: 0 0 0 1px color-mix(in oklab, #f0e8dc 8%, transparent);
+  --shadow-border-hover: 0 0 0 1px color-mix(in oklab, #f0e8dc 16%, transparent);
+
+  --duration-250: 250ms;
+  --ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html,
+  body,
+  #app {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    min-height: 100dvh;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-fg);
+  }
+}
+
+@layer components {
+  .paper {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  .print-only {
+    display: none;
+  }
+
+  .stagger-in {
+    animation: rise 500ms var(--ease-smooth-out) both;
+  }
+
+  .stagger-in:nth-child(1) {
+    animation-delay: 40ms;
+  }
+  .stagger-in:nth-child(2) {
+    animation-delay: 120ms;
+  }
+  .stagger-in:nth-child(3) {
+    animation-delay: 200ms;
+  }
+  .stagger-in:nth-child(4) {
+    animation-delay: 280ms;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media print {
+  html,
+  body,
+  #app {
+    background: white;
+    color: black;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .paper {
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

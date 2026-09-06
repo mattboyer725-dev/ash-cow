@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import Stripe from "stripe";
 import { handleStripeEvent, refundRefOf, saleFromSession } from "./stripe-events.ts";
+import { cleanOrigin, railsWebhookUrls, resolvePublicOrigin } from "./stripe.server.ts";
 
 test("saleFromSession only accepts paid sessions with kitId", () => {
   const paid = saleFromSession({
@@ -78,4 +79,60 @@ test("charge.refunded yields a refund notice", () => {
   assert.equal(notice.ok, true);
   assert.match(notice.detail, /pi_1/);
   assert.equal(refundRefOf({ payment_intent: "pi_1" }), "pi_1");
+});
+
+test("cleanOrigin strips path and trailing slash", () => {
+  assert.equal(cleanOrigin("https://ash.example.com/till/"), "https://ash.example.com");
+  assert.equal(cleanOrigin("ash.example.com"), "https://ash.example.com");
+  assert.equal(cleanOrigin("javascript:alert(1)"), "");
+  assert.equal(cleanOrigin(""), "");
+});
+
+test("resolvePublicOrigin prefers PUBLIC_ORIGIN then Origin header", () => {
+  assert.equal(
+    resolvePublicOrigin({
+      envOrigin: "https://barn.example.com/",
+      originHeader: "https://preview.example.com",
+      host: "internal:8080",
+      url: "http://internal:8080/till",
+      passedOrigin: "http://localhost:8080",
+    }),
+    "https://barn.example.com",
+  );
+
+  assert.equal(
+    resolvePublicOrigin({
+      originHeader: "https://preview.example.com",
+      host: "internal:8080",
+      url: "http://internal:8080/till",
+      passedOrigin: "http://localhost:8080",
+    }),
+    "https://preview.example.com",
+  );
+
+  assert.equal(
+    resolvePublicOrigin({
+      host: "internal:8080",
+      forwardedProto: "https, http",
+      forwardedHost: "ash.example.com, localhost",
+      url: "http://internal:8080/till",
+    }),
+    "https://ash.example.com",
+  );
+
+  assert.equal(
+    resolvePublicOrigin({
+      passedOrigin: "http://localhost:8080",
+      url: "http://127.0.0.1:8080/",
+    }),
+    "http://localhost:8080",
+  );
+});
+
+test("railsWebhookUrls uses this deploy origin", () => {
+  assert.deepEqual(railsWebhookUrls("https://ash.example.com/"), {
+    origin: "https://ash.example.com",
+    stripeWebhook: "https://ash.example.com/api/stripe/webhook",
+    nangoWebhook: "https://ash.example.com/api/nango/webhook",
+  });
 });

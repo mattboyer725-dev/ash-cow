@@ -12,6 +12,18 @@ const operatorInput = z.object({
   key: z.string().max(200).optional(),
 });
 
+const railsInput = z.object({
+  origin: z.string().max(300).optional(),
+});
+
+export const RAILS_ENV_KEYS = [
+  "STRIPE_SECRET_KEY",
+  "STRIPE_WEBHOOK_SECRET",
+  "NANGO_API_KEY",
+  "NANGO_WEBHOOK_SIGNING_KEY",
+  "OPERATOR_SECRET",
+] as const;
+
 export const stripeStatus = createServerFn({ method: "GET" }).handler(async () => {
   const { stripeSecrets } = await import("./stripe.server");
   const { nangoConfig } = await import("./nango.server");
@@ -27,6 +39,17 @@ export const stripeStatus = createServerFn({ method: "GET" }).handler(async () =
     ledger: true,
   };
 });
+
+export const railsEndpoints = createServerFn({ method: "GET" })
+  .validator((raw?: z.input<typeof railsInput>) => railsInput.parse(raw ?? {}))
+  .handler(async ({ data }) => {
+    const { publicOrigin, railsWebhookUrls } = await import("./stripe.server");
+    try {
+      return railsWebhookUrls(publicOrigin(data.origin));
+    } catch {
+      return { origin: "", stripeWebhook: "", nangoWebhook: "" };
+    }
+  });
 
 export const createCheckout = createServerFn({ method: "POST" })
   .validator((raw: z.input<typeof checkoutInput>) => checkoutInput.parse(raw))

@@ -51,4 +51,6 @@ npm run dev
 
 ## Deploy
 
-Import [mattboyer725-dev/ash-cow](https://github.com/mattboyer725-dev/ash-cow) on Vercel. Build: `npm run build`. Set `VITE_AUTH_ENABLED=false` and optionally `VITE_PAY_URL`.
+Import [mattboyer725-dev/ash-cow](https://github.com/mattboyer725-dev/ash-cow) on Vercel. Framework preset is **TanStack Start** (`vercel.json`). Build: `npm run build` (Vite + `db:migrate`).
+
+Dashboard env names and webhook URL pattern: [RAILS.md](./RAILS.md). Set `VITE_AUTH_ENABLED=false` and optionally `VITE_PAY_URL`.

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { LaunchClock } from "@/components/clock";
+import { CopyButton } from "@/components/copy-button";
 import { Shell } from "@/components/shell";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { currentBeat, nextBeat } from "@/lib/live";
 import { READY_COWS } from "@/lib/ready-cows";
-import { inspectNango, stripeStatus } from "@/lib/stripe-checkout";
+import { inspectNango, RAILS_ENV_KEYS, railsEndpoints, stripeStatus } from "@/lib/stripe-checkout";
 import { barnTotals, useBarn } from "@/lib/store";
 import { useStripeSync } from "@/lib/use-stripe-sync";
 import { outreachMailto, parseEmails, shopHref, tweetIntent, useTill } from "@/lib/till";
@@ -17,6 +18,42 @@ import { money } from "@/lib/utils";
 export const Route = createFileRoute("/till")({ component: TillPage });
 
 const DEFAULT_ID = "ready-ash-cow";
+
+type StripeFlags = {
+  checkoutReady: boolean;
+  webhookReady: boolean;
+  nangoReady: boolean;
+  nangoWebhookReady: boolean;
+  operatorLocked: boolean;
+  ledger: boolean;
+};
+
+type RailsUrls = {
+  origin: string;
+  stripeWebhook: string;
+  nangoWebhook: string;
+};
+
+function envFlag(name: (typeof RAILS_ENV_KEYS)[number], stripe: StripeFlags | null) {
+  if (!stripe) return "…";
+  if (name === "STRIPE_SECRET_KEY") return stripe.checkoutReady ? "set" : "missing";
+  if (name === "STRIPE_WEBHOOK_SECRET") return stripe.webhookReady ? "set" : "missing";
+  if (name === "NANGO_API_KEY") return stripe.nangoReady ? "set" : "missing";
+  if (name === "NANGO_WEBHOOK_SIGNING_KEY") return stripe.nangoWebhookReady ? "set" : "missing";
+  return stripe.operatorLocked ? "set" : "open";
+}
+
+function RailsUrlRow({ label, url }: { label: string; url: string }) {
+  return (
+    <div className="flex items-start justify-between gap-3">
+      <div className="min-w-0">
+        <p className="font-mono text-xs tracking-[0.18em] text-subtle uppercase">{label}</p>
+        <p className="mt-1 break-all font-mono text-xs text-fg">{url || "resolving…"}</p>
+      </div>
+      {url ? <CopyButton text={url} /> : null}
+    </div>
+  );
+}
 
 function TillPage() {
   useStripeSync();
@@ -27,14 +64,8 @@ function TillPage() {
   const launches = useBarn((s) => s.launches);
   const startLaunch = useBarn((s) => s.startLaunch);
   const sales = useBarn((s) => s.sales);
-  const [stripe, setStripe] = useState<{
-    checkoutReady: boolean;
-    webhookReady: boolean;
-    nangoReady: boolean;
-    nangoWebhookReady: boolean;
-    operatorLocked: boolean;
-    ledger: boolean;
-  } | null>(null);
+  const [stripe, setStripe] = useState<StripeFlags | null>(null);
+  const [rails, setRails] = useState<RailsUrls | null>(null);
   const [inspect, setInspect] = useState<Awaited<ReturnType<typeof inspectNango>> | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [mounted, setMounted] = useState(false);
@@ -46,6 +77,9 @@ function TillPage() {
   useEffect(() => setMounted(true), []);
   useEffect(() => {
     void stripeStatus().then(setStripe);
+    void railsEndpoints({ data: { origin: window.location.origin } }).then(setRails);
+  }, []);
+  useEffect(() => {
     void inspectNango({ data: { key: operatorKey } }).then(setInspect);
   }, [operatorKey]);
   useEffect(() => {
@@ -92,9 +126,14 @@ function TillPage() {
           <p className="mt-1 font-mono text-xs text-subtle">
             {stripe?.checkoutReady ? "Checkout on" : "Set STRIPE_SECRET_KEY"}
             {" · "}
+            {stripe?.webhookReady ? "Stripe webhook on" : "Set STRIPE_WEBHOOK_SECRET"}
+            {" · "}
             {stripe?.nangoReady ? "Nango sync on" : "Set NANGO_API_KEY"}
             {" · "}
+            {stripe?.nangoWebhookReady ? "Nango webhook on" : "Set NANGO_WEBHOOK_SIGNING_KEY"}
+            {" · "}
             {stripe?.operatorLocked ? "Operator locked" : "Operator open"}
+            {stripe?.ledger ? " · Ledger on" : ""}
           </p>
           {inspect?.expected ? (
             <dl className="mt-4 grid gap-2 font-mono text-xs text-subtle">
@@ -134,6 +173,26 @@ function TillPage() {
             </dl>
           ) : null}
         </div>
+
+        <section className="mt-6 rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
+          <p className="font-mono text-xs tracking-[0.18em] text-subtle uppercase">Rails</p>
+          <p className="mt-2 text-sm leading-relaxed text-muted">
+            Webhook URLs for this origin. Paste them into Stripe and Nango. Names only — values
+            stay on the server.
+          </p>
+          <div className="mt-4 grid gap-4">
+            <RailsUrlRow label="Stripe webhook" url={rails?.stripeWebhook ?? ""} />
+            <RailsUrlRow label="Nango webhook" url={rails?.nangoWebhook ?? ""} />
+          </div>
+          <dl className="mt-5 grid gap-2 font-mono text-xs text-subtle">
+            {RAILS_ENV_KEYS.map((name) => (
+              <div key={name} className="flex justify-between gap-4">
+                <dt>{name}</dt>
+                <dd className="text-fg">{envFlag(name, stripe)}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
 
         {beat ? (
           <section className="mt-6 rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">

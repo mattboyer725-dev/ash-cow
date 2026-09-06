@@ -1,6 +1,6 @@
 # ASH COW
 
-A 24-hour digital-product launch kit. Forge a named file, list it tonight, sell it in a day.
+A 24-hour digital-product launch kit. The animal is a Highland cow. Forge a named file, list it tonight, sell it in a day.
 
 **Shop** is the public stall. **Live** starts the 24-hour clock the first time you open it, shows the due hour, and posts/emails for that hour. Stripe Checkout is the till. **Nango** syncs paid checkout sessions; this app reads the records cache instead of polling Stripe.
 

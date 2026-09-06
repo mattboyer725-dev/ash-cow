@@ -42,7 +42,7 @@ export function Shell({ children, trailer }: { children: ReactNode; trailer?: Re
       <div className="flex-1">{children}</div>
       <footer className="no-print border-t border-border">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-1 px-4 py-8 text-sm text-subtle sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <p>A figurative cash cow. Built once. Sold in a day.</p>
+          <p>A Highland cash cow. Built once. Sold in a day.</p>
           {trailer ?? <p className="font-mono text-xs tracking-wider">24:00:00</p>}
         </div>
       </footer>

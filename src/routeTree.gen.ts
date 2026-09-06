@@ -15,6 +15,8 @@ import { Route as PaidRouteImport } from './routes/paid'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as TillRouteImport } from './routes/till'
 import { Route as TruthRouteImport } from './routes/truth'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ApiStallsRouteImport } from './routes/api/stalls'
 import { Route as CowIdRouteImport } from './routes/cow.$id'
 import { Route as SIdRouteImport } from './routes/s.$id'
 import { Route as ApiNangoWebhookRouteImport } from './routes/api/nango/webhook'
@@ -50,6 +52,16 @@ const TruthRoute = TruthRouteImport.update({
   path: '/truth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStallsRoute = ApiStallsRouteImport.update({
+  id: '/api/stalls',
+  path: '/api/stalls',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CowIdRoute = CowIdRouteImport.update({
   id: '/cow/$id',
   path: '/cow/$id',
@@ -78,6 +90,8 @@ export interface FileRoutesByFullPath {
   '/shop': typeof ShopRoute
   '/till': typeof TillRoute
   '/truth': typeof TruthRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/stalls': typeof ApiStallsRoute
   '/cow/$id': typeof CowIdRoute
   '/s/$id': typeof SIdRoute
   '/api/nango/webhook': typeof ApiNangoWebhookRoute
@@ -90,6 +104,8 @@ export interface FileRoutesByTo {
   '/shop': typeof ShopRoute
   '/till': typeof TillRoute
   '/truth': typeof TruthRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/stalls': typeof ApiStallsRoute
   '/cow/$id': typeof CowIdRoute
   '/s/$id': typeof SIdRoute
   '/api/nango/webhook': typeof ApiNangoWebhookRoute
@@ -103,6 +119,8 @@ export interface FileRoutesById {
   '/shop': typeof ShopRoute
   '/till': typeof TillRoute
   '/truth': typeof TruthRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/stalls': typeof ApiStallsRoute
   '/cow/$id': typeof CowIdRoute
   '/s/$id': typeof SIdRoute
   '/api/nango/webhook': typeof ApiNangoWebhookRoute
@@ -117,6 +135,8 @@ export interface FileRouteTypes {
     | '/shop'
     | '/till'
     | '/truth'
+    | '/api/health'
+    | '/api/stalls'
     | '/cow/$id'
     | '/s/$id'
     | '/api/nango/webhook'
@@ -129,6 +149,8 @@ export interface FileRouteTypes {
     | '/shop'
     | '/till'
     | '/truth'
+    | '/api/health'
+    | '/api/stalls'
     | '/cow/$id'
     | '/s/$id'
     | '/api/nango/webhook'
@@ -141,6 +163,8 @@ export interface FileRouteTypes {
     | '/shop'
     | '/till'
     | '/truth'
+    | '/api/health'
+    | '/api/stalls'
     | '/cow/$id'
     | '/s/$id'
     | '/api/nango/webhook'
@@ -154,6 +178,8 @@ export interface RootRouteChildren {
   ShopRoute: typeof ShopRoute
   TillRoute: typeof TillRoute
   TruthRoute: typeof TruthRoute
+  ApiHealthRoute: typeof ApiHealthRoute
+  ApiStallsRoute: typeof ApiStallsRoute
   CowIdRoute: typeof CowIdRoute
   SIdRoute: typeof SIdRoute
   ApiNangoWebhookRoute: typeof ApiNangoWebhookRoute
@@ -204,6 +230,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TruthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stalls': {
+      id: '/api/stalls'
+      path: '/api/stalls'
+      fullPath: '/api/stalls'
+      preLoaderRoute: typeof ApiStallsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cow/$id': {
       id: '/cow/$id'
       path: '/cow/$id'
@@ -242,6 +282,8 @@ const rootRouteChildren: RootRouteChildren = {
   ShopRoute: ShopRoute,
   TillRoute: TillRoute,
   TruthRoute: TruthRoute,
+  ApiHealthRoute: ApiHealthRoute,
+  ApiStallsRoute: ApiStallsRoute,
   CowIdRoute: CowIdRoute,
   SIdRoute: SIdRoute,
   ApiNangoWebhookRoute: ApiNangoWebhookRoute,

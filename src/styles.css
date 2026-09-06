@@ -11,10 +11,10 @@
   --color-fg: #f0e8dc;
   --color-muted: #9c948a;
   --color-subtle: #6f6860;
-  --color-accent: #d4cdc3;
+  --color-accent: #c17f4a;
   --color-accent-fg: #0c0b0a;
   --color-border: color-mix(in oklab, #f0e8dc 12%, transparent);
-  --color-ring: #d4cdc3;
+  --color-ring: #c17f4a;
   --color-paper: #f3eee4;
   --color-ink: #1c1814;
   --color-ink-muted: #5c564e;

@@ -15,7 +15,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "A figurative cash cow. Forge a named digital product, list it tonight, and sell it in 24 hours.",
+          "A Highland cash cow. Forge a named digital product, list it tonight, and sell it in 24 hours.",
       },
       { name: "theme-color", content: "#0c0b0a" },
     ],

@@ -14,32 +14,55 @@ function ShopPage() {
 
   return (
     <Shell>
-      <main className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-        <p className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">Open stall</p>
-        <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-6xl">Shop</h1>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-          These three kits are live. Share a stall. Take payment on the link you set in Till.
-          The barn logs what actually clears.
-        </p>
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {READY_COWS.map((cow) => (
-            <article
-              key={cow.id}
-              className="flex flex-col rounded-xl bg-surface p-5 shadow-[var(--shadow-border)]"
-            >
-              <p className="font-mono text-xs tabular-nums text-subtle">{money(cow.price)}</p>
-              <h2 className="mt-2 font-display text-2xl tracking-tight">{cow.name}</h2>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{cow.oneLiner}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                <Button asChild variant="secondary">
-                  <Link to="/s/$id" params={{ id: cow.id }}>
-                    Sales page
-                  </Link>
-                </Button>
-                {mounted ? <BuyButton cow={cow} size="default" /> : null}
-              </div>
-            </article>
-          ))}
+      <main>
+        <section className="relative isolate overflow-hidden">
+          <img
+            src="/portrait-cow.jpg"
+            alt="Highland cow in a dark barn"
+            className="absolute inset-0 size-full object-cover object-[center_20%] md:hidden"
+          />
+          <img
+            src="/hero-cow.jpg"
+            alt="Highland cow in a dark barn"
+            className="absolute inset-0 hidden size-full object-cover object-center md:block"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/50 to-bg/15" />
+          <div className="relative mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+            <p className="font-mono text-xs tracking-[0.2em] text-accent uppercase">Open stall</p>
+            <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-6xl">Shop</h1>
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-fg/85">
+              Three kits. Share a stall. Stripe Checkout takes the money. Nango fills the barn.
+            </p>
+          </div>
+        </section>
+        <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:pb-16">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {READY_COWS.map((cow) => (
+              <article
+                key={cow.id}
+                className="flex flex-col overflow-hidden rounded-xl bg-surface shadow-[var(--shadow-border)]"
+              >
+                <img
+                  src="/portrait-cow.jpg"
+                  alt=""
+                  className="h-40 w-full object-cover object-[center_20%]"
+                />
+                <div className="flex flex-1 flex-col p-5">
+                  <p className="font-mono text-xs tabular-nums text-subtle">{money(cow.price)}</p>
+                  <h2 className="mt-2 font-display text-2xl tracking-tight">{cow.name}</h2>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{cow.oneLiner}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    <Button asChild variant="secondary">
+                      <Link to="/s/$id" params={{ id: cow.id }}>
+                        Sales page
+                      </Link>
+                    </Button>
+                    {mounted ? <BuyButton cow={cow} size="default" /> : null}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </main>
     </Shell>

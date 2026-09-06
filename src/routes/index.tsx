@@ -51,14 +51,14 @@ function Home() {
         <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/55 to-bg/20" />
         <div className="relative mx-auto flex min-h-[88dvh] w-full max-w-6xl flex-col justify-end px-4 pb-14 pt-24 sm:px-6 sm:pb-20">
           <p className="stagger-in font-mono text-xs tracking-[0.22em] text-accent uppercase">
-            The figurative cash cow
+            A Highland cash cow
           </p>
           <h1 className="stagger-in mt-4 font-display text-6xl tracking-tight text-fg sm:text-8xl">
             Ash Cow
           </h1>
           <p className="stagger-in mt-5 max-w-xl text-base leading-relaxed text-fg/85 sm:text-lg">
             Build a named digital product. List it tonight. Sell it in twenty-four hours.
-            The animal is a metaphor. The file is not.
+            The Highland is the animal. The file is the cow.
           </p>
           <div className="stagger-in mt-8 flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">

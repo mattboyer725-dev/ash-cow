@@ -17,14 +17,14 @@ export const READY_COWS: CashCow[] = [
     price: 29,
     name: "Ash Cow",
     oneLiner:
-      "A figurative cash cow: name a digital product, write the file, list it tonight, and run a 24-hour clock until someone pays — or until you still have a product.",
+      "A Highland cash cow: name a digital product, write the file, list it tonight, and run a 24-hour clock until someone pays — or until you still have a product.",
     promise: "Walk into tomorrow with a named product for sale, not another idea.",
     who: "people who can already do the work and keep waiting for a brand",
     outcome: "a listed digital product and a day of honest distribution",
     gumroadTitle: "Ash Cow — the 24-hour cash cow kit",
     gumroadTags: ["digital download", "solopreneur", "gumroad", "launch"],
     coverPrompt:
-      "Square 1:1 listing cover. Dark timber barn, near-black, a single pale cow in dusty side light. Centered paper-white serif lettering: \"ASH COW\". Smaller line: \"A 24-hour cash cow kit\". Editorial still. No neon, no cartoon, no collage.",
+      "Square 1:1 listing cover. Dark timber barn, a Scottish Highland cow in dusty side light, ginger coat and lyre horns. Centered paper-white serif lettering: \"ASH COW\". Smaller line: \"A Highland cash cow kit\". Editorial still. No neon, no cartoon, no collage.",
     objections: [
       {
         objection: "This is just a pep talk.",
@@ -77,7 +77,7 @@ export const READY_COWS: CashCow[] = [
       },
       {
         channel: "Caption",
-        copy: "A cash cow is a product you build once that keeps paying.\n\nAsh Cow is a figurative one: a named digital good, a sales page, and a 24-hour clock.\n\n$29. File, not a funnel.",
+        copy: "A cash cow is a product you build once that keeps paying.\n\nAsh Cow is a Highland one: a named digital good, a sales page, and a 24-hour clock.\n\n$29. File, not a funnel.",
       },
       {
         channel: "Thread",
@@ -90,7 +90,7 @@ export const READY_COWS: CashCow[] = [
     ],
     deliveryDoc: {
       title: "Ash Cow",
-      subtitle: "A 24-hour kit for a figurative cash cow.",
+      subtitle: "A 24-hour kit for a Highland cash cow.",
       pages: [
         {
           heading: "A cash cow is an object",

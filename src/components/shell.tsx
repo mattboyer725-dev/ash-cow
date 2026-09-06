@@ -8,6 +8,7 @@ const NAV = [
   { to: "/till", label: "Live" as const },
   { to: "/shop", label: "Shop" as const },
   { to: "/forge", label: "Forge" as const },
+  { to: "/deck", label: "Deck" as const },
 ] as const;
 
 function NavLink({
@@ -65,7 +66,7 @@ export function Shell({ children, trailer }: { children: ReactNode; trailer?: Re
         </div>
       </footer>
       <nav
-        className="no-print fixed inset-x-0 bottom-0 z-40 grid grid-cols-4 border-t border-border bg-bg/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
+        className="no-print fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-border bg-bg/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md md:hidden"
         aria-label="Primary"
       >
         {NAV.map((item) => (

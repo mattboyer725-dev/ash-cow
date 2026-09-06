@@ -37,6 +37,7 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
   }
 
   html,
@@ -45,6 +46,7 @@
     background: var(--color-bg);
     color: var(--color-fg);
     min-height: 100dvh;
+    overflow-x: clip;
   }
 
   button:not(:disabled),

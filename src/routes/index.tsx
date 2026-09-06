@@ -37,23 +37,23 @@ function Home() {
         ) : undefined
       }
     >
-      <section className="relative isolate min-h-[88dvh] overflow-hidden">
+      <section className="relative isolate min-h-[calc(100svh-7rem)] overflow-hidden md:min-h-[calc(100svh-3.5rem)]">
         <img
           src="/portrait-cow.jpg"
           alt=""
-          className="absolute inset-0 size-full object-cover object-[center_30%] md:hidden"
+          className="absolute inset-0 size-full object-cover object-[center_28%] md:hidden"
         />
         <img
           src="/hero-cow.jpg"
           alt=""
           className="absolute inset-0 hidden size-full object-cover object-center md:block"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/55 to-bg/20" />
-        <div className="relative mx-auto flex min-h-[88dvh] w-full max-w-6xl flex-col justify-end px-4 pb-14 pt-24 sm:px-6 sm:pb-20">
+        <div className="absolute inset-0 bg-gradient-to-t from-bg from-20% via-bg/85 to-bg/45" />
+        <div className="relative mx-auto flex min-h-[calc(100svh-7rem)] w-full max-w-6xl flex-col justify-end px-4 pb-6 pt-16 sm:px-6 sm:pb-20 md:min-h-[calc(100svh-3.5rem)]">
           <p className="stagger-in font-mono text-xs tracking-[0.22em] text-accent uppercase">
             A Highland cash cow
           </p>
-          <h1 className="stagger-in mt-4 font-display text-6xl tracking-tight text-fg sm:text-8xl">
+          <h1 className="stagger-in mt-4 font-display text-5xl tracking-tight text-fg sm:text-8xl">
             Ash Cow
           </h1>
           <p className="stagger-in mt-5 max-w-xl text-base leading-relaxed text-fg/85 sm:text-lg">
@@ -61,13 +61,13 @@ function Home() {
             The Highland is the animal. The file is the cow.
           </p>
           <div className="stagger-in mt-8 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg">
+            <Button asChild size="lg" className="w-full sm:w-auto">
               <Link to="/till">
                 Start 24 hours
                 <ArrowRight />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="paper">
+            <Button asChild size="lg" variant="paper" className="w-full sm:w-auto">
               <Link to="/shop">Shop</Link>
             </Button>
           </div>
@@ -79,7 +79,7 @@ function Home() {
         <h2 className="mt-2 max-w-2xl font-display text-3xl tracking-tight sm:text-4xl">
           Four facts, a file, a listing, a clock.
         </h2>
-        <ol className="mt-10 grid gap-4 sm:grid-cols-3">
+        <ol className="mt-10 grid gap-4 md:grid-cols-3">
           {[
             {
               n: "01",
@@ -99,7 +99,7 @@ function Home() {
           ].map((step) => (
             <li
               key={step.n}
-              className="rounded-xl bg-surface p-5 shadow-[var(--shadow-border)]"
+              className="rounded-2xl bg-surface p-5 shadow-[var(--shadow-border)]"
             >
               <p className="font-mono text-xs tabular-nums text-subtle">{step.n}</p>
               <p className="mt-3 font-display text-2xl tracking-tight">{step.t}</p>

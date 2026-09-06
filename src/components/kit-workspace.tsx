@@ -52,16 +52,17 @@ export function KitWorkspace({ cow }: { cow: CashCow }) {
             <Badge>{cow.source === "ready" ? "Ready stall" : "Forged"}</Badge>
           </div>
         </div>
-        <div className="w-full max-w-sm rounded-xl bg-surface p-5 shadow-[var(--shadow-border)]">
+        <div className="w-full max-w-sm rounded-2xl bg-surface p-5 shadow-[var(--shadow-border)]">
           <LaunchClock startedAt={startedAt} />
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
             {startedAt ? (
-              <Button type="button" variant="secondary" onClick={() => resetLaunch(cow.id)}>
+              <Button type="button" variant="secondary" className="w-full sm:w-auto" onClick={() => resetLaunch(cow.id)}>
                 Reset clock
               </Button>
             ) : (
               <Button
                 type="button"
+                className="w-full sm:w-auto"
                 onClick={() => {
                   startLaunch(cow.id);
                   const href = shopHref(cow.id);
@@ -72,12 +73,12 @@ export function KitWorkspace({ cow }: { cow: CashCow }) {
                 Go live
               </Button>
             )}
-            <Button asChild variant="secondary">
+            <Button asChild variant="secondary" className="w-full sm:w-auto">
               <Link to="/s/$id" params={{ id: cow.id }}>
                 Sales page
               </Link>
             </Button>
-            <Button asChild variant="secondary">
+            <Button asChild variant="secondary" className="w-full sm:w-auto">
               <a
                 href={tweetIntent(`${cow.posts[0]?.copy ?? cow.oneLiner}\n${shopHref(cow.id)}`)}
                 target="_blank"
@@ -86,7 +87,7 @@ export function KitWorkspace({ cow }: { cow: CashCow }) {
                 Post on X
               </a>
             </Button>
-            <Button type="button" variant="secondary" onClick={() => window.print()}>
+            <Button type="button" variant="secondary" className="w-full sm:w-auto" onClick={() => window.print()}>
               <Printer />
               Print file
             </Button>

@@ -39,14 +39,14 @@ function StallPage() {
         <img
           src="/portrait-cow.jpg"
           alt="Highland cow"
-          className="mb-8 h-56 w-full rounded-xl object-cover object-[center_18%] shadow-[var(--shadow-border)] sm:h-72"
+          className="mb-8 h-48 w-full rounded-2xl object-cover object-[center_18%] shadow-[var(--shadow-border)] sm:h-72"
         />
         <p className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">For sale</p>
         <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-5xl">{page.headline}</h1>
         <p className="mt-4 text-lg leading-relaxed text-muted">{page.subhead}</p>
         <p className="mt-6 font-mono text-3xl tabular-nums">{money(cow.price)}</p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          {mounted ? <BuyButton cow={cow} /> : null}
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          {mounted ? <BuyButton cow={cow} className="w-full sm:w-auto" /> : null}
         </div>
         <div className="mt-10 flex flex-col gap-5 text-base leading-relaxed">
           <p>{page.problem}</p>

@@ -117,7 +117,7 @@ function ForgePage() {
               onChange={(e) => setPrice(e.target.value)}
             />
           </Field>
-          <Button type="submit" size="lg" disabled={busy}>
+          <Button type="submit" size="lg" className="w-full sm:w-auto" disabled={busy}>
             {busy ? "Forging…" : "Forge this cow"}
           </Button>
           <p className="text-sm text-subtle">

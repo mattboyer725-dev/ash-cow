@@ -13,7 +13,7 @@ export function CowCard({
   onAction: () => void;
 }) {
   return (
-    <article className="rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] transition-[box-shadow] duration-150 hover:shadow-[var(--shadow-border-hover)]">
+    <article className="rounded-2xl bg-surface p-5 shadow-[var(--shadow-border)] transition-[box-shadow] duration-150 hover:shadow-[var(--shadow-border-hover)]">
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-display text-2xl tracking-tight text-fg">{cow.name}</p>
@@ -24,7 +24,7 @@ export function CowCard({
       <p className="mt-4 text-sm leading-relaxed text-muted">{cow.oneLiner}</p>
       <p className="mt-3 text-xs tracking-wide text-subtle">For {cow.who}</p>
       <div className="mt-5">
-        <Button type="button" className="w-full sm:w-auto" onClick={onAction}>
+        <Button type="button" className="w-full" onClick={onAction}>
           {actionLabel}
         </Button>
       </div>

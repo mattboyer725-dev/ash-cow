@@ -37,8 +37,10 @@ function PaidPage() {
   if (!error) {
     return (
       <Shell>
-        <main className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6">
-          <p className="text-sm text-muted">Checking Stripe…</p>
+        <main className="mx-auto w-full max-w-lg px-4 py-16 sm:px-6">
+          <p className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">Checkout</p>
+          <h1 className="mt-2 font-display text-3xl tracking-tight">Checking Stripe</h1>
+          <p className="mt-3 text-sm text-muted">Hold this tab. The file opens when the session is paid.</p>
         </main>
       </Shell>
     );

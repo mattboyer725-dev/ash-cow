@@ -6,9 +6,11 @@ import { toast } from "sonner";
 export function CopyButton({
   text,
   label = "Copy",
+  className,
 }: {
   text: string;
   label?: string;
+  className?: string;
 }) {
   const [done, setDone] = useState(false);
 
@@ -24,7 +26,7 @@ export function CopyButton({
   }
 
   return (
-    <Button type="button" variant="secondary" size="sm" onClick={onCopy}>
+    <Button type="button" variant="secondary" size="sm" className={className} onClick={onCopy}>
       {done ? <Check /> : <Copy />}
       {done ? "Copied" : label}
     </Button>

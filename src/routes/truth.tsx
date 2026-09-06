@@ -108,7 +108,7 @@ function TruthPage() {
             line is the only cash that existed in the printout. At generation 264 the
             counter hits $100,000 and stops. Generation 509 copies the same number.
           </p>
-          <div className="mt-6 h-72 w-full rounded-xl bg-surface p-4 shadow-[var(--shadow-border)] sm:h-80">
+          <div className="mt-6 h-72 min-w-0 w-full overflow-hidden rounded-2xl bg-surface p-4 shadow-[var(--shadow-border)] sm:h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={chart} margin={{ top: 8, right: 12, left: 8, bottom: 8 }}>
                 <CartesianGrid stroke="var(--color-border)" />

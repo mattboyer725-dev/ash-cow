@@ -53,13 +53,22 @@ function envFlag(name: (typeof RAILS_ENV_KEYS)[number], stripe: StripeFlags | nu
 
 function RailsUrlRow({ label, url }: { label: string; url: string }) {
   return (
-    <div className="flex items-start justify-between gap-3">
-      <div className="min-w-0">
+    <div className="flex items-start gap-3">
+      <div className="min-w-0 flex-1">
         <p className="font-mono text-xs tracking-[0.18em] text-subtle uppercase">{label}</p>
         <p className="mt-1 break-all font-mono text-xs text-fg">{url || "resolving…"}</p>
       </div>
-      {url ? <CopyButton text={url} /> : null}
+      {url ? <CopyButton text={url} className="shrink-0" /> : null}
     </div>
+  );
+}
+
+function StatusChip({ ok, label }: { ok: boolean; label: string }) {
+  return (
+    <li className="rounded-md bg-raised px-3 py-2 font-mono text-xs text-muted">
+      <span className={ok ? "text-sage" : "text-subtle"}>{ok ? "on" : "off"}</span>
+      <span className="mt-0.5 block text-fg">{label}</span>
+    </li>
   );
 }
 
@@ -67,6 +76,10 @@ function TillPage() {
   useStripeSync();
   const emails = useTill((s) => s.emails);
   const setEmails = useTill((s) => s.setEmails);
+  const payUrl = useTill((s) => s.payUrl);
+  const setPayUrl = useTill((s) => s.setPayUrl);
+  const contact = useTill((s) => s.contact);
+  const setContact = useTill((s) => s.setContact);
   const operatorKey = useTill((s) => s.operatorKey);
   const setOperatorKey = useTill((s) => s.setOperatorKey);
   const launches = useBarn((s) => s.launches);
@@ -117,7 +130,7 @@ function TillPage() {
 
   return (
     <Shell>
-      <main className="mx-auto w-full max-w-2xl px-4 py-12 sm:px-6 sm:py-16">
+      <main className="mx-auto w-full max-w-2xl px-4 py-10 sm:px-6 sm:py-16">
         <p className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">Live</p>
         <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-5xl">{cow.name}</h1>
         <p className="mt-3 text-base leading-relaxed text-muted">
@@ -125,43 +138,39 @@ function TillPage() {
           sessions into the barn.
         </p>
 
-        <div className="mt-8 rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
+        <div className="mt-8 rounded-2xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
           <LaunchClock startedAt={startedAt} />
           <p className="mt-4 font-mono text-sm tabular-nums text-muted">
             {money(stripeTotal.amount)} from Stripe
             {stripeTotal.count ? ` · ${stripeTotal.count} paid` : " · waiting"}
           </p>
-          <p className="mt-1 font-mono text-xs text-subtle">
-            {stripe?.leakedToClient
-              ? "Stripe keys leaked into VITE_ — checkout off"
-              : stripe?.checkoutReady
-                ? `Checkout ${stripe.mode}`
-                : "Set STRIPE_SECRET_KEY"}
-            {" · "}
-            {stripe?.webhookReady ? "Stripe webhook on" : "Set STRIPE_WEBHOOK_SECRET"}
-            {" · "}
-            {stripe?.nangoReady ? "Nango sync on" : "Set NANGO_API_KEY"}
-            {" · "}
-            {stripe?.nangoWebhookReady ? "Nango webhook on" : "Set NANGO_WEBHOOK_SIGNING_KEY"}
-            {" · "}
-            {stripe?.operatorLocked ? "Operator locked" : "Operator open"}
-            {stripe?.ledger ? " · Ledger on" : ""}
-          </p>
+          {stripe?.leakedToClient ? (
+            <p className="mt-2 text-sm text-muted">Stripe keys leaked into VITE_ — checkout off.</p>
+          ) : null}
+          <ul className="mt-4 grid grid-cols-2 gap-2">
+            <StatusChip
+              ok={Boolean(stripe?.checkoutReady)}
+              label={stripe?.checkoutReady ? `Checkout ${stripe.mode}` : "Checkout"}
+            />
+            <StatusChip ok={Boolean(stripe?.webhookReady)} label="Stripe hook" />
+            <StatusChip ok={Boolean(stripe?.nangoReady)} label="Nango sync" />
+            <StatusChip ok={Boolean(stripe?.nangoWebhookReady)} label="Nango hook" />
+          </ul>
           {inspect?.expected ? (
             <dl className="mt-4 grid gap-2 font-mono text-xs text-subtle">
               <div className="flex justify-between gap-4">
-                <dt>Sync</dt>
-                <dd className="text-fg">
+                <dt className="shrink-0">Sync</dt>
+                <dd className="min-w-0 truncate text-right text-fg">
                   {inspect.expected.syncName} → {inspect.expected.model}
                 </dd>
               </div>
               <div className="flex justify-between gap-4">
-                <dt>Cadence</dt>
-                <dd className="text-fg">{inspect.expected.frequency}</dd>
+                <dt className="shrink-0">Cadence</dt>
+                <dd className="min-w-0 truncate text-right text-fg">{inspect.expected.frequency}</dd>
               </div>
               <div className="flex justify-between gap-4">
-                <dt>Connection</dt>
-                <dd className="text-fg">
+                <dt className="shrink-0">Connection</dt>
+                <dd className="min-w-0 truncate text-right text-fg">
                   {inspect.expected.integrationId}/{inspect.expected.connectionId}
                 </dd>
               </div>
@@ -169,8 +178,8 @@ function TillPage() {
                 .filter((row) => row.name === inspect.expected?.syncName)
                 .map((row) => (
                   <div key={row.name} className="flex justify-between gap-4">
-                    <dt>Status</dt>
-                    <dd className="text-fg">
+                    <dt className="shrink-0">Status</dt>
+                    <dd className="min-w-0 truncate text-right text-fg">
                       {row.status}
                       {row.records ? ` · ${row.records} records` : ""}
                     </dd>
@@ -178,15 +187,15 @@ function TillPage() {
                 ))}
               {inspect.functions.length > 0 ? (
                 <div className="flex justify-between gap-4">
-                  <dt>Deployed</dt>
-                  <dd className="text-right text-fg">{inspect.functions.join(", ")}</dd>
+                  <dt className="shrink-0">Deployed</dt>
+                  <dd className="min-w-0 text-right text-fg">{inspect.functions.join(", ")}</dd>
                 </div>
               ) : null}
             </dl>
           ) : null}
         </div>
 
-        <section className="mt-6 rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
+        <section className="mt-6 rounded-2xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
           <p className="font-mono text-xs tracking-[0.18em] text-subtle uppercase">Rails</p>
           <p className="mt-2 text-sm leading-relaxed text-muted">
             Webhook URLs for this origin. Paste them into Stripe and Nango. Names only — values
@@ -198,16 +207,16 @@ function TillPage() {
           </div>
           <dl className="mt-5 grid gap-2 font-mono text-xs text-subtle">
             {RAILS_ENV_KEYS.map((name) => (
-              <div key={name} className="flex justify-between gap-4">
-                <dt>{name}</dt>
-                <dd className="text-fg">{envFlag(name, stripe)}</dd>
+              <div key={name} className="flex items-baseline justify-between gap-3">
+                <dt className="min-w-0 break-all">{name}</dt>
+                <dd className="shrink-0 text-fg">{envFlag(name, stripe)}</dd>
               </div>
             ))}
           </dl>
         </section>
 
         {beat ? (
-          <section className="mt-6 rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
+          <section className="mt-6 rounded-2xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
             <p className="font-mono text-xs tracking-[0.18em] text-subtle uppercase">
               Hour {beat.hour} now
             </p>
@@ -218,13 +227,13 @@ function TillPage() {
                 Next: hour {upcoming.hour} — {upcoming.title}
               </p>
             ) : null}
-            <div className="mt-5 flex flex-wrap gap-2">
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
               {primary.disabled ? (
-                <Button type="button" disabled>
+                <Button type="button" disabled className="w-full sm:w-auto">
                   {primary.label}
                 </Button>
               ) : (
-                <Button asChild>
+                <Button asChild className="w-full sm:w-auto">
                   <a
                     href={primary.href}
                     target={primary.href.startsWith("http") ? "_blank" : undefined}
@@ -234,7 +243,7 @@ function TillPage() {
                   </a>
                 </Button>
               )}
-              <Button asChild variant="secondary">
+              <Button asChild variant="secondary" className="w-full sm:w-auto">
                 <Link to="/s/$id" params={{ id: cow.id }}>
                   Sales page
                 </Link>
@@ -242,6 +251,32 @@ function TillPage() {
             </div>
           </section>
         ) : null}
+
+        <section className="mt-6 grid gap-6 sm:grid-cols-2">
+          <div>
+            <Label htmlFor="pay-url">Fallback pay link</Label>
+            <Input
+              id="pay-url"
+              className="mt-1.5"
+              placeholder="https://…"
+              value={mounted ? payUrl : ""}
+              onChange={(e) => setPayUrl(e.target.value)}
+            />
+            <p className="mt-2 text-sm text-subtle">Used when Stripe is off. Gumroad or PayPal is fine.</p>
+          </div>
+          <div>
+            <Label htmlFor="contact">Contact email</Label>
+            <Input
+              id="contact"
+              className="mt-1.5"
+              type="email"
+              placeholder="you@…"
+              value={mounted ? contact : ""}
+              onChange={(e) => setContact(e.target.value)}
+            />
+            <p className="mt-2 text-sm text-subtle">Shop uses this for a mailto if there is no pay link.</p>
+          </div>
+        </section>
 
         <section className="mt-6">
           <Label htmlFor="emails">People who already trust you</Label>

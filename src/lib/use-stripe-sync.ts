@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { listStripeSales } from "@/lib/stripe-checkout";
+import { kickNangoSync, listStripeSales } from "@/lib/stripe-checkout";
 import { useBarn } from "@/lib/store";
 
 export function useStripeSync() {
@@ -14,10 +14,11 @@ export function useStripeSync() {
         if (cancelled || !res.ok) return;
         for (const sale of res.sales) recordPaidSale(sale);
       } catch {
-        // Stripe unset or network — barn stays as-is.
+        // Nango/Stripe unset or network — barn stays as-is.
       }
     }
 
+    void kickNangoSync();
     void pull();
     const id = window.setInterval(() => void pull(), 30_000);
     const onFocus = () => {

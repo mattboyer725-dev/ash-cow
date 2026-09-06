@@ -24,7 +24,12 @@ function TillPage() {
   const launches = useBarn((s) => s.launches);
   const startLaunch = useBarn((s) => s.startLaunch);
   const sales = useBarn((s) => s.sales);
-  const [stripe, setStripe] = useState<{ checkoutReady: boolean; webhookReady: boolean } | null>(null);
+  const [stripe, setStripe] = useState<{
+    checkoutReady: boolean;
+    webhookReady: boolean;
+    nangoReady: boolean;
+    nangoWebhookReady: boolean;
+  } | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [mounted, setMounted] = useState(false);
 
@@ -68,8 +73,8 @@ function TillPage() {
         <p className="font-mono text-xs tracking-[0.2em] text-subtle uppercase">Live</p>
         <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-5xl">{cow.name}</h1>
         <p className="mt-3 text-base leading-relaxed text-muted">
-          Clock starts when you open this page. Stripe Checkout is the till. Paid sessions
-          land in the barn by themselves.
+          Clock starts when you open this page. Stripe Checkout is the till. Nango syncs paid
+          sessions into the barn.
         </p>
 
         <div className="mt-8 rounded-xl bg-surface p-5 shadow-[var(--shadow-border)] sm:p-6">
@@ -81,7 +86,9 @@ function TillPage() {
           <p className="mt-1 font-mono text-xs text-subtle">
             {stripe?.checkoutReady ? "Checkout on" : "Set STRIPE_SECRET_KEY"}
             {" · "}
-            {stripe?.webhookReady ? "Webhook on" : "Set STRIPE_WEBHOOK_SECRET"}
+            {stripe?.nangoReady ? "Nango sync on" : "Set NANGO_API_KEY"}
+            {" · "}
+            {stripe?.nangoWebhookReady ? "Nango webhook on" : "Set NANGO_WEBHOOK_SIGNING_KEY"}
           </p>
         </div>
 

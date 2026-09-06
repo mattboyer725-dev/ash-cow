@@ -17,6 +17,7 @@ import { Route as TillRouteImport } from './routes/till'
 import { Route as TruthRouteImport } from './routes/truth'
 import { Route as CowIdRouteImport } from './routes/cow.$id'
 import { Route as SIdRouteImport } from './routes/s.$id'
+import { Route as ApiNangoWebhookRouteImport } from './routes/api/nango/webhook'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 
 const IndexRoute = IndexRouteImport.update({
@@ -59,6 +60,11 @@ const SIdRoute = SIdRouteImport.update({
   path: '/s/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiNangoWebhookRoute = ApiNangoWebhookRouteImport.update({
+  id: '/api/nango/webhook',
+  path: '/api/nango/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   id: '/api/stripe/webhook',
   path: '/api/stripe/webhook',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/truth': typeof TruthRoute
   '/cow/$id': typeof CowIdRoute
   '/s/$id': typeof SIdRoute
+  '/api/nango/webhook': typeof ApiNangoWebhookRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/truth': typeof TruthRoute
   '/cow/$id': typeof CowIdRoute
   '/s/$id': typeof SIdRoute
+  '/api/nango/webhook': typeof ApiNangoWebhookRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesById {
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/truth': typeof TruthRoute
   '/cow/$id': typeof CowIdRoute
   '/s/$id': typeof SIdRoute
+  '/api/nango/webhook': typeof ApiNangoWebhookRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/truth'
     | '/cow/$id'
     | '/s/$id'
+    | '/api/nango/webhook'
     | '/api/stripe/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/truth'
     | '/cow/$id'
     | '/s/$id'
+    | '/api/nango/webhook'
     | '/api/stripe/webhook'
   id:
     | '__root__'
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/truth'
     | '/cow/$id'
     | '/s/$id'
+    | '/api/nango/webhook'
     | '/api/stripe/webhook'
   fileRoutesById: FileRoutesById
 }
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   TruthRoute: typeof TruthRoute
   CowIdRoute: typeof CowIdRoute
   SIdRoute: typeof SIdRoute
+  ApiNangoWebhookRoute: typeof ApiNangoWebhookRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
 
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/nango/webhook': {
+      id: '/api/nango/webhook'
+      path: '/api/nango/webhook'
+      fullPath: '/api/nango/webhook'
+      preLoaderRoute: typeof ApiNangoWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stripe/webhook': {
       id: '/api/stripe/webhook'
       path: '/api/stripe/webhook'
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   TruthRoute: TruthRoute,
   CowIdRoute: CowIdRoute,
   SIdRoute: SIdRoute,
+  ApiNangoWebhookRoute: ApiNangoWebhookRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport

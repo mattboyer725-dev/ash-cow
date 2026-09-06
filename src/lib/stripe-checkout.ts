@@ -10,8 +10,15 @@ const checkoutInput = z.object({
 
 export const stripeStatus = createServerFn({ method: "GET" }).handler(async () => {
   const { stripeSecrets } = await import("./stripe.server");
+  const { nangoConfig } = await import("./nango.server");
   const s = stripeSecrets();
-  return { checkoutReady: s.checkoutReady, webhookReady: s.webhookReady };
+  const n = nangoConfig();
+  return {
+    checkoutReady: s.checkoutReady,
+    webhookReady: s.webhookReady,
+    nangoReady: n.ready,
+    nangoWebhookReady: n.webhookReady,
+  };
 });
 
 export const createCheckout = createServerFn({ method: "POST" })
@@ -80,13 +87,37 @@ export const readCheckout = createServerFn({ method: "POST" })
   });
 
 export const listStripeSales = createServerFn({ method: "GET" }).handler(async () => {
+  const { recentNotices } = await import("./stripe-events");
+  const { nangoConfig, listNangoSales } = await import("./nango.server");
+  const nango = nangoConfig();
+  if (nango.ready) {
+    try {
+      const sales = await listNangoSales();
+      return { ok: true as const, sales, notices: recentNotices(), via: "nango" as const };
+    } catch {
+      // Fall through to Stripe list if Nango is unreachable.
+    }
+  }
   const { getStripe } = await import("./stripe.server");
-  const { saleFromSession, recentNotices } = await import("./stripe-events");
+  const { saleFromSession } = await import("./stripe-events");
   const stripe = getStripe();
   if (!stripe) {
-    return { ok: false as const, error: "Stripe is not configured.", sales: [], notices: [] };
+    return { ok: false as const, error: "No Nango or Stripe sync configured.", sales: [], notices: [] };
   }
   const listed = await stripe.checkout.sessions.list({ limit: 40, status: "complete" });
-  const sales = listed.data.map(saleFromSession).filter((row): row is NonNullable<typeof row> => Boolean(row));
-  return { ok: true as const, sales, notices: recentNotices() };
+  const sales = listed.data
+    .map(saleFromSession)
+    .filter((row): row is NonNullable<typeof row> => Boolean(row));
+  return { ok: true as const, sales, notices: recentNotices(), via: "stripe" as const };
 });
+
+export const kickNangoSync = createServerFn({ method: "POST" }).handler(async () => {
+  const { kickNangoCheckoutSync } = await import("./nango.server");
+  try {
+    return await kickNangoCheckoutSync();
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Nango sync failed to start.";
+    return { ok: false as const, error: message };
+  }
+});
+

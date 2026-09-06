@@ -40,6 +40,25 @@ export type SessionSlice = {
   metadata?: Record<string, string> | null;
 };
 
+export function saleFromCheckoutRecord(row: {
+  id: string;
+  amount_total?: number | null;
+  created?: number | null;
+  payment_status?: string | null;
+  status?: string | null;
+  metadata?: Record<string, unknown> | null;
+}): Sale | null {
+  const kitId = typeof row.metadata?.kitId === "string" ? row.metadata.kitId : "";
+  return saleFromSession({
+    id: row.id,
+    amount_total: row.amount_total,
+    created: row.created,
+    payment_status: row.payment_status,
+    status: row.status,
+    metadata: kitId ? { kitId } : null,
+  });
+}
+
 export function saleFromSession(session: SessionSlice): Sale | null {
   if (session.payment_status !== "paid" && session.status !== "complete") return null;
   const kitId = typeof session.metadata?.kitId === "string" ? session.metadata.kitId : "";

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DeckRouteImport } from './routes/deck'
 import { Route as ForgeRouteImport } from './routes/forge'
 import { Route as PaidRouteImport } from './routes/paid'
 import { Route as ShopRouteImport } from './routes/shop'
@@ -28,6 +29,11 @@ import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhoo
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeckRoute = DeckRouteImport.update({
+  id: '/deck',
+  path: '/deck',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgeRoute = ForgeRouteImport.update({
@@ -103,6 +109,7 @@ const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/deck': typeof DeckRoute
   '/forge': typeof ForgeRoute
   '/paid': typeof PaidRoute
   '/shop': typeof ShopRoute
@@ -120,6 +127,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/deck': typeof DeckRoute
   '/forge': typeof ForgeRoute
   '/paid': typeof PaidRoute
   '/shop': typeof ShopRoute
@@ -138,6 +146,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/deck': typeof DeckRoute
   '/forge': typeof ForgeRoute
   '/paid': typeof PaidRoute
   '/shop': typeof ShopRoute
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/deck'
     | '/forge'
     | '/paid'
     | '/shop'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/deck'
     | '/forge'
     | '/paid'
     | '/shop'
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/deck'
     | '/forge'
     | '/paid'
     | '/shop'
@@ -209,6 +221,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DeckRoute: typeof DeckRoute
   ForgeRoute: typeof ForgeRoute
   PaidRoute: typeof PaidRoute
   ShopRoute: typeof ShopRoute
@@ -232,6 +245,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/deck': {
+      id: '/deck'
+      path: '/deck'
+      fullPath: '/deck'
+      preLoaderRoute: typeof DeckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forge': {
@@ -337,6 +357,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DeckRoute: DeckRoute,
   ForgeRoute: ForgeRoute,
   PaidRoute: PaidRoute,
   ShopRoute: ShopRoute,

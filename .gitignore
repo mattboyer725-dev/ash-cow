@@ -21,3 +21,5 @@ AGENTS.md
 .grok/status
 *.log
 .DS_Store
+
+INDEX.md

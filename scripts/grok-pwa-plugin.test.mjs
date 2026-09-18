@@ -29,37 +29,28 @@ test("injects before </head>", () => {
   const out = injectGrokPwaHead("<html><head><title>x</title></head><body></body></html>");
   assert.match(out, /rel="manifest"/);
   assert.match(out, /apple-touch-icon/);
-  assert.match(out, /grok-app-builder\/extensions\.js/);
+  assert.doesNotMatch(out, /grok-app-builder\/extensions\.js/);
   assert.ok(out.indexOf("manifest") < out.indexOf("</head>"));
 });
 
-test("injects the extensions script without a project id", () => {
-  const out = injectGrokPwaHead("<html><head></head></html>", {
+test("never injects the Grok App Builder extensions script", () => {
+  const withoutProjectId = injectGrokPwaHead("<html><head></head></html>", {
     appName: "Demo",
     projectId: "",
   });
-  assert.match(out, /src="https:\/\/grok\.com\/grok-app-builder\/extensions\.js" defer/);
-  assert.doesNotMatch(out, /grok-project-id/);
-  assert.doesNotMatch(out, /data-project-id/);
-  assert.doesNotMatch(out, /property="grok:app_id"/);
-});
+  assert.doesNotMatch(withoutProjectId, /grok-app-builder\/extensions\.js/);
+  assert.doesNotMatch(withoutProjectId, /grok-project-id/);
+  assert.doesNotMatch(withoutProjectId, /data-project-id/);
+  assert.doesNotMatch(withoutProjectId, /property="grok:app_id"/);
 
-test("injects project id on the script and meta when provided", () => {
-  const out = injectGrokPwaHead("<html><head></head></html>", {
+  const withProjectId = injectGrokPwaHead("<html><head></head></html>", {
     appName: "Demo",
     projectId: "proj-123",
   });
-  assert.match(out, /name="grok-project-id" content="proj-123"/);
-  assert.match(out, /data-project-id="proj-123"/);
-  assert.match(out, /property="grok:app_id" content="proj-123"/);
-});
-
-test("does not duplicate grok:app_id", () => {
-  const ctx = { appName: "Demo", projectId: "proj-123" };
-  const once = injectGrokPwaHead("<html><head></head></html>", ctx);
-  const twice = injectGrokPwaHead(once, ctx);
-  assert.equal(once, twice);
-  assert.equal(twice.split('property="grok:app_id"').length - 1, 1);
+  assert.doesNotMatch(withProjectId, /grok-app-builder\/extensions\.js/);
+  assert.doesNotMatch(withProjectId, /grok-project-id/);
+  assert.doesNotMatch(withProjectId, /data-project-id/);
+  assert.doesNotMatch(withProjectId, /property="grok:app_id"/);
 });
 
 test("omits x:creator tags without both creator values", () => {
@@ -388,14 +379,6 @@ test("streaming injector matches </HEAD> case-insensitively", () => {
   assert.match(out, /<body>hello<\/body>/);
 });
 
-test("does not duplicate the extensions script", () => {
-  const ctx = { appName: "Demo", projectId: "proj-123" };
-  const once = injectGrokPwaHead("<html><head></head></html>", ctx);
-  const twice = injectGrokPwaHead(once, ctx);
-  assert.equal(once, twice);
-  assert.equal(twice.split("extensions.js").length - 1, 1);
-});
-
 test("is idempotent", () => {
   const once = injectGrokPwaHead("<html><head></head></html>");
   const twice = injectGrokPwaHead(once);
@@ -468,7 +451,7 @@ test("rejects hosts that are not plain slugs", () => {
 });
 
 test("renders install page markup", () => {
-  const html = renderInstallPage("wild-race.grok.me", "/?install=1&platform=ios");
+  const html = renderInstallPage("wild-race.grok.me", "/?install=1&platform=ios", CLEAN_CWD);
   assert.match(html, /Add Wild Race to your/);
   assert.match(html, /\/__grok\/install\/styles\.css/);
   assert.match(html, /href="\/"/);
@@ -477,8 +460,16 @@ test("renders install page markup", () => {
 });
 
 test("escapes host-derived values in the install page", () => {
-  const html = renderInstallPage("<script>alert(1)</script>", "/?install=1&platform=ios");
+  const html = renderInstallPage("<script>alert(1)</script>", "/?install=1&platform=ios", CLEAN_CWD);
   assert.equal(html.includes("<script>alert(1)</script>"), false);
+});
+
+test("install page prefers site.json title over the host slug", () => {
+  const root = mkdtempSync(join(tmpdir(), "grok-install-site-"));
+  mkdirSync(join(root, "src/lib/og"), { recursive: true });
+  writeFileSync(join(root, "src/lib/og/site.json"), JSON.stringify({ title: "ASH COW" }));
+  const html = renderInstallPage("some-app.vercel.app", "/?install=1&platform=ios", root);
+  assert.match(html, /Add ASH COW to your/);
 });
 
 test("renders the manifest with the per-app name", () => {
@@ -486,6 +477,14 @@ test("renders the manifest with the per-app name", () => {
   assert.equal(manifest.name, "Wild Race");
   assert.equal(manifest.short_name, "Wild Race");
   assert.equal(manifest.icons[0].src, "/__grok/icon-180.png");
+});
+
+test("manifest prefers site.json title over the host slug", () => {
+  const manifest = JSON.parse(
+    renderWebManifest("some-app.vercel.app", { title: "ASH COW" }),
+  );
+  assert.equal(manifest.name, "ASH COW");
+  assert.equal(manifest.short_name, "ASH COW");
 });
 
 // Tripwires: the deployed-app path only works if Nitro scans server/ — an

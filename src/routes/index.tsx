@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { CowCard } from "@/components/cow-card";
 import { Shell } from "@/components/shell";
 import { Button } from "@/components/ui/button";
-import { READY_COWS } from "@/lib/ready-cows";
+import { LISTED_COWS, READY_COWS } from "@/lib/ready-cows";
 import { barnTotals, useBarn } from "@/lib/store";
 import { money } from "@/lib/utils";
 
@@ -119,7 +119,7 @@ function Home() {
           This is the fastest way to make the first dollar.
         </p>
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
-          {READY_COWS.map((cow) => (
+          {LISTED_COWS.map((cow) => (
             <CowCard
               key={cow.id}
               cow={cow}

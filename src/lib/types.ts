@@ -35,6 +35,12 @@ export type CashCow = {
   id: string;
   createdAt: string;
   source: "forge" | "ready";
+  /** Sold by direct link only; left out of the shop and home listings. */
+  unlisted?: boolean;
+  /** Stall page photo. Omit for the default cow; null for none. */
+  heroImage?: string | null;
+  /** Downloadable file delivered after payment instead of the .txt. */
+  file?: { filename: string; contentType: string };
   skill: string;
   buyer: string;
   seedDelivery: string;

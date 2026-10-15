@@ -356,7 +356,117 @@ export const READY_COWS: CashCow[] = [
       ],
     },
   }),
+  stamp({
+    id: "ready-safe-build-kit",
+    createdAt: "2026-10-14T00:00:00.000Z",
+    source: "ready",
+    unlisted: true,
+    heroImage: null,
+    file: { filename: "safe-build-kit.zip", contentType: "application/zip" },
+    skill: "building a first Roblox game with a kid, with safety switched on",
+    buyer: "parents, coaches and teachers of kids who love Roblox",
+    seedDelivery:
+      "a double-click setup helper, starter game code, a child-safety layer, and a one-page guide",
+    price: 20,
+    name: "Safe Build Kit — for Roblox Studio",
+    oneLiner:
+      "Build your kid's first Roblox game together this weekend: they dream it up, you type it in plain English, Claude builds it with child-safety protection switched on.",
+    promise: "A playable game you built together by Sunday, with guardrails already in place.",
+    who: "grown-ups building alongside a kid who loves Roblox",
+    outcome: "a working Roblox game, a safety layer inside it, and a plan for the weekend",
+    gumroadTitle: "Safe Build Kit — build a Roblox game with your kid, safely",
+    gumroadTags: ["roblox", "parents", "coding for kids", "digital download"],
+    coverPrompt:
+      "Square 1:1 cover. Bright, clean desk with a laptop showing colorful toy blocks, a small shield shape built from blocks. Large rounded sans-serif: \"SAFE BUILD KIT\". Smaller: \"Build a Roblox game with your kid\". No Roblox logo, no real characters.",
+    objections: [
+      {
+        objection: "I can't code.",
+        reply:
+          "You don't need to. You describe what you want in plain English and a setup helper does the rest, telling you exactly where to click.",
+      },
+      {
+        objection: "Can my kid use it alone?",
+        reply:
+          "No, by design. Claude accounts are for adults (18+). The kit is built for a grown-up and a kid side by side: they design, you type.",
+      },
+      {
+        objection: "Does this make Roblox safe?",
+        reply:
+          "No product can promise that. It adds protection inside the game you build and tools to notice and report problems. Keep using Roblox's parental controls.",
+      },
+      {
+        objection: "Is there another cost?",
+        reply:
+          "Yes. It runs on Claude Code, which needs a paid Claude plan (Pro is $20/month). Roblox Studio is free.",
+      },
+    ],
+    salesPage: {
+      headline: "Build your kid's first Roblox game together this weekend.",
+      subhead:
+        "They dream it up. You type it in plain English. Claude builds it in Roblox Studio, with child-safety protection switched on from the first minute.",
+      problem:
+        "Kids want to make Roblox games, not just play them. Parents want to help but don't code, and worry about who their kids meet online. Most AI game tools hand a kid a blank box and no guardrails.",
+      mechanism:
+        "Double-click Start Here. A setup helper installs what's needed, connects to Roblox Studio, adds starter game code and a safety layer, makes you the safety moderator and tests everything. Then your kid describes what they want and you type it in. Risky messages (phone numbers, other apps, where do you live) are blocked, there's a Report a problem button, and you get a log and alerts.",
+      whatYouGet: [
+        "Double-click setup helper for Mac and Windows",
+        "Starter game code with safe saving",
+        "Child-safety layer: message screening, Report button, incident log, moderator alerts",
+        "Plain-English commands: /make to build an idea, /incidents to review the safety log",
+        "One-page guide, weekend plan and a parents' safety handbook",
+      ],
+      forWhom:
+        "Parents, coaches and teachers with a Mac or Windows PC, a Roblox account and a paid Claude plan.",
+      notFor:
+        "Kids on their own, Chromebooks or iPads, or anyone looking for a guarantee that Roblox is safe.",
+      guarantee: "7 days. If it doesn't work for you, email and the money comes back.",
+      cta: "Get the Safe Build Kit — $20.",
+    },
+    posts: [
+      {
+        channel: "Parent group",
+        copy: "I put together a kit for building a first Roblox game with your kid, with safety features switched on (blocks kids sharing phone numbers or other apps, adds a report button). Double-click setup. $20. Happy to answer questions.",
+      },
+      {
+        channel: "Team text",
+        copy: "For the families whose kids are always talking about Roblox: I made a weekend kit to build a game together, with safety built in. Link below if useful. If not, ignore.",
+      },
+    ],
+    deliveryDoc: {
+      title: "Safe Build Kit",
+      subtitle: "Build a Roblox game with your kid, with safety switched on. Start here.",
+      pages: [
+        {
+          heading: "Download and unzip",
+          body: "Click the download button above to get safe-build-kit.zip. On a Mac, double-click it. On Windows, right-click it and choose Extract All. Don't open files from inside the zip.",
+        },
+        {
+          heading: "Double-click Start Here",
+          body: "Mac: Start Here.command (the first time, right-click it, choose Open, then Open). Windows: Start Here.bat (if a blue SmartScreen box appears, choose More info, then Run anyway). It installs Claude Code if needed, opens the Roblox Studio download page if needed, asks your game's name and opens the setup helper.",
+        },
+        {
+          heading: "Answer the setup helper",
+          body: "It works one step at a time and checks each one. You'll click a few things only you can: turn on Studio's connection, publish your place, allow saving, approve changes, and fill in Roblox's content questionnaire. You need a paid Claude plan that includes Claude Code.",
+        },
+        {
+          heading: "Build together",
+          body: "Your kid describes what they want; you type it. Try /make followed by the idea, for example: /make a coin that spins and gives 10 points. Test each change right away.",
+        },
+        {
+          heading: "Keep it safe",
+          body: "Type /incidents once a week to review the safety log in plain language. If an adult is ever sexual toward a child, asks for pictures, pushes to another app or asks where a child lives: report them to Roblox, report to the NCMEC CyberTipline (report.cybertip.org, 1-800-843-5678) in the US, and keep the records. Never save or forward images. In an emergency, call 911.",
+        },
+        {
+          heading: "Help and refunds",
+          body: "The guide inside the zip covers troubleshooting. If it doesn't work for you within 7 days, email for a full refund. Safe Build Kit is independent and not affiliated with Roblox Corporation or Anthropic.",
+        },
+      ],
+    },
+  }),
 ];
+
+/** Products shown in the shop and on the home page. Unlisted ones sell only by direct link. */
+export const LISTED_COWS = READY_COWS.filter((cow) => !cow.unlisted);
 
 export const FORGE_PRESETS: {
   label: string;

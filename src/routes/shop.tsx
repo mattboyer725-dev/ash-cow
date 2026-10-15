@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BuyButton } from "@/components/buy-button";
 import { Shell } from "@/components/shell";
 import { Button } from "@/components/ui/button";
-import { READY_COWS } from "@/lib/ready-cows";
+import { LISTED_COWS } from "@/lib/ready-cows";
 import { money } from "@/lib/utils";
 
 export const Route = createFileRoute("/shop")({ component: ShopPage });
@@ -37,7 +37,7 @@ function ShopPage() {
         </section>
         <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:pb-16">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {READY_COWS.map((cow) => (
+            {LISTED_COWS.map((cow) => (
               <article
                 key={cow.id}
                 className="flex flex-col overflow-hidden rounded-2xl bg-surface shadow-[var(--shadow-border)]"

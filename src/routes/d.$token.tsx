@@ -58,7 +58,9 @@ function DownloadPage() {
             </p>
             <div className="mt-6">
               <Button asChild>
-                <a href={`/api/download/${encodeURIComponent(token)}`}>Download .txt</a>
+                <a href={`/api/download/${encodeURIComponent(token)}`}>
+                  {cow.file ? `Download ${cow.file.filename}` : "Download .txt"}
+                </a>
               </Button>
             </div>
             <div className="mt-10">

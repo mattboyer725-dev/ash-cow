@@ -18,6 +18,21 @@ export const Route = createFileRoute("/api/download/$token")({
         if (!cow) {
           return Response.json({ error: "File is not on this stall." }, { status: 404 });
         }
+        if (cow.file) {
+          const { kitFileBytes } = await import("@/lib/kit-files.server");
+          const bytes = await kitFileBytes(cow.id);
+          if (!bytes) {
+            return Response.json({ error: "File is not on this stall." }, { status: 404 });
+          }
+          return new Response(bytes, {
+            headers: {
+              "content-type": cow.file.contentType,
+              "content-disposition": `attachment; filename="${cow.file.filename}"`,
+              "content-length": String(bytes.length),
+              "cache-control": "private, no-store",
+            },
+          });
+        }
         const body = deliveryText(cow);
         const filename = `${cow.name.replace(/\s+/g, "-").toLowerCase()}.txt`;
         return new Response(body, {

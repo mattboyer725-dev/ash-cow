@@ -419,7 +419,7 @@ export const READY_COWS: CashCow[] = [
         "Parents, coaches and teachers with a Mac or Windows PC, a Roblox account and a paid Claude plan.",
       notFor:
         "Kids on their own, Chromebooks or iPads, or anyone looking for a guarantee that Roblox is safe.",
-      guarantee: "7 days. If it doesn't work for you, email and the money comes back.",
+      guarantee: "7 days. If it doesn't work for you, reply to your payment receipt and the money comes back.",
       cta: "Get the Safe Build Kit — $20.",
     },
     posts: [
@@ -458,7 +458,7 @@ export const READY_COWS: CashCow[] = [
         },
         {
           heading: "Help and refunds",
-          body: "The guide inside the zip covers troubleshooting. If it doesn't work for you within 7 days, email for a full refund. Safe Build Kit is independent and not affiliated with Roblox Corporation or Anthropic.",
+          body: "The guide inside the zip covers troubleshooting. If it doesn't work for you within 7 days, reply to your payment receipt for a full refund. Safe Build Kit is independent and not affiliated with Roblox Corporation or Anthropic.",
         },
       ],
     },

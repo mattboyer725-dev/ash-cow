@@ -410,8 +410,9 @@ export const READY_COWS: CashCow[] = [
         "Double-click Start Here. A setup helper installs what's needed, connects to Roblox Studio, adds starter game code and a safety layer, makes you the safety moderator and tests everything. Then your kid describes what they want and you type it in. Risky messages (phone numbers, other apps, where do you live) are blocked, there's a Report a problem button, and you get a log and alerts.",
       whatYouGet: [
         "Double-click setup helper for Mac and Windows",
-        "Starter game code with safe saving",
+        "Starter game code with safe saving, plus a ready-made 8-stage obby to reshape",
         "Child-safety layer: message screening, Report button, incident log, moderator alerts",
+        "Family mode: only you, your Roblox friends and people you add can play until you open the game",
         "Plain-English commands: /make to build an idea, /incidents to review the safety log",
         "One-page guide, weekend plan and a parents' safety handbook",
       ],
@@ -454,7 +455,7 @@ export const READY_COWS: CashCow[] = [
         },
         {
           heading: "Keep it safe",
-          body: "Type /incidents once a week to review the safety log in plain language. If an adult is ever sexual toward a child, asks for pictures, pushes to another app or asks where a child lives: report them to Roblox, report to the NCMEC CyberTipline (report.cybertip.org, 1-800-843-5678) in the US, and keep the records. Never save or forward images. In an emergency, call 911.",
+          body: "Your game starts private and in family mode: only you, your Roblox friends and people you add can stay. Open it to friends first, and to everyone only after the content questionnaire and /safety-review are done. Type /incidents once a week to review the safety log in plain language. If an adult is ever sexual toward a child, asks for pictures, pushes to another app or asks where a child lives: report them to Roblox, report to the NCMEC CyberTipline (report.cybertip.org, 1-800-843-5678) in the US, and keep the records. Never save or forward images. In an emergency, call 911.",
         },
         {
           heading: "Help and refunds",

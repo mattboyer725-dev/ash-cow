@@ -415,6 +415,7 @@ export const READY_COWS: CashCow[] = [
         "Child-safety layer: message screening, Report button, incident log, moderator alerts",
         "Family mode: only you, your Roblox friends and people you add can play until you open the game",
         "Plain-English commands: /make to build an idea, /incidents to review the safety log",
+        "Self-adapting: /loop 1h /adapt keeps learning new filter-dodging tricks (stricter only), tunes difficulty from anonymous play stats, and fixes errors",
         "One-page guide, weekend plan and a parents' safety handbook",
       ],
       forWhom:
@@ -523,6 +524,7 @@ export const READY_COWS: CashCow[] = [
         "/custom game designer: answer a few questions together and Claude builds your own game",
         "Teen safety layer: predator-pattern chat blocking, safe trading, Report button, incident log, moderator alerts",
         "Robux shop done right: fixed items, never given twice, no loot boxes",
+        "Self-adapting: /loop 1h /adapt keeps learning new filter-dodging tricks (stricter only), tunes difficulty from anonymous play stats, and fixes errors",
         "One-page guide and a teen safety handbook",
       ],
       forWhom:

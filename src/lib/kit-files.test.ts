@@ -10,6 +10,15 @@ test("Safe Build Kit zip decodes to a zip archive", async () => {
   assert.deepEqual([...bytes.subarray(0, 4)], [0x50, 0x4b, 0x03, 0x04]);
 });
 
+test("Teen Build Kit zip decodes to a zip archive with the teen setting", async () => {
+  const bytes = await kitFileBytes("ready-teen-build-kit");
+  assert.ok(bytes, "expected bytes for the Teen Build Kit");
+  assert.ok(bytes.length > 50_000, `zip looks too small: ${bytes.length} bytes`);
+  assert.deepEqual([...bytes.subarray(0, 4)], [0x50, 0x4b, 0x03, 0x04]);
+  const safe = await kitFileBytes("ready-safe-build-kit");
+  assert.notDeepEqual(bytes, safe, "teen and family kits must differ");
+});
+
 test("products without a file get null", async () => {
   assert.equal(await kitFileBytes("ready-ash-cow"), null);
 });

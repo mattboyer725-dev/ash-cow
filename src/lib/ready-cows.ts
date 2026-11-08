@@ -465,6 +465,110 @@ export const READY_COWS: CashCow[] = [
       ],
     },
   }),
+  stamp({
+    id: "ready-teen-build-kit",
+    createdAt: "2026-11-08T00:00:00.000Z",
+    source: "ready",
+    unlisted: true,
+    heroImage: null,
+    file: { filename: "teen-build-kit.zip", contentType: "application/zip" },
+    skill: "building the Roblox games teens play, with protection from predators switched on",
+    buyer: "parents of teens (13–17) who want to make Roblox games",
+    seedDelivery:
+      "a double-click setup helper, eleven starter games, a teen safety layer, safe trading, and a one-page guide",
+    price: 20,
+    name: "Teen Build Kit — for Roblox Studio",
+    oneLiner:
+      "Build the Roblox games teens actually play (battles, horror, trading, tycoons) with your teen, in plain English, with every protection against predators switched on.",
+    promise: "A real teen game built together, with the action they want and the protection they need.",
+    who: "parents and guardians building alongside a teen aged 13 to 17",
+    outcome: "a working teen Roblox game, a safety layer inside it, and safe trading",
+    gumroadTitle: "Teen Build Kit — build Roblox games with your teen, safely",
+    gumroadTags: ["roblox", "teens", "parents", "game development", "digital download"],
+    coverPrompt:
+      "Square 1:1 cover. Dark desk with a laptop showing a moody blocky arena and a glowing shield made of blocks. Bold sans-serif: \"TEEN BUILD KIT\". Smaller: \"Roblox games for 13–17, built safely\". No Roblox logo, no real characters.",
+    objections: [
+      {
+        objection: "Can my teen use it on their own?",
+        reply:
+          "No. Claude accounts are for adults (18+), so the account is yours and you run setup. Your teen designs and builds with you, and you're the game's safety moderator.",
+      },
+      {
+        objection: "Isn't this just the kids' kit?",
+        reply:
+          "No. It opens what teen games need: combat with health and damage, horror, trading, typed names, Robux items, up to Roblox's Moderate (13+) label. What stays locked is anything predators use: personal details, moving chats to other apps, meet-ups, secrecy, picture requests and gifts.",
+      },
+      {
+        objection: "Does this make Roblox safe?",
+        reply:
+          "No product can promise that. It adds protection inside the game you build and tools to notice and report problems. Keep using Roblox's own controls.",
+      },
+      {
+        objection: "Is there another cost?",
+        reply:
+          "Yes. It runs on Claude Code, which needs a paid Claude plan (Pro is $20/month). Roblox Studio is free.",
+      },
+    ],
+    salesPage: {
+      headline: "Build the Roblox games teens actually play, with your teen.",
+      subhead:
+        "Battles, horror, trading, tycoons. Your teen designs it, you build it together in plain English, and every protection against predators stays switched on.",
+      problem:
+        "Teens want to make the games they play: battlegrounds, horror, trading games. Kids' tools lock all of that out, and open tools leave teens exposed to the adults who use games to reach them.",
+      mechanism:
+        "Double-click Start Here. A setup helper connects to Roblox Studio, installs eleven starter games and a teen safety layer, makes you the safety moderator and tests everything. Teen games can have combat, horror, trading and typed names up to Roblox's Moderate label. Messages sharing personal details, moving to other apps, asking where someone lives, secrecy and picture requests are blocked; gifts are blocked and lopsided trades alert you.",
+      whatYouGet: [
+        "Double-click setup helper for Mac and Windows",
+        "Eleven starter games: obby, roleplay town, pet collector with safe trading, garden, tycoon, campfire survival, battle arena, tower defense, hide and seek, fishing, haunted escape",
+        "/custom game designer: answer a few questions together and Claude builds your own game",
+        "Teen safety layer: predator-pattern chat blocking, safe trading, Report button, incident log, moderator alerts",
+        "Robux shop done right: fixed items, never given twice, no loot boxes",
+        "One-page guide and a teen safety handbook",
+      ],
+      forWhom:
+        "Parents and guardians of teens aged 13 to 17, with a Mac or Windows PC, a Roblox account and a paid Claude plan.",
+      notFor:
+        "Teens on their own, games for under-13s (get the Safe Build Kit), Chromebooks or iPads, or anyone wanting 18+ content.",
+      guarantee: "7 days. If it doesn't work for you, reply to your payment receipt and the money comes back.",
+      cta: "Get the Teen Build Kit — $20.",
+    },
+    posts: [
+      {
+        channel: "Parent group",
+        copy: "For parents of teens who want to make Roblox games: I made a kit that lets them build battle, horror and trading games with you, while blocking the stuff predators use (sharing info, moving to other apps, gifts). Double-click setup. $20.",
+      },
+    ],
+    deliveryDoc: {
+      title: "Teen Build Kit",
+      subtitle: "Build Roblox games with your teen, with predator protection switched on. Start here.",
+      pages: [
+        {
+          heading: "Download and unzip",
+          body: "Click the download button above to get teen-build-kit.zip. On a Mac, double-click it. On Windows, right-click it and choose Extract All. Don't open files from inside the zip.",
+        },
+        {
+          heading: "Double-click Start Here",
+          body: "Mac: Start Here.command (the first time, right-click it, choose Open, then Open). Windows: Start Here.bat (if a blue SmartScreen box appears, choose More info, then Run anyway). It installs Claude Code if needed, opens the Roblox Studio download page if needed, asks your game's name and opens the setup helper. The Claude account is yours; your teen builds with you.",
+        },
+        {
+          heading: "Answer the setup helper",
+          body: "It works one step at a time and checks each one. You'll click a few things only you can: turn on Studio's connection, publish your place, allow saving, approve changes, and fill in Roblox's content questionnaire. Combat and horror change your answers, so answer honestly. You need a paid Claude plan that includes Claude Code.",
+        },
+        {
+          heading: "Build together",
+          body: "Setup offers eleven ready-made games, or type /custom to design your own. Then describe what you want and try each change right away, for example: /make a sword that does 20 damage with a 1 second cooldown.",
+        },
+        {
+          heading: "Keep it safe",
+          body: "Your game starts private and in family mode. Open it to friends first, and to everyone only after the content questionnaire and /safety-review are done. Type /incidents once a week; watch for lopsided-trade alerts. If an adult is ever sexual toward a teen, asks for pictures, pushes to another app or asks where they live: report them to Roblox, report to the NCMEC CyberTipline (report.cybertip.org, 1-800-843-5678) in the US, and keep the records. Never save or forward images. In an emergency, call 911.",
+        },
+        {
+          heading: "Help and refunds",
+          body: "The guide inside the zip covers troubleshooting. If it doesn't work for you within 7 days, reply to your payment receipt for a full refund. Teen Build Kit is independent and not affiliated with Roblox Corporation or Anthropic.",
+        },
+      ],
+    },
+  }),
 ];
 
 /** Products shown in the shop and on the home page. Unlisted ones sell only by direct link. */

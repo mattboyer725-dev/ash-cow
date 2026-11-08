@@ -6,10 +6,13 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function money(amount: number) {
+  // Whole dollars show as "$20"; prices with cents show both digits ("$9.99").
+  const cents = !Number.isInteger(amount);
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 0,
+    minimumFractionDigits: cents ? 2 : 0,
+    maximumFractionDigits: cents ? 2 : 0,
   }).format(amount);
 }
 

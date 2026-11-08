@@ -4,207 +4,171 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Safe Build Kit</title>
-<meta name="description" content="Build your kid's first Roblox game together this weekend, with child-safety protection switched on.">
+<meta name="description" content="Build your kid's first Roblox game together this weekend, with child-safety protection switched on. $9.99.">
+<meta property="og:title" content="Safe Build Kit">
+<meta property="og:description" content="Build your kid's first Roblox game together this weekend, with child-safety protection switched on. $9.99.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1f8fff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
-<style>
-/* Layout: a single calm column a parent can read on a phone at a ballfield; one playful block
-   illustration in the hero, everything else plain and trustworthy. Draft box pinned at top. */
-:root{
-  --bg:#f7f5f0; --surface:#ffffff; --fg:#1d2430; --muted:#5b6474; --line:#e3ded3;
-  --sky:#2f6fd6; --sky-soft:#e6eefb; --grass:#2f8f5b; --grass-soft:#e4f3ea;
-  --clay:#c2552e; --sun:#f2b33d; --draft:#7a4b00; --draft-bg:#fff4dc;
-  --display:"Fredoka","Avenir Next Rounded","Nunito",system-ui,sans-serif;
-  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#12161d; --surface:#1a2029; --fg:#eef1f5; --muted:#a3adbb; --line:#2a323e;
-  --sky:#7fb0ff; --sky-soft:#1a2740; --grass:#5fc28b; --grass-soft:#16291f;
-  --clay:#ff8d63; --sun:#f5c45f; --draft:#ffd27a; --draft-bg:#2b2111; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#12161d; --surface:#1a2029; --fg:#eef1f5; --muted:#a3adbb; --line:#2a323e;
-  --sky:#7fb0ff; --sky-soft:#1a2740; --grass:#5fc28b; --grass-soft:#16291f;
-  --clay:#ff8d63; --sun:#f5c45f; --draft:#ffd27a; --draft-bg:#2b2111; color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.6 var(--body);padding-inline:16px;padding-block:24px 64px}
-.wrap{max-width:760px;margin:0 auto;display:grid;gap:56px}
-h1,h2,h3{font-family:var(--display);line-height:1.12;text-wrap:balance;margin:0}
-h1{font-size:clamp(34px,7vw,54px);font-weight:700;letter-spacing:-.01em}
-h2{font-size:clamp(26px,4.5vw,34px);font-weight:600;margin-bottom:14px}
-h3{font-size:20px;font-weight:600;margin-bottom:4px}
-p,li{max-width:64ch}
-p{margin:0 0 12px}
-a{color:var(--sky)}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--sky);outline-offset:3px;border-radius:6px}
-.draft{background:var(--draft-bg);color:var(--fg);border:2px dashed var(--draft);border-radius:12px;padding:16px 18px;font-size:15px}
-.draft b.h{color:var(--draft);display:block;font-family:var(--display);font-size:17px;margin-bottom:6px}
-.draft ol{margin:6px 0 0;padding-left:20px;display:grid;gap:4px}
-.hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px;align-items:center}
-@media (max-width:680px){.hero{grid-template-columns:minmax(0,1fr)}}
-.eyebrow{font:700 13px/1 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--grass);margin:0 0 14px}
-.lede{font-size:19px;color:var(--muted);margin-top:16px}
-.buy{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:24px}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border-radius:12px;border:0;background:var(--clay);color:#fff;font:600 19px/1 var(--display);text-decoration:none;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.18)}
-.btn:hover{filter:brightness(1.05)}
-.fine{font-size:14px;color:var(--muted)}
-/* Abstract brick stack: our own shapes, no Roblox marks */
-.blocks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:300px;justify-self:center;width:100%}
-.blocks span{aspect-ratio:1;border-radius:8px;position:relative;box-shadow:inset 0 -6px 0 rgba(0,0,0,.14)}
-.blocks span::after{content:"";position:absolute;width:34%;height:16%;left:33%;top:14%;border-radius:4px;background:rgba(255,255,255,.35)}
-.b1{background:var(--sky)} .b2{background:var(--sun)} .b3{background:var(--grass)} .b4{background:var(--clay)}
-.blocks .gap{background:transparent;box-shadow:none} .blocks .gap::after{display:none}
-.shield{grid-column:2 / span 2;aspect-ratio:2/1 !important;background:var(--surface)!important;border:3px solid var(--grass);display:flex;align-items:center;justify-content:center;font:600 15px/1.1 var(--display);color:var(--grass);text-align:center;box-shadow:none!important}
-.shield::after{display:none}
-.steps{list-style:none;padding:0;margin:0;display:grid;gap:12px;counter-reset:s}
-.steps li{counter-increment:s;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px 16px 66px;position:relative;max-width:none}
-.steps li::before{content:counter(s);position:absolute;left:18px;top:14px;width:34px;height:34px;border-radius:9px;background:var(--sky);color:#fff;font:700 18px/34px var(--display);text-align:center}
-.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.day{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
-.day .when{font:700 12px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--grass);margin-bottom:8px;display:block}
-.day p{margin:6px 0 0;font-size:16px}
-.say{font-style:italic;color:var(--muted)}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
-.box.yes{border-top:5px solid var(--grass)} .box.no{border-top:5px solid var(--sun)}
-.box ul{margin:8px 0 0;padding-left:20px;display:grid;gap:6px}
-.get{list-style:none;padding:0;margin:0;display:grid;gap:10px}
-.get li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;max-width:none}
-.get li::before{content:"";width:22px;height:22px;margin-top:3px;border-radius:6px;background:var(--grass-soft);border:2px solid var(--grass)}
-.cost{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
-.cost table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-.cost td,.cost th{padding:12px 16px;border-bottom:1px solid var(--line);text-align:left}
-.cost td:last-child,.cost th:last-child{text-align:right;white-space:nowrap}
-.cost tr:last-child td{border-bottom:0;font-weight:700}
-.cost th{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 18px;margin-bottom:10px}
-summary{cursor:pointer;font:600 18px/1.3 var(--display);padding:16px 0}
-details p{margin:0 0 16px}
-.about{display:grid;gap:8px;background:var(--sky-soft);border-radius:14px;padding:20px 22px}
-.final{text-align:center;display:grid;gap:12px;justify-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:32px 20px}
-footer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&family=Nunito+Sans:ital,wght@0,400;0,700;0,800;1,400&display=swap">
+<link rel="stylesheet" href="/kits/kits.css">
 </head>
 <body>
-<div class="wrap">
-
-<header class="hero">
-  <div>
-    <p class="eyebrow">For parents, coaches and teachers</p>
-    <h1>Build your kid's first Roblox game together this weekend</h1>
-    <p class="lede">They dream it up. You type it in plain English. Claude builds it in Roblox Studio, with child-safety protection switched on from the first minute.</p>
-    <div class="buy">
-      <a class="btn" href="/s/ready-safe-build-kit">Get the kit — $20</a>
-      <span class="fine">One-time. 7-day refund. Mac or Windows.</span>
-    </div>
-  </div>
-  <div class="blocks" aria-hidden="true">
-    <span class="b1"></span><span class="b2"></span><span class="gap"></span><span class="b3"></span>
-    <span class="b4"></span><span class="shield">Safety<br>on</span><span class="b1"></span>
-    <span class="b3"></span><span class="b2"></span><span class="b4"></span><span class="b1"></span>
+<header class="bar">
+  <div class="bar-in">
+    <a class="brand" href="/kits.html"><span class="brand-mark" aria-hidden="true"></span>Build Kits</a>
+    <nav aria-label="Kits">
+      <a href="/kits.html">All kits</a>
+      <a href="/safe-build-kit.html" aria-current="page">Safe Build Kit</a>
+      <a href="/teen-build-kit.html">Teen Build Kit</a>
+      <a href="/kits.html#compare">Compare</a>
+    </nav>
+    <a class="btn small family" href="/s/ready-safe-build-kit">Buy $9.99</a>
   </div>
 </header>
+<main>
+<div class="wrap">
+<section class="hero">
+  <div>
+    <span class="eyebrow">Safe Build Kit</span>
+    <h1>Build your kid's first Roblox game together this weekend</h1>
+    <p class="lede">They dream it up. You type it in plain English. Claude builds it in Roblox Studio, with child-safety protection switched on from the first minute.</p>
+    <ul class="chips"><li>All ages</li><li>10 starter games</li><li>$9.99 one-time</li><li>7-day refund</li><li>Mac or Windows</li></ul>
+    <div class="actions"><a class="btn family" href="/s/ready-safe-build-kit">Get the kit <span class="price">$9.99</span></a><a class="btn ghost" href="/kits.html#compare">Compare kits</a></div>
+    <p class="fine" style="margin-top:14px">One-time payment. Instant download. 7-day refund: reply to your receipt.</p>
+  </div>
+  <div class="thumb family" aria-hidden="true"><span class="ground"></span><span class="blk" style="left:8%;bottom:26%;width:16%;height:18%;background:#ff5a5f"></span><span class="blk" style="left:26%;bottom:26%;width:12%;height:30%;background:#ffc533"></span><span class="blk" style="left:40%;bottom:26%;width:14%;height:14%;background:#ffffff"></span><span class="blk" style="left:56%;bottom:26%;width:10%;height:40%;background:#8a5cff"></span><span class="blk" style="left:28%;bottom:56%;width:8%;height:8%;background:#ffc533"></span><span class="blk" style="left:44%;bottom:48%;width:9%;height:9%;background:#ff5a5f"></span><span class="shield"></span><span class="tag">All ages</span></div>
+</section>
 
 <section>
   <h2>How it works</h2>
   <ol class="steps">
-    <li><h3>Download and double-click “Start Here”</h3><p>It installs what's needed and opens a setup helper. No coding, no terminal commands to type.</p></li>
-    <li><h3>Answer a few questions</h3><p>What's the game about? Who'll play it? Pick one of ten ready-made games, or design your own. The helper connects to Roblox Studio, adds the game and safety code, makes you the safety moderator, and tests everything. It tells you exactly where to click for the few things only you can do.</p></li>
-    <li><h3>Say what you want</h3><p class="say">“Add a coin that spins and gives 10 points.” “Make the jump pads stronger.” “Add a leaderboard for fastest finish.”</p><p>Claude plans it, checks with you, builds it and tests it.</p></li>
+    <li class="card"><h3>Download, double-click</h3><p>"Start Here" installs what's needed and opens a setup helper. No coding, no terminal commands to type.</p></li>
+    <li class="card"><h3>Pick a starter game</h3><p>Choose one of ten, or design your own with <code>/custom</code>. The helper adds the game and safety code, makes you the moderator and tests everything.</p></li>
+    <li class="card"><h3>Say what you want</h3><p class="say">"Add a coin that spins and gives 10 points."</p><p>Claude plans it, builds it and tests it.</p></li>
   </ol>
 </section>
 
 <section>
-  <h2>A weekend plan, included</h2>
-  <div class="days">
-    <div class="day"><span class="when">Saturday morning · 30 min</span><strong>Set up together</strong><p>Run Start Here, answer the questions, watch the first test pass.</p></div>
-    <div class="day"><span class="when">Saturday afternoon · 1–2 hours</span><strong>Your kid designs, you type</strong><p>They describe the course, the coins, the colors. You type it in. Try each change right away.</p></div>
-    <div class="day"><span class="when">Sunday</span><strong>Play it as a family</strong><p>Test with siblings and friends. Fix what's annoying. Publish when you're both proud of it.</p></div>
-  </div>
+  <h2>Ten games to start from</h2>
+  <p class="lede">Each one is playable right away and made of ordinary parts you can reshape.</p>
+  <div class="games"><div class="card game"><div class="dot" style="background:#ff5a5f"></div><b>Obby</b><span>8 stages, checkpoints that save, coins at the finish</span></div><div class="card game"><div class="dot" style="background:#ffc533"></div><b>Roleplay town</b><span>Pick a job, do tasks that light up, earn coins</span></div><div class="card game"><div class="dot" style="background:#ff8ad8"></div><b>Pet collector</b><span>Hatch eggs; your best pet follows you</span></div><div class="card game"><div class="dot" style="background:#48c26a"></div><b>Garden simulator</b><span>Plant, grow, harvest, sell, better seeds</span></div><div class="card game"><div class="dot" style="background:#ffd84d"></div><b>Tycoon</b><span>Build a lemonade business that saves</span></div><div class="card game"><div class="dot" style="background:#ff8a3d"></div><b>Campfire survival</b><span>Keep the fire lit through the night</span></div><div class="card game"><div class="dot" style="background:#1f8fff"></div><b>Knockout arena</b><span>Bonk friends off the platform</span></div><div class="card game"><div class="dot" style="background:#8a5cff"></div><b>Tower defense</b><span>Build towers, stop the waves</span></div><div class="card game"><div class="dot" style="background:#00c2a8"></div><b>Hide and seek</b><span>Lobby, random seeker, timed rounds</span></div><div class="card game"><div class="dot" style="background:#38b6ff"></div><b>Fishing</b><span>Rare fish, better rods, a collection book</span></div></div>
 </section>
+
+<section>
+  <h2>A weekend plan, included</h2>
+  <ol class="steps">
+    <li class="card"><h3>Saturday morning</h3><p>Run Start Here together, answer the questions, watch the first test pass. About 30 minutes.</p></li>
+    <li class="card"><h3>Saturday afternoon</h3><p>Your kid designs: the course, the coins, the colors. You type it in and try each change right away.</p></li>
+    <li class="card"><h3>Sunday</h3><p>Play it as a family. Fix what's annoying. Open it to friends when you're both proud of it.</p></li>
+  </ol>
+</section>
+
 
 <section>
   <h2>Safety, built in from the start</h2>
-  <p>Roblox already age-checks chat and filters messages. This kit adds a second layer inside <em>your</em> game, plus rules that stop the AI from building risky features in the first place.</p>
+  <p class="lede">Roblox already age-checks chat and filters messages. This kit adds a second layer inside <em>your</em> game, plus rules that stop Claude from building risky features.</p>
   <div class="two">
-    <div class="box yes">
-      <h3>What it adds</h3>
-      <ul>
-        <li>Blocks messages sharing phone numbers, addresses or other apps, or asking where someone lives or how old they are, including common tricks like spaced-out letters, number swaps and spelled-out phone numbers</li>
+    <div class="card box yes"><h3>What it does</h3><ul><li>Blocks messages sharing phone numbers, addresses or other apps, or asking where someone lives or how old they are, including disguised spellings</li>
         <li>Family mode: while you build, only you, your Roblox friends and people you add can stay in the game</li>
-        <li>Remembers flagged accounts, so switching servers doesn't reset them</li>
-        <li>An always-visible “Report a problem” button kids can use in three taps</li>
-        <li>A private log of anything flagged, and alerts to you while you're in the game</li>
-        <li>Plain-English guidance on what to do, including who to report to</li>
-        <li>The AI won't build private chat, item gifting, secluded rooms or anything that asks kids for personal details</li>
-      </ul>
-    </div>
-    <div class="box no">
-      <h3>What it doesn't do</h3>
-      <ul>
-        <li>Replace your supervision or Roblox's own protections</li>
-        <li>Hear voice chat or see images</li>
-        <li>Catch every trick. Word filters can still be dodged.</li>
-        <li>Ban anyone automatically. A person decides.</li>
-      </ul>
-    </div>
+        <li>Repeat offenders are paused and remembered across servers</li>
+        <li>An always-visible "Report a problem" button kids can use in three taps</li>
+        <li>A private incident log and live alerts to you, plus plain-English steps on what to do</li>
+        <li>Claude won't build private chat, item gifting, secluded rooms, or anything that asks kids for personal details</li></ul></div>
+    <div class="card box no"><h3>What it doesn't do</h3><ul>
+      <li>Replace your supervision or Roblox's own protections</li>
+      <li>Hear voice chat or see images</li>
+      <li>Catch every trick, though it learns new ones as it goes</li>
+      <li>Ban anyone automatically. A person decides.</li></ul></div>
   </div>
 </section>
 
 <section>
+  <h2>It keeps getting better on its own</h2>
+  <p class="lede">Leave <code>/loop 1h /adapt</code> running and Claude improves your game every hour while Claude Code is open.</p>
+  <div class="two">
+    <div class="card box"><h3>Learns your game</h3><p>Writes what worked, what broke and how you like to work into a lessons file, and reads it at the start of every session.</p></div>
+    <div class="card box"><h3>Keeps the filter current</h3><p>Spots new spellings people use to sneak contact requests past the safety filter and adds them. It can only make the filter stricter.</p></div>
+    <div class="card box"><h3>Tunes the difficulty</h3><p>Reads anonymous play counts (where players fall, quit or breeze through) and adjusts rewards and timings within safe limits.</p></div>
+    <div class="card box"><h3>Playtests and fixes</h3><p>Starts the game, reads errors, fixes them and tests again. It never touches the safety system.</p></div>
+  </div>
+</section>
+
+
+<section>
   <h2>What you get</h2>
-  <ul class="get">
-    <li><span><strong>The kit</strong>: a double-click setup helper for Mac and Windows, starter game code, and the safety system</span></li>
-    <li><span><strong>Ten ready-made games</strong>: obby, roleplay town, pet collector, garden simulator, tycoon, campfire survival, knockout arena, tower defense, hide and seek, and fishing. Each one is playable and ready to reshape.</span></li>
-    <li><span><strong><code>/custom</code> game designer</strong>: answer four questions together and Claude mixes and rethemes the templates into your own game, with safety on</span></li>
-    <li><span><strong>Self-adapting</strong>: leave <code>/loop 1h /adapt</code> running and the game keeps learning new tricks people use to dodge the safety filter (it can only get stricter), tunes difficulty from anonymous play stats, playtests, fixes errors, and remembers what it learned</span></li>
-    <li><span><strong>Plain-English commands</strong>: <code>/make</code> to build from an idea, <code>/incidents</code> to review the safety log</span></li>
-    <li><span><strong>The guide</strong>: one page covering setup, the weekend plan, troubleshooting and a parents' safety section</span></li>
-    <li><span><strong>Safety handbook</strong>: what to do if you see something, hotlines, and what never to do with evidence</span></li>
-  </ul>
+  <div class="games">
+    <div class="card game"><div class="dot" style="background:var(--safety)"></div><b>Setup helper</b><span>Double-click for Mac and Windows; installs, connects and tests</span></div>
+    <div class="card game"><div class="dot" style="background:var(--family)"></div><b>Starter games</b><span>10 playable games plus <code>/custom</code> to design your own</span></div>
+    <div class="card game"><div class="dot" style="background:var(--buy)"></div><b>Safety layer</b><span>Chat screening, Report button, incident log, alerts</span></div>
+    <div class="card game"><div class="dot" style="background:var(--teen)"></div><b>Plain-English commands</b><span><code>/make</code>, <code>/incidents</code>, <code>/adapt</code></span></div>
+    <div class="card game"><div class="dot" style="background:#ff5a5f"></div><b>Guide and handbook</b><span>Setup, troubleshooting, and what to do if you see something</span></div>
+  </div>
 </section>
 
 <section>
   <h2>What it really costs</h2>
-  <p>The kit uses Claude Code, which needs a paid Claude plan. We'd rather you know now than find out halfway through.</p>
-  <div class="cost">
-    <table>
-      <tr><th>Item</th><th>Price</th></tr>
-      <tr><td>Safe Build Kit (one-time)</td><td>$20</td></tr>
-      <tr><td>Claude Pro plan (monthly billing, cancel any time)</td><td>$20/mo</td></tr>
-      <tr><td>Roblox Studio and a Roblox account</td><td>Free</td></tr>
-      <tr><td>Your first month</td><td>about $40</td></tr>
-    </table>
-  </div>
-  <p class="fine">Claude Pro price as listed by Anthropic; check claude.com/pricing for your region.</p>
+  <p>The kit runs on Claude Code, which needs a paid Claude plan. Better to know now than halfway through.</p>
+  <div class="card table-wrap"><table>
+    <tr><th>Item</th><th>Price</th></tr>
+    <tr><td>Build Kit (one-time)</td><td>$9.99</td></tr>
+    <tr><td>Claude Pro plan (monthly, cancel any time)</td><td>$20/mo</td></tr>
+    <tr><td>Roblox Studio and a Roblox account</td><td>Free</td></tr>
+    <tr><td>Your first month</td><td>about $30</td></tr>
+  </table></div>
+  <p class="fine" style="margin-top:12px">Claude Pro price as listed by Anthropic; check claude.com/pricing for your region.</p>
 </section>
+
 
 <section>
   <h2>Questions</h2>
-  <details><summary>Do I need to know how to code?</summary><p>No. You describe what you want in plain English. The helper handles setup and tells you exactly where to click when it needs you.</p></details>
-  <details><summary>Can my kid use it on their own?</summary><p>No, and that's by design. Claude accounts are for adults (18+). The kit is built for a grown-up and a kid working side by side: they design, you type.</p></details>
-  <details><summary>Does this make Roblox safe for my child?</summary><p>No product can promise that. The kit adds protection inside the game you build together, and gives you tools to notice and report problems. Keep using Roblox's parental controls and stay involved. The guide shows you how.</p></details>
-  <details><summary>What computer do I need?</summary><p>A Mac (macOS 13 or newer) or a Windows 10/11 PC. It doesn't run on Chromebooks, iPads or phones, though the games you make can be played on phones.</p></details>
-  <details><summary>What if it doesn't work for me?</summary><p>Reply to your payment receipt within 7 days for a full refund. No form, no questions.</p></details>
-  <details><summary>Is this made by Roblox or Anthropic?</summary><p>No. It's an independent kit that works with Roblox Studio and Claude Code.</p></details>
+  <details class="card"><summary>Can my kid use it on their own?</summary><p>No. Claude accounts are for adults (18+). You own the account, run setup and are the game's safety moderator; your kid designs and builds alongside you.</p></details>
+  <details class="card"><summary>Do I need to know how to code?</summary><p>No. You describe what you want in plain English and the helper tells you exactly where to click when it needs you.</p></details>
+  <details class="card"><summary>Does this make Roblox safe?</summary><p>No product can promise that. The kit adds protection inside the game you build together, and tools to notice and report problems. Keep using Roblox's own controls and stay involved.</p></details>
+  <details class="card"><summary>Which kit is right for us?</summary><p>Building with a teen (13 to 17) who wants battles, horror or trading? See the Teen Build Kit. <a href="/teen-build-kit.html">Teen Build Kit</a></p></details>
+  <details class="card"><summary>What computer do I need?</summary><p>A Mac (macOS 13 or newer) or a Windows 10/11 PC. Not Chromebooks, iPads or phones, though the games you make can be played on phones.</p></details>
+  <details class="card"><summary>What if it doesn't work for me?</summary><p>Reply to your payment receipt within 7 days for a full refund. No form, no questions.</p></details>
+  <details class="card"><summary>Is this made by Roblox or Anthropic?</summary><p>No. It's an independent kit that works with Roblox Studio and Claude Code, sold through ASH COW.</p></details>
 </section>
 
-<section class="about">
-  <h2>Why I made this</h2>
-  <p>I coach youth baseball. I built this so a parent and a kid can make something together, with the guardrails already in place.</p>
-  <p class="fine">— Matt Boyer, Aequitas Core, Stamford, CT</p>
+<section>
+  <div class="card final">
+    <h2>Make something together this weekend</h2>
+    <div class="buy"><a class="btn family" href="/s/ready-safe-build-kit">Get the Safe Build Kit <span class="price">$9.99</span></a><a class="btn ghost" href="/teen-build-kit.html">See the Teen Build Kit</a></div>
+    <p class="fine">One-time payment. Instant download. 7-day refund.</p>
+  </div>
 </section>
-
-<section class="final" id="buy">
-  <h2>Make something together this weekend</h2>
-  <a class="btn" href="/s/ready-safe-build-kit">Get the kit — $20</a>
-  <span class="fine">One-time payment. Instant download. 7-day refund: reply to your receipt.</span>
-</section>
-
-<footer>
-  Safe Build Kit is an independent product and is not affiliated with, endorsed by, or sponsored by Roblox Corporation or Anthropic. Roblox and Roblox Studio are trademarks of Roblox Corporation. Claude and Claude Code are trademarks of Anthropic.
-</footer>
-
 </div>
+</main>
+<footer>
+  <div class="foot">
+    <div>
+      <a class="brand" href="/kits.html"><span class="brand-mark" aria-hidden="true"></span>Build Kits</a>
+      <p class="fine" style="margin-top:10px">Kits for building Roblox games with Claude Code, with protection for young players built in. Sold through ASH COW. One-time $9.99 each, instant download, 7-day refund.</p>
+    </div>
+    <div>
+      <h4>Kits</h4>
+      <ul>
+        <li><a href="/safe-build-kit.html">Safe Build Kit · all ages</a></li>
+        <li><a href="/teen-build-kit.html">Teen Build Kit · 13 to 17</a></li>
+        <li><a href="/kits.html#compare">Compare the kits</a></li>
+        <li><a href="/s/ready-safe-build-kit">Buy Safe Build Kit · $9.99</a></li>
+        <li><a href="/s/ready-teen-build-kit">Buy Teen Build Kit · $9.99</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>ASH COW</h4>
+      <ul>
+        <li><a href="/shop">Shop</a></li>
+        <li><a href="/">Barn</a></li>
+        <li><a href="/truth">Truth</a></li>
+        <li><a href="/kits.html#help">Help and refunds</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="legal">Build Kits are independent products and are not affiliated with, endorsed by, or sponsored by Roblox Corporation or Anthropic. Roblox and Roblox Studio are trademarks of Roblox Corporation. Claude and Claude Code are trademarks of Anthropic. Made by Matt Boyer, Aequitas Core, Stamford, CT.</p>
+</footer>
 </body>
 </html>

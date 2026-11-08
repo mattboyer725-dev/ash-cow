@@ -126,7 +126,7 @@ export function saleFromSession(session: SessionSlice): Sale | null {
   return {
     id: session.id,
     kitId,
-    amount: Math.round(cents / 100),
+    amount: Math.round(cents) / 100,
     at: new Date((session.created ?? Math.floor(Date.now() / 1000)) * 1000).toISOString(),
     source: "stripe",
   };

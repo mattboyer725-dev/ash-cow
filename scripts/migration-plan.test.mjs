@@ -60,6 +60,7 @@ test("the auth schema ships outside the globbed directory", () => {
   const migrationsDir = join(projectRoot(), "migrations");
   assert.deepEqual(pendingMigrations(readdirSync(migrationsDir), []), [
     { name: "0002_sales.sql", path: "0002_sales.sql" },
+    { name: "0003_sales_cents.sql", path: "0003_sales_cents.sql" },
   ]);
   assert.ok(readdirSync(join(migrationsDir, "auth")).includes("0001_auth.sql"));
 });

@@ -63,6 +63,31 @@ function ShopPage() {
               </article>
             ))}
           </div>
+          <aside className="mt-10 flex flex-col gap-4 rounded-2xl bg-surface p-6 shadow-[var(--shadow-border)] sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="font-mono text-xs tracking-[0.2em] text-accent uppercase">Also in the barn</p>
+              <h2 className="mt-2 font-display text-2xl tracking-tight">Build Kits for Roblox Studio</h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted">
+                Build Roblox games with Claude Code, with protection for young players switched on. Safe Build
+                Kit for all ages, Teen Build Kit for 13 to 17. {money(9.99)} each.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              <Button asChild className="w-full sm:w-auto">
+                <a href="/kits.html">See the kits</a>
+              </Button>
+              <Button asChild variant="secondary" className="w-full sm:w-auto">
+                <Link to="/s/$id" params={{ id: "ready-safe-build-kit" }}>
+                  Safe Build Kit
+                </Link>
+              </Button>
+              <Button asChild variant="secondary" className="w-full sm:w-auto">
+                <Link to="/s/$id" params={{ id: "ready-teen-build-kit" }}>
+                  Teen Build Kit
+                </Link>
+              </Button>
+            </div>
+          </aside>
         </div>
       </main>
     </Shell>

@@ -11,6 +11,9 @@ import { money } from "@/lib/utils";
 
 export const Route = createFileRoute("/s/$id")({ component: StallPage });
 
+/** Roblox Build Kits: their stall pages link back to the kits storefront (public/kits.html). */
+const BUILD_KIT_IDS = new Set(["ready-safe-build-kit", "ready-teen-build-kit"]);
+
 function StallPage() {
   const { id } = Route.useParams();
   const cows = useBarn((s) => s.cows);
@@ -68,6 +71,15 @@ function StallPage() {
           <p className="text-sm text-muted">Not for: {page.notFor}</p>
           <p>{page.guarantee}</p>
           <p className="font-medium">{page.cta}</p>
+          {BUILD_KIT_IDS.has(cow.id) ? (
+            <p className="text-sm text-muted">
+              Not sure which kit?{" "}
+              <a className="underline underline-offset-4 hover:text-fg" href="/kits.html#compare">
+                Compare the Safe and Teen Build Kits
+              </a>
+              .
+            </p>
+          ) : null}
         </div>
       </main>
     </Shell>

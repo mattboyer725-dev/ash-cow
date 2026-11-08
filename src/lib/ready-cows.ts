@@ -367,7 +367,7 @@ export const READY_COWS: CashCow[] = [
     buyer: "parents, coaches and teachers of kids who love Roblox",
     seedDelivery:
       "a double-click setup helper, starter game code, a child-safety layer, and a one-page guide",
-    price: 20,
+    price: 9.99,
     name: "Safe Build Kit — for Roblox Studio",
     oneLiner:
       "Build your kid's first Roblox game together this weekend: they dream it up, you type it in plain English, Claude builds it with child-safety protection switched on.",
@@ -423,12 +423,12 @@ export const READY_COWS: CashCow[] = [
       notFor:
         "Kids on their own, Chromebooks or iPads, or anyone looking for a guarantee that Roblox is safe.",
       guarantee: "7 days. If it doesn't work for you, reply to your payment receipt and the money comes back.",
-      cta: "Get the Safe Build Kit — $20.",
+      cta: "Get the Safe Build Kit — $9.99.",
     },
     posts: [
       {
         channel: "Parent group",
-        copy: "I put together a kit for building a first Roblox game with your kid, with safety features switched on (blocks kids sharing phone numbers or other apps, adds a report button). Double-click setup. $20. Happy to answer questions.",
+        copy: "I put together a kit for building a first Roblox game with your kid, with safety features switched on (blocks kids sharing phone numbers or other apps, adds a report button). Double-click setup. $9.99. Happy to answer questions.",
       },
       {
         channel: "Team text",
@@ -477,7 +477,7 @@ export const READY_COWS: CashCow[] = [
     buyer: "parents of teens (13–17) who want to make Roblox games",
     seedDelivery:
       "a double-click setup helper, eleven starter games, a teen safety layer, safe trading, and a one-page guide",
-    price: 20,
+    price: 9.99,
     name: "Teen Build Kit — for Roblox Studio",
     oneLiner:
       "Build the Roblox games teens actually play (battles, horror, trading, tycoons) with your teen, in plain English, with every protection against predators switched on.",
@@ -532,12 +532,12 @@ export const READY_COWS: CashCow[] = [
       notFor:
         "Teens on their own, games for under-13s (get the Safe Build Kit), Chromebooks or iPads, or anyone wanting 18+ content.",
       guarantee: "7 days. If it doesn't work for you, reply to your payment receipt and the money comes back.",
-      cta: "Get the Teen Build Kit — $20.",
+      cta: "Get the Teen Build Kit — $9.99.",
     },
     posts: [
       {
         channel: "Parent group",
-        copy: "For parents of teens who want to make Roblox games: I made a kit that lets them build battle, horror and trading games with you, while blocking the stuff predators use (sharing info, moving to other apps, gifts). Double-click setup. $20.",
+        copy: "For parents of teens who want to make Roblox games: I made a kit that lets them build battle, horror and trading games with you, while blocking the stuff predators use (sharing info, moving to other apps, gifts). Double-click setup. $9.99.",
       },
     ],
     deliveryDoc: {

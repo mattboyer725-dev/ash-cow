@@ -81,7 +81,7 @@ export const createCheckout = createServerFn({ method: "POST" })
           quantity: 1,
           price_data: {
             currency: "usd",
-            unit_amount: price * 100,
+            unit_amount: Math.round(price * 100),
             product_data: {
               name,
               description: "Digital download. Delivered on the paid page.",

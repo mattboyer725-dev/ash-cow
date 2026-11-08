@@ -410,7 +410,8 @@ export const READY_COWS: CashCow[] = [
         "Double-click Start Here. A setup helper installs what's needed, connects to Roblox Studio, adds starter game code and a safety layer, makes you the safety moderator and tests everything. Then your kid describes what they want and you type it in. Risky messages (phone numbers, other apps, where do you live) are blocked, there's a Report a problem button, and you get a log and alerts.",
       whatYouGet: [
         "Double-click setup helper for Mac and Windows",
-        "Starter game code with safe saving, plus a ready-made 8-stage obby to reshape",
+        "Ten ready-made games to reshape: obby, roleplay town, pet collector, garden, tycoon, campfire survival, knockout arena, tower defense, hide and seek, fishing",
+        "/custom game designer: answer a few questions together and Claude builds your own game from the templates",
         "Child-safety layer: message screening, Report button, incident log, moderator alerts",
         "Family mode: only you, your Roblox friends and people you add can play until you open the game",
         "Plain-English commands: /make to build an idea, /incidents to review the safety log",
@@ -451,7 +452,7 @@ export const READY_COWS: CashCow[] = [
         },
         {
           heading: "Build together",
-          body: "Your kid describes what they want; you type it. Try /make followed by the idea, for example: /make a coin that spins and gives 10 points. Test each change right away.",
+          body: "Setup offers ten ready-made games to start from, or type /custom to design your own together. Then your kid describes what they want; you type it. Try /make followed by the idea, for example: /make a coin that spins and gives 10 points. Test each change right away.",
         },
         {
           heading: "Keep it safe",

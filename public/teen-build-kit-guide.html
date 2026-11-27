@@ -4,6 +4,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Teen Build Kit setup guide</title>
 <meta name="description" content="Step-by-step setup guide for the Teen Build Kit: quick start, the eleven starter games, daily workflow and the teen safety handbook.">
+<meta property="og:title" content="Teen Build Kit setup guide">
+<meta property="og:description" content="Step-by-step setup guide for the Teen Build Kit: quick start, the eleven starter games, daily workflow and the teen safety handbook.">
+<meta property="og:type" content="article">
 <meta name="theme-color" content="#1d2433">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -240,7 +243,7 @@ footer{margin-top:56px;padding-top:16px;border-top:3px dashed var(--hair);font-s
 <tr><td>Installs Claude Code and makes your game folder</td><td>Install Roblox Studio and sign in, if you haven't</td></tr>
 <tr><td>Connects to Roblox Studio</td><td>Turn on <b>Enable Studio as MCP server</b> in Studio</td></tr>
 <tr><td>Writes your game brief and makes you the safety moderator</td><td>Answer three questions</td></tr>
-<tr><td>Adds 37 game and safety scripts to your place, and builds the starter game you pick from eleven</td><td>Pick a game, and approve the edits when Claude asks</td></tr>
+<tr><td>Adds 42 game and safety scripts to your place, and builds the starter game you pick from eleven</td><td>Pick a game, and approve the edits when Claude asks</td></tr>
 <tr><td>Checks saving works</td><td><b>Publish to Roblox</b>, and turn on <b>Studio Access to API Services</b></td></tr>
 <tr><td>Keeps your game private and in family mode, and explains how to open it to friends later</td><td>Nothing until you're ready</td></tr>
 <tr><td>Starts the game, tests saving and the safety filter, fixes problems</td><td>Nothing</td></tr>
@@ -304,8 +307,8 @@ footer{margin-top:56px;padding-top:16px;border-top:3px dashed var(--hair);font-s
 <p>Download the kit from your purchase page into your Downloads folder, then:</p>
 <div class="codewrap"><button type="button" class="copy">Copy</button><pre><code>mkdir -p ~/Projects/my-game
 cd ~/Downloads
-unzip roblox-teen-kit.zip
-cp -R roblox-claude-kit/. ~/Projects/my-game/
+unzip teen-build-kit.zip
+cp -R &quot;Teen Build Kit&quot;/. ~/Projects/my-game/
 cd ~/Projects/my-game
 ls -a
 git init &amp;&amp; git add -A &amp;&amp; git commit -m &quot;Starter kit&quot;   # optional</code></pre></div>
@@ -344,7 +347,7 @@ rojo serve</code></pre></div>
 <p><b>Windows Rokit install</b> (PowerShell):</p>
 <div class="codewrap"><button type="button" class="copy">Copy</button><pre><code>Invoke-RestMethod https://raw.githubusercontent.com/rojo-rbx/rokit/main/scripts/install.ps1 | Invoke-Expression</code></pre></div>
 <p><b>Path B, straight into Studio.</b> Ask Claude to create each script from <code>src/</code> with <code>multi_edit</code>, creating parent folders first. The README in the kit lists the exact destinations.</p>
-<span class="check">Explorer shows ServerScriptService › Server (Main, Lib, Safety, Services), ReplicatedStorage › Shared, and StarterPlayerScripts › Client.</span>
+<span class="check">Explorer shows ServerScriptService › Server (Main, Lib, Obby, Safety, Services, Templates), ReplicatedStorage › Shared, and StarterPlayerScripts › Client.</span>
 
 <h3>6. Fill in the two files that are yours</h3>
 <ol class="steps">
@@ -405,8 +408,8 @@ rojo serve</code></pre></div>
 <h2 id="safety">Teen safety</h2>
 <p>This is the <strong>Teen Build Kit</strong>: for games made by and for players aged 13 to 17. It opens up the
 kinds of games teens actually play (combat, horror, trading, typed names) and keeps every
-protection against adults trying to reach them. The family handbook further down still applies:
-read sections 4 to 8 there for reviewing incidents, what to do if you see something, and evidence.</p>
+protection against adults trying to reach them. Everything further down this page applies too: <a href="#review">reviewing the log</a>,
+<a href="#respond">what to do if you see something</a>, and the evidence rules.</p>
 <h3>Who uses this kit</h3>
 <p>Claude accounts are for adults (18+). A <strong>parent or guardian owns the Claude account</strong>, runs setup,
 and is the game's safety moderator. The teen designs and builds alongside them. The teen can't use
@@ -477,13 +480,15 @@ Claude on their own.</p>
   alcohol or drugs, strong language, gambling, paid random items (loot boxes), and gore.</li>
 </ul>
 <h3>Trading, safely</h3>
-<p>Grooming often starts with gifts. So in the teen kit:
-- A trade needs <strong>something on both sides</strong>. One-way "trades" are gifts and are blocked.
-- Both players must <strong>accept</strong>; any change to an offer resets both accepts.
-- <strong>Lopsided trades</strong> (one side worth 4 times the other or more) go through, but are logged and
+<p>Grooming often starts with gifts. So in the teen kit:</p>
+<ul>
+<li>A trade needs <strong>something on both sides</strong>. One-way "trades" are gifts and are blocked.</li>
+<li>Both players must <strong>accept</strong>; any change to an offer resets both accepts.</li>
+<li><strong>Lopsided trades</strong> (one side worth 4 times the other or more) go through, but are logged and
   <strong>you get an alert</strong>. One is usually a friend being generous. A pattern of one account making
-  generous trades with younger players is a warning sign: check <code>/incidents</code>.
-- Each player can trade at most once every 20 seconds. Every trade is in the log.</p>
+  generous trades with younger players is a warning sign: check <code>/incidents</code>.</li>
+<li>Each player can trade at most once every 20 seconds. Every trade is in the log.</li>
+</ul>
 <h3>Robux items</h3>
 <p><code>ShopService</code> sells fixed items only: coin packs and perks like Double Coins. Every item gives
 exactly what its name says. No loot boxes, spins or mystery items bought with Robux.</p>
@@ -492,7 +497,7 @@ exactly what its name says. No loot boxes, spins or mystery items bought with Ro
 questionnaire. Answer it honestly whenever you add them; the game will usually be labelled
 <strong>Moderate</strong>, which Roblox shows to players 9 and up in its Select setting and to everyone 16 and up.</p>
 <h3>Opening the game</h3>
-<p>Same steps as the family kit (section 3b below): finish the questionnaire and <code>/safety-review</code>,
+<p>The same staged steps as in <a href="#publish">Before publishing</a>: finish the questionnaire and <code>/safety-review</code>,
 open to <strong>Friends</strong> first, then to everyone when you're ready. Family mode (guest list only) stays on
 until you choose.</p>
 <h3>The protections in detail</h3>
@@ -520,7 +525,7 @@ until you choose.</p>
 </table></div>
 <div class="callout"><strong>Limits</strong><p>The kit can't hear voice chat or see images, and determined people evade keyword checks. A quiet log means nothing was caught, not that nothing happened. Roblox's reporting and moderation remain the main line of defense.</p></div>
 
-<h3>Review the log</h3>
+<h3 id="review">Review the log</h3>
 <p>At least weekly, and the same day an alert or report comes in. Easiest: type <code>/incidents</code> in Claude. It explains the log in plain language and tells you what to do. By hand, in Studio's command bar:</p>
 <div class="codewrap"><button type="button" class="copy">Copy</button><pre><code>local L = require(game.ServerScriptService.Server.Safety.SafetyLog)
 L.printRecent(7)          -- last 7 days, newest first
@@ -620,7 +625,7 @@ L.exportCsv(7)            -- CSV to copy into a report</code></pre></div>
   <li><a href="https://code.claude.com/docs/en/setup">Claude Code setup and requirements</a></li>
   <li><a href="https://code.claude.com/docs/en/cli-reference">Claude Code CLI reference</a></li>
 </ul>
-<footer>Roblox Safe Build Kit · October 2026. Safety features reflect Roblox's published policies as of this date; check the sources for changes.<br>Build Kits are independent products and are not affiliated with, endorsed by, or sponsored by Roblox Corporation or Anthropic. Roblox and Roblox Studio are trademarks of Roblox Corporation. Claude and Claude Code are trademarks of Anthropic.</footer>
+<footer>Roblox Teen Build Kit · October 2026. Safety features reflect Roblox's published policies as of this date; check the sources for changes.<br>Build Kits are independent products and are not affiliated with, endorsed by, or sponsored by Roblox Corporation or Anthropic. Roblox and Roblox Studio are trademarks of Roblox Corporation. Claude and Claude Code are trademarks of Anthropic.</footer>
 </main>
 </div>
 

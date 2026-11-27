@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teen Build Kit setup guide</title>
+<meta name="description" content="Step-by-step setup guide for the Teen Build Kit: quick start, the eleven starter games, daily workflow and the teen safety handbook.">
+<meta name="theme-color" content="#1d2433">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Lilita+One&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Look: a toy-brick game lobby. The page sits on a studded baseplate; every panel is a chunky
+   white block with a dark outline and a hard drop shadow, buttons press down when tapped,
+   and the safety sections are fenced off with yellow-and-black caution tape. */
+:root{
+  --plate:#dfe5ee; --stud:#cbd3df; --surface:#ffffff; --fg:#1d2433; --muted:#475266; --ink:#1d2433;
+  --line:#1d2433; --hair:#d5dbe5;
+  --blue:#1d5fd6; --blue-soft:#e3edff; --green:#12813f; --green-hi:#22a55a; --red:#d1352f; --yellow:#ffc933;
+  --safety:#9a4a00; --safety-soft:#fff4d6; --danger:#b42318; --danger-soft:#fdecea;
+  --code-bg:#1d2433; --code-fg:#eef2f8;
+  --display:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --block:0 6px 0 var(--ink);
+  --block-sm:0 4px 0 var(--ink);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --plate:#1c2230; --stud:#252d3e; --surface:#2a3245; --fg:#eef2f8; --muted:#b4bfd0; --ink:#0b0f17;
+  --line:#0b0f17; --hair:#3a445a;
+  --blue:#8db6ff; --blue-soft:#25324d; --safety:#ffc25c; --safety-soft:#3a2e12;
+  --danger:#ff9a90; --danger-soft:#3a1d1b; --code-bg:#121725; color-scheme:dark }}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:16px;padding-block:0 48px;
+  background-color:var(--plate);
+  background-image:radial-gradient(circle at 12px 12px,var(--stud) 0 6px,transparent 7px);
+  background-size:24px 24px}
+a{color:var(--blue);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:4px solid var(--yellow);outline-offset:2px;border-radius:8px}
+
+.shell{max-width:1220px;margin:0 auto;display:grid;grid-template-columns:250px minmax(0,1fr);gap:36px;padding-top:24px}
+@media (max-width:900px){.shell{grid-template-columns:minmax(0,1fr);gap:16px;padding-top:16px}}
+
+/* contents rail: a stack of chunky menu buttons */
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;max-height:calc(100vh - 32px);overflow:auto;
+  background:var(--surface);border:3px solid var(--line);border-radius:16px;box-shadow:var(--block);padding:14px 12px 16px}
+nav.toc a.back{margin:0 0 12px;background:var(--yellow);border:2px solid var(--line);color:#1d2433;font-weight:700}
+nav.toc a.back::before{display:none}
+nav.toc p{font:400 20px/1.1 var(--display);color:var(--fg);margin:2px 6px 10px;letter-spacing:.01em}
+nav.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+nav.toc a{display:flex;align-items:center;gap:10px;min-height:40px;padding:6px 10px;border-radius:10px;color:var(--fg);text-decoration:none;font-size:15px;font-weight:700;border:2px solid transparent}
+nav.toc a::before{content:"";width:12px;height:12px;flex:none;border-radius:3px;background:var(--blue);box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
+nav.toc a:hover{background:var(--blue-soft);border-color:var(--line)}
+nav.toc a.safe{color:var(--safety)}
+nav.toc a.safe::before{background:repeating-linear-gradient(-45deg,var(--yellow) 0 3px,var(--ink) 3px 6px)}
+@media (max-width:900px){nav.toc{position:static;max-height:none}
+  nav.toc ol{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}}
+
+main{min-width:0;max-width:820px;background:var(--surface);border:3px solid var(--line);border-radius:20px;box-shadow:var(--block);padding:0 32px 32px}
+@media (max-width:600px){main{padding:0 16px 24px;border-radius:16px}}
+
+/* hero: the lobby screen */
+header.hero{padding-block:32px 28px;border-bottom:3px dashed var(--hair);margin-inline:-32px;padding-inline:32px;
+  background:linear-gradient(var(--blue-soft),var(--blue-soft)) top/100% 58% no-repeat;border-radius:17px 17px 0 0}
+@media (max-width:600px){header.hero{margin-inline:-16px;padding-inline:16px}}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:24px;align-items:center}
+.hero-art svg{width:100%;height:auto;display:block}
+@media (max-width:760px){.hero-grid{grid-template-columns:minmax(0,1fr)}.hero-art{max-width:220px}}
+@media (max-width:600px){.hero-art{display:none}}
+.eyebrow{display:inline-block;font:700 13px/1.3 var(--body);color:#1d2433;background:var(--yellow);border:2px solid var(--line);border-radius:999px;padding:5px 12px;margin:0 0 14px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.1;text-wrap:balance;margin:0;letter-spacing:.005em}
+h1{font-size:clamp(40px,6.4vw,64px);color:var(--fg);text-shadow:0 3px 0 var(--yellow)}
+h2{font-size:34px;margin-block:56px 14px;scroll-margin-top:16px;display:flex;align-items:center;gap:12px}
+h2::before{content:"";width:22px;height:22px;flex:none;border-radius:5px;background:var(--green-hi);border:3px solid var(--line);box-shadow:var(--block-sm)}
+h3{font-size:22px;margin-block:28px 8px}
+.lede{font-size:19px;color:var(--muted);max-width:60ch;margin:16px 0 0}
+p,li{max-width:66ch}
+.actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px;align-items:center}
+
+/* buttons that press down */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:12px 22px;border-radius:14px;font:400 21px/1 var(--display);letter-spacing:.01em;text-decoration:none;
+  border:3px solid var(--line);background:var(--blue);color:#fff;box-shadow:var(--block);transition:transform .06s,box-shadow .06s}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--ink)}
+.btn.play{background:var(--green);font-size:24px;min-height:60px;padding-inline:26px}
+.btn .ico{width:24px;height:24px}
+.btn.secondary{background:var(--surface);color:var(--fg)}
+@media (prefers-reduced-motion: reduce){.btn{transition:none}}
+.note{font-size:14px;color:var(--muted);margin-top:18px}
+
+.inside{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:28px}
+.inside div{background:var(--surface);border:3px solid var(--line);border-radius:14px;box-shadow:var(--block-sm);padding:14px 16px 16px;position:relative}
+.inside div::before{content:"";position:absolute;top:-9px;left:16px;width:18px;height:8px;border:3px solid var(--line);border-bottom:0;border-radius:4px 4px 0 0;background:var(--yellow)}
+.inside div:nth-child(2)::before{background:var(--green-hi)}
+.inside div:nth-child(3)::before{background:var(--red)}
+.inside div:nth-child(4)::before{background:var(--blue)}
+.inside b{display:block;font:400 19px/1.2 var(--display);margin-bottom:4px}
+.inside span{font-size:15px;color:var(--muted)}
+
+/* quick start: numbered bricks */
+.quick{list-style:none;padding:0;margin:20px 0 0;display:grid;gap:16px;counter-reset:q}
+.quick>li{counter-increment:q;background:var(--surface);border:3px solid var(--line);border-radius:14px;box-shadow:var(--block-sm);padding:16px 18px 16px 78px;position:relative;max-width:none}
+.quick>li::before{content:counter(q);position:absolute;left:16px;top:16px;width:44px;height:40px;border-radius:8px;background:var(--yellow);color:var(--ink);border:3px solid var(--line);
+  font:400 24px/34px var(--display);text-align:center;box-shadow:inset 0 -5px 0 rgba(0,0,0,.18)}
+.quick b.t{display:block;font:400 21px/1.2 var(--display);margin-bottom:4px}
+.quick p{margin:4px 0}
+.say{font-style:italic;color:var(--fg);background:var(--blue-soft);border:2px solid var(--line);border-radius:14px 14px 14px 4px;padding:12px 16px}
+
+/* game tiles */
+.tiles{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.tile{background:var(--surface);border:3px solid var(--line);border-radius:14px;box-shadow:var(--block-sm);overflow:hidden;display:flex;flex-direction:column;max-width:none}
+.tile .thumb{display:block;width:100%;height:auto;border-bottom:3px solid var(--line)}
+.tile-body{padding:12px 14px 14px}
+.tile h3{margin:0 0 4px;font-size:21px}
+.tile p{margin:4px 0;font-size:15px}
+.safe-by{color:var(--muted)}
+.safe-by span{display:block;font-weight:700;font-size:12px;letter-spacing:.04em;color:var(--safety)}
+
+/* safety sections: fenced with caution tape */
+section.safety{position:relative;margin-top:56px;padding:6px 20px 20px;border:3px solid var(--line);border-radius:16px;background:var(--safety-soft);box-shadow:var(--block-sm)}
+section.safety::before{content:"";display:block;height:14px;margin:-6px -20px 0;border-bottom:3px solid var(--line);border-radius:13px 13px 0 0;
+  background:repeating-linear-gradient(-45deg,var(--yellow) 0 14px,var(--ink) 14px 28px)}
+@media (max-width:600px){section.safety{padding-inline:14px}section.safety::before{margin-inline:-14px}}
+section.safety h2{color:var(--safety);margin-top:22px}
+section.safety h2::before{background:var(--yellow)}
+.callout{background:var(--surface);border:3px solid var(--line);border-radius:12px;padding:14px 16px;margin-block:16px}
+.callout.danger{background:var(--danger-soft);border-color:var(--danger)}
+.callout.danger strong:first-child{color:var(--danger)}
+.callout strong:first-child{display:block;margin-bottom:4px;font-family:var(--display);font-weight:400;font-size:19px}
+.callout p{margin:4px 0}
+
+ol.steps{padding-left:24px;display:grid;gap:10px}
+ol.steps li::marker{font-family:var(--display);color:var(--blue)}
+.check{display:block;margin-top:8px;padding:10px 14px;border-radius:12px;background:#e4f6ea;color:#14381f;border:2px solid var(--line);font-size:15px}
+.check::before{content:"Check: ";font-weight:700}
+
+/* tables: scoreboard panels */
+.tablewrap{overflow-x:auto;margin-block:14px;border:3px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--block-sm)}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:2px solid var(--hair)}
+th{font:400 16px/1.2 var(--display);color:#fff;background:var(--blue);border-bottom:3px solid var(--line)}
+section.safety th{background:var(--ink)}
+tr:last-child td{border-bottom:0}
+tr:nth-child(even) td{background:color-mix(in srgb,var(--blue-soft) 45%,transparent)}
+td code,p code,li code,.check code{font-family:var(--mono);font-size:.86em;background:var(--blue-soft);color:var(--fg);padding:1px 5px;border-radius:5px;overflow-wrap:anywhere}
+
+.codewrap{position:relative;margin-block:12px}
+pre{margin:0;background:var(--code-bg);color:var(--code-fg);border:3px solid var(--line);border-radius:12px;padding:16px;padding-right:90px;overflow-x:auto;font:14px/1.55 var(--mono);tab-size:4}
+pre code{font:inherit;background:none;padding:0}
+button.copy{position:absolute;top:10px;right:10px;font:400 15px/1 var(--display);min-height:36px;padding:8px 14px;border-radius:10px;border:3px solid #0b0f17;background:var(--yellow);color:#1d2433;cursor:pointer;box-shadow:0 3px 0 #0b0f17}
+button.copy:active{transform:translateY(2px);box-shadow:0 1px 0 #0b0f17}
+
+.hotlines{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-block:12px}
+.hotlines div{background:var(--surface);border:3px solid var(--line);border-radius:12px;padding:12px 14px;font-size:15px}
+.hotlines b{display:block;font:400 18px/1.2 var(--display)}
+.hotlines .num{font-family:var(--mono);font-variant-numeric:tabular-nums;user-select:all}
+footer{margin-top:56px;padding-top:16px;border-top:3px dashed var(--hair);font-size:14px;color:var(--muted)}
+
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <a class="back" href="/teen-build-kit.html">Back to the Teen Build Kit</a>
+  <p>Contents</p>
+  <ol>
+    <li><a href="#start">Start here</a></li>
+    <li><a href="#quick">Quick start</a></li>
+    <li><a href="#games">Eleven games</a></li>
+    <li><a href="#after">After setup</a></li>
+    <li><a href="#loops">Self-adapting loops</a></li>
+    <li><a href="#setup">Manual setup</a></li>
+    <li><a href="#test">What gets tested</a></li>
+    <li><a href="#workflow">Daily workflow</a></li>
+    <li><a href="#tokens">Saving tokens</a></li>
+    <li><a class="safe" href="#safety">Teen safety</a></li>
+    <li><a class="safe" href="#respond">If you see something</a></li>
+    <li><a class="safe" href="#parents">For parents</a></li>
+    <li><a href="#trouble">Troubleshooting</a></li>
+    <li><a href="#publish">Before publishing</a></li>
+    <li><a href="#sources">Sources</a></li>
+  </ol>
+</nav>
+<main>
+
+<header class="hero" id="start">
+<div class="hero-grid"><div class="hero-copy">
+  <p class="eyebrow">Roblox Studio + Claude Code · For players 13–17 · Predator protection built in</p>
+  <h1>Roblox Teen Build Kit</h1>
+  <p class="lede">Build the games teens actually play (combat, horror, trading, tycoons) by describing them in plain English, up to Roblox's Moderate label, with every protection against predators switched on. A parent or guardian owns the Claude account and builds alongside the teen. Download, double-click one file, answer a few questions. A setup helper does the rest.</p>
+  <div class="actions">
+    <a class="btn play" href="/s/ready-teen-build-kit"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg><span>Get the kit — $9.99</span></a>
+    <a class="btn secondary" href="/kits.html#compare">Compare kits</a>
+  </div>
+  <p class="note">This is the setup guide. The kit itself (setup helper, games and safety code) comes with your purchase: one-time $9.99, instant download, 7-day refund. <a href="/teen-build-kit.html">What's in the kit</a>.</p>
+  </div>
+<div class="hero-art" aria-hidden="true">
+  <svg viewBox="0 0 320 220" focusable="false">
+    <rect x="0" y="196" width="320" height="24" fill="#7bc96f"/>
+    <g stroke="#1d2433" stroke-width="4" stroke-linejoin="round">
+      <rect x="40" y="136" width="96" height="60" rx="6" fill="#2f7cf6"/>
+      <rect x="52" y="126" width="16" height="10" rx="3" fill="#2f7cf6"/><rect x="80" y="126" width="16" height="10" rx="3" fill="#2f7cf6"/><rect x="108" y="126" width="16" height="10" rx="3" fill="#2f7cf6"/>
+      <rect x="144" y="106" width="64" height="90" rx="6" fill="#ffc933"/>
+      <rect x="156" y="96" width="16" height="10" rx="3" fill="#ffc933"/><rect x="182" y="96" width="16" height="10" rx="3" fill="#ffc933"/>
+      <rect x="216" y="156" width="72" height="40" rx="6" fill="#e2403a"/>
+      <rect x="228" y="146" width="16" height="10" rx="3" fill="#e2403a"/><rect x="258" y="146" width="16" height="10" rx="3" fill="#e2403a"/>
+      <rect x="70" y="60" width="64" height="44" rx="6" fill="#22a55a"/>
+      <rect x="82" y="50" width="16" height="10" rx="3" fill="#22a55a"/><rect x="108" y="50" width="16" height="10" rx="3" fill="#22a55a"/>
+      <path d="M232 70l22-30 22 30z" fill="#fff"/>
+      <rect x="240" y="70" width="28" height="56" rx="4" fill="#fff"/>
+      <path d="M248 92h12M248 104h12" stroke-width="3"/>
+    </g>
+  </svg>
+</div>
+</div>
+  <div class="inside">
+    <div><b>Setup helper</b><span>Double-click launcher plus a guided assistant that installs, connects and tests everything</span></div>
+    <div><b>Starter game code</b><span>Validated remotes, rate limits, data saving that can't duplicate items</span></div>
+    <div><b>Teen safety layer</b><span>Predator-pattern chat blocking, safe trading, report button, incident log, moderator alerts</span></div>
+    <div><b>Handbooks</b><span>Response protocol, hotlines, evidence rules, parent guide</span></div>
+  </div>
+</header>
+
+<h2 id="quick">Quick start</h2>
+<p>About 15 minutes, once. You need a Mac or Windows PC, a Roblox account, and a paid Claude plan that includes Claude Code (Pro, Max, Team or Enterprise; the free plan doesn't).</p>
+<ol class="quick">
+  <li><b class="t">Download and unzip the kit</b>
+    <p>Get it from <a href="/s/ready-teen-build-kit">the store</a>; your purchase page has the download. Mac: double-click the zip. Windows: right-click it › <b>Extract All</b> (don't open files from inside the zip).</p></li>
+  <li><b class="t">Double-click “Start Here”</b>
+    <p>Mac: <code>Start Here.command</code>. The first time, macOS may say it can't be opened; right-click it › <b>Open</b> › <b>Open</b>.<br>Windows: <code>Start Here.bat</code>. If a blue SmartScreen box appears: <b>More info</b> › <b>Run anyway</b>.</p>
+    <p>It installs Claude Code if you don't have it, opens the Roblox Studio download page if you need it, asks your game's name, makes its folder in <b>Roblox Games</b>, and opens the setup helper. Sign in to Claude when the browser asks, and say <b>Yes</b> when Claude asks whether to trust the folder.</p></li>
+  <li><b class="t">Answer the setup helper</b>
+    <p>It works one step at a time and checks each one itself. It will ask what your game is about, who'll play it, and your Roblox username (to make you the safety moderator).</p></li>
+</ol>
+
+<h3>What the helper does, and the few clicks only you can make</h3>
+<div class="tablewrap"><table>
+<tr><th>The helper does</th><th>You click (it tells you exactly where, then checks)</th></tr>
+<tr><td>Installs Claude Code and makes your game folder</td><td>Install Roblox Studio and sign in, if you haven't</td></tr>
+<tr><td>Connects to Roblox Studio</td><td>Turn on <b>Enable Studio as MCP server</b> in Studio</td></tr>
+<tr><td>Writes your game brief and makes you the safety moderator</td><td>Answer three questions</td></tr>
+<tr><td>Adds 37 game and safety scripts to your place, and builds the starter game you pick from eleven</td><td>Pick a game, and approve the edits when Claude asks</td></tr>
+<tr><td>Checks saving works</td><td><b>Publish to Roblox</b>, and turn on <b>Studio Access to API Services</b></td></tr>
+<tr><td>Keeps your game private and in family mode, and explains how to open it to friends later</td><td>Nothing until you're ready</td></tr>
+<tr><td>Starts the game, tests saving and the safety filter, fixes problems</td><td>Nothing</td></tr>
+<tr><td>Reminds you about Roblox's content questionnaire</td><td>Fill it in honestly (about 3 minutes)</td></tr>
+</table></div>
+<p>Why some clicks stay with you: Roblox only lets the place owner change Studio's settings and publish, and Claude asks before every change to your game so nothing happens without you. If setup stops halfway, double-click <b>Start Here</b> again; it picks up where it left off.</p>
+
+<h2 id="games">Eleven games to start from</h2>
+<p>Setup offers these. Each one is a working game made of ordinary parts you can reshape, and several can share one place.</p>
+<ul class="tiles">
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="44" width="20" height="30" rx="3" fill="#2f7cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="39" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="34" y="20" width="28" height="54" rx="3" fill="#2f7cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="40" y="15" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="52" y="15" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="68" y="56" width="36" height="18" rx="3" fill="#2f7cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="74" y="51" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="86" y="51" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="98" y="51" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="110" y="56" width="36" height="18" rx="3" fill="#2f7cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="116" y="51" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="128" y="51" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="140" y="51" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Obby</h3><p>Jump through 8 stages, checkpoints save, coins at the finish</p><p class="safe-by"><span>Made safe by</span> Server checks every checkpoint</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="56" width="36" height="18" rx="3" fill="#22a55a" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="51" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="26" y="51" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="38" y="51" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="50" y="20" width="28" height="54" rx="3" fill="#22a55a" stroke="#1d2433" stroke-width="2.5"/><rect x="56" y="15" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="68" y="15" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="84" y="56" width="36" height="18" rx="3" fill="#22a55a" stroke="#1d2433" stroke-width="2.5"/><rect x="90" y="51" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="102" y="51" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="114" y="51" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="126" y="20" width="20" height="54" rx="3" fill="#22a55a" stroke="#1d2433" stroke-width="2.5"/><rect x="132" y="15" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Roleplay town</h3><p>Pick a job, do tasks that light up, earn coins</p><p class="safe-by"><span>Made safe by</span> Open-front buildings, no private rooms</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="20" width="36" height="54" rx="3" fill="#e2403a" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="15" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="26" y="15" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="38" y="15" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="50" y="32" width="28" height="42" rx="3" fill="#e2403a" stroke="#1d2433" stroke-width="2.5"/><rect x="56" y="27" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="68" y="27" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="84" y="44" width="28" height="30" rx="3" fill="#e2403a" stroke="#1d2433" stroke-width="2.5"/><rect x="90" y="39" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="102" y="39" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Pet collector</h3><p>Hatch eggs, your best pet follows you, trade at the Trade Booth</p><p class="safe-by"><span>Made safe by</span> Both sides must offer and accept; gifts blocked; lopsided trades alert you</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="20" width="36" height="54" rx="3" fill="#f2a900" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="15" width="7" height="5" rx="1.5" fill="#f2a900" stroke="#1d2433" stroke-width="2"/><rect x="26" y="15" width="7" height="5" rx="1.5" fill="#f2a900" stroke="#1d2433" stroke-width="2"/><rect x="38" y="15" width="7" height="5" rx="1.5" fill="#f2a900" stroke="#1d2433" stroke-width="2"/><rect x="50" y="44" width="36" height="30" rx="3" fill="#f2a900" stroke="#1d2433" stroke-width="2.5"/><rect x="56" y="39" width="7" height="5" rx="1.5" fill="#f2a900" stroke="#1d2433" stroke-width="2"/><rect x="68" y="39" width="7" height="5" rx="1.5" fill="#f2a900" stroke="#1d2433" stroke-width="2"/><rect x="80" y="39" width="7" height="5" rx="1.5" fill="#f2a900" stroke="#1d2433" stroke-width="2"/><rect x="92" y="44" width="20" height="30" rx="3" fill="#f2a900" stroke="#1d2433" stroke-width="2.5"/><rect x="98" y="39" width="7" height="5" rx="1.5" fill="#f2a900" stroke="#1d2433" stroke-width="2"/><rect x="118" y="44" width="20" height="30" rx="3" fill="#f2a900" stroke="#1d2433" stroke-width="2.5"/><rect x="124" y="39" width="7" height="5" rx="1.5" fill="#f2a900" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Garden simulator</h3><p>Plant, wait, harvest, sell, buy better seeds</p><p class="safe-by"><span>Made safe by</span> Crops grow on the server clock</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="20" width="20" height="54" rx="3" fill="#8b5cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="15" width="7" height="5" rx="1.5" fill="#8b5cf6" stroke="#1d2433" stroke-width="2"/><rect x="34" y="20" width="20" height="54" rx="3" fill="#8b5cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="40" y="15" width="7" height="5" rx="1.5" fill="#8b5cf6" stroke="#1d2433" stroke-width="2"/><rect x="60" y="56" width="20" height="18" rx="3" fill="#8b5cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="66" y="51" width="7" height="5" rx="1.5" fill="#8b5cf6" stroke="#1d2433" stroke-width="2"/><rect x="86" y="56" width="20" height="18" rx="3" fill="#8b5cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="92" y="51" width="7" height="5" rx="1.5" fill="#8b5cf6" stroke="#1d2433" stroke-width="2"/><rect x="112" y="44" width="36" height="30" rx="3" fill="#8b5cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="118" y="39" width="7" height="5" rx="1.5" fill="#8b5cf6" stroke="#1d2433" stroke-width="2"/><rect x="130" y="39" width="7" height="5" rx="1.5" fill="#8b5cf6" stroke="#1d2433" stroke-width="2"/><rect x="142" y="39" width="7" height="5" rx="1.5" fill="#8b5cf6" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Tycoon</h3><p>Claim a plot, earn into a bank, buy upgrades in order</p><p class="safe-by"><span>Made safe by</span> Server checks every purchase</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="20" width="36" height="54" rx="3" fill="#ef7d22" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="15" width="7" height="5" rx="1.5" fill="#ef7d22" stroke="#1d2433" stroke-width="2"/><rect x="26" y="15" width="7" height="5" rx="1.5" fill="#ef7d22" stroke="#1d2433" stroke-width="2"/><rect x="38" y="15" width="7" height="5" rx="1.5" fill="#ef7d22" stroke="#1d2433" stroke-width="2"/><rect x="50" y="56" width="28" height="18" rx="3" fill="#ef7d22" stroke="#1d2433" stroke-width="2.5"/><rect x="56" y="51" width="7" height="5" rx="1.5" fill="#ef7d22" stroke="#1d2433" stroke-width="2"/><rect x="68" y="51" width="7" height="5" rx="1.5" fill="#ef7d22" stroke="#1d2433" stroke-width="2"/><rect x="84" y="32" width="20" height="42" rx="3" fill="#ef7d22" stroke="#1d2433" stroke-width="2.5"/><rect x="90" y="27" width="7" height="5" rx="1.5" fill="#ef7d22" stroke="#1d2433" stroke-width="2"/><rect x="110" y="20" width="36" height="54" rx="3" fill="#ef7d22" stroke="#1d2433" stroke-width="2.5"/><rect x="116" y="15" width="7" height="5" rx="1.5" fill="#ef7d22" stroke="#1d2433" stroke-width="2"/><rect x="128" y="15" width="7" height="5" rx="1.5" fill="#ef7d22" stroke="#1d2433" stroke-width="2"/><rect x="140" y="15" width="7" height="5" rx="1.5" fill="#ef7d22" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Campfire survival</h3><p>Chop wood, keep the fire lit through the night</p><p class="safe-by"><span>Made safe by</span> No damage; wisps just send you to camp</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="20" width="28" height="54" rx="3" fill="#e2403a" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="15" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="26" y="15" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="42" y="32" width="28" height="42" rx="3" fill="#e2403a" stroke="#1d2433" stroke-width="2.5"/><rect x="48" y="27" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="60" y="27" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="76" y="32" width="20" height="42" rx="3" fill="#e2403a" stroke="#1d2433" stroke-width="2.5"/><rect x="82" y="27" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="102" y="56" width="28" height="18" rx="3" fill="#e2403a" stroke="#1d2433" stroke-width="2.5"/><rect x="108" y="51" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/><rect x="120" y="51" width="7" height="5" rx="1.5" fill="#e2403a" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Battle arena</h3><p>Bonks take health and knock back; knock players out or into the pool</p><p class="safe-by"><span>Made safe by</span> Server decides every hit; sparks, not gore</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="56" width="28" height="18" rx="3" fill="#22a55a" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="51" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="26" y="51" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="42" y="20" width="36" height="54" rx="3" fill="#22a55a" stroke="#1d2433" stroke-width="2.5"/><rect x="48" y="15" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="60" y="15" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="72" y="15" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="84" y="20" width="28" height="54" rx="3" fill="#22a55a" stroke="#1d2433" stroke-width="2.5"/><rect x="90" y="15" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="102" y="15" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/><rect x="118" y="44" width="20" height="30" rx="3" fill="#22a55a" stroke="#1d2433" stroke-width="2.5"/><rect x="124" y="39" width="7" height="5" rx="1.5" fill="#22a55a" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Tower defense</h3><p>Build and upgrade towers to stop waves of slimes</p><p class="safe-by"><span>Made safe by</span> Towers only on fixed pads</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="56" width="20" height="18" rx="3" fill="#2f7cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="51" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="34" y="20" width="36" height="54" rx="3" fill="#2f7cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="40" y="15" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="52" y="15" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="64" y="15" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="76" y="44" width="20" height="30" rx="3" fill="#2f7cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="82" y="39" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="102" y="56" width="28" height="18" rx="3" fill="#2f7cf6" stroke="#1d2433" stroke-width="2.5"/><rect x="108" y="51" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/><rect x="120" y="51" width="7" height="5" rx="1.5" fill="#2f7cf6" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Hide and seek</h3><p>Lobby, random seeker, timed rounds</p><p class="safe-by"><span>Made safe by</span> Open playground, no closed rooms</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="32" width="20" height="42" rx="3" fill="#14a3b8" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="27" width="7" height="5" rx="1.5" fill="#14a3b8" stroke="#1d2433" stroke-width="2"/><rect x="34" y="44" width="28" height="30" rx="3" fill="#14a3b8" stroke="#1d2433" stroke-width="2.5"/><rect x="40" y="39" width="7" height="5" rx="1.5" fill="#14a3b8" stroke="#1d2433" stroke-width="2"/><rect x="52" y="39" width="7" height="5" rx="1.5" fill="#14a3b8" stroke="#1d2433" stroke-width="2"/><rect x="68" y="32" width="28" height="42" rx="3" fill="#14a3b8" stroke="#1d2433" stroke-width="2.5"/><rect x="74" y="27" width="7" height="5" rx="1.5" fill="#14a3b8" stroke="#1d2433" stroke-width="2"/><rect x="86" y="27" width="7" height="5" rx="1.5" fill="#14a3b8" stroke="#1d2433" stroke-width="2"/><rect x="102" y="56" width="28" height="18" rx="3" fill="#14a3b8" stroke="#1d2433" stroke-width="2.5"/><rect x="108" y="51" width="7" height="5" rx="1.5" fill="#14a3b8" stroke="#1d2433" stroke-width="2"/><rect x="120" y="51" width="7" height="5" rx="1.5" fill="#14a3b8" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Fishing</h3><p>Cast, reel in on a bite, sell, fill the collection book</p><p class="safe-by"><span>Made safe by</span> Server rolls every catch</p></div></li>
+<li class="tile"><svg class="thumb" viewBox="0 0 160 80" aria-hidden="true" focusable="false"><rect width="160" height="80" fill="#cfe3ff"/><rect y="74" width="160" height="6" fill="#7bc96f"/><rect x="8" y="56" width="28" height="18" rx="3" fill="#5b4b8a" stroke="#1d2433" stroke-width="2.5"/><rect x="14" y="51" width="7" height="5" rx="1.5" fill="#5b4b8a" stroke="#1d2433" stroke-width="2"/><rect x="26" y="51" width="7" height="5" rx="1.5" fill="#5b4b8a" stroke="#1d2433" stroke-width="2"/><rect x="42" y="20" width="36" height="54" rx="3" fill="#5b4b8a" stroke="#1d2433" stroke-width="2.5"/><rect x="48" y="15" width="7" height="5" rx="1.5" fill="#5b4b8a" stroke="#1d2433" stroke-width="2"/><rect x="60" y="15" width="7" height="5" rx="1.5" fill="#5b4b8a" stroke="#1d2433" stroke-width="2"/><rect x="72" y="15" width="7" height="5" rx="1.5" fill="#5b4b8a" stroke="#1d2433" stroke-width="2"/><rect x="84" y="44" width="36" height="30" rx="3" fill="#5b4b8a" stroke="#1d2433" stroke-width="2.5"/><rect x="90" y="39" width="7" height="5" rx="1.5" fill="#5b4b8a" stroke="#1d2433" stroke-width="2"/><rect x="102" y="39" width="7" height="5" rx="1.5" fill="#5b4b8a" stroke="#1d2433" stroke-width="2"/><rect x="114" y="39" width="7" height="5" rx="1.5" fill="#5b4b8a" stroke="#1d2433" stroke-width="2"/></svg><div class="tile-body"><h3>Haunted escape</h3><p>15 dark rooms, hide in wardrobes from the Shade, escape together</p><p class="safe-by"><span>Made safe by</span> Moderate fear, no gore; wardrobes hold one player</p></div></li>
+</ul>
+
+<h2 id="after">After setup</h2>
+<p>Double-click <b>Start Here</b> in your game folder (inside <b>Roblox Games</b>) and say what you want, in your own words:</p>
+<p class="say">“Add a coin that spins and gives 10 coins when someone touches it.”<br>“Make a leaderboard that shows who's finished the obby fastest.”<br>“The jump pads feel too weak, make them stronger.”</p>
+<div class="tablewrap"><table>
+<tr><th>Type</th><th>What happens</th></tr>
+<tr><td><code>/custom</code></td><td>Design your own game together. A few questions (what you do, how you win, where it happens, one awesome twist), then Claude mixes and rethemes the templates and builds a playable starter. Unsafe ideas get a safe version.</td></tr>
+<tr><td><code>/make</code> + your idea</td><td>Claude plans it in plain words, checks with you, builds it step by step and tests it. Ideas that could put kids at risk get a safer version.</td></tr>
+<tr><td><code>/incidents</code></td><td>Reads the safety log, explains it plainly, flags warning patterns, and tells you exactly what to do. Do this weekly.</td></tr>
+<tr><td><code>/handoff</code></td><td>Saves where you got to so next time starts fast. Use it when you're done for the day.</td></tr>
+<tr><td><code>/setup</code></td><td>Re-runs setup checks any time something seems broken.</td></tr>
+</table></div>
+
+<h2 id="loops">Self-adapting loops</h2>
+<p>Once people are playing, the game can keep improving itself. Type this in Claude Code and leave it open:</p>
+<div class="codewrap"><button type="button" class="copy">Copy</button><pre><code>/loop 1h /adapt</code></pre></div>
+<p>Every hour, one <code>/adapt</code> pass runs four loops. Press <b>Esc</b> to stop. It runs only while Claude Code is open (up to 7 days per loop) and uses your Claude plan while it works.</p>
+<div class="tablewrap"><table>
+<tr><th>Loop</th><th>What it does by itself</th><th>Its limits</th></tr>
+<tr><td>Learning</td><td>Writes what worked, what broke and your preferences to <code>docs/lessons.md</code> after every feature, fix and pass. Every new session starts by reading it.</td><td>No player names or chat text. You can edit or delete any line.</td></tr>
+<tr><td>Safety</td><td>Reads the incident log, spots new spellings people use to sneak contact requests past the filter, and adds them. Every server picks them up within a minute.</td><td>Stricter only: it can add terms, never remove them. A term that would block everyday chat is refused.</td></tr>
+<tr><td>Game tuning</td><td>Reads anonymous play counts (where players fall, quit, get stuck or breeze through) and adjusts rewards, timings and difficulty live.</td><td>At most 2 knobs per pass, at most 25% each, always within safe bounds, with 30+ events of evidence. Every change is logged and can be reset.</td></tr>
+<tr><td>Playtest and fix</td><td>Starts the game, reads errors, fixes them, tests again.</td><td>Never edits the safety system.</td></tr>
+</table></div>
+<p>To make this possible unattended, the kit lets Claude run Luau and edit scripts in Studio without asking. The README shows how to switch that back.</p>
+
+<h2 id="setup">Manual setup (only if the helper gets stuck)</h2>
+<p>Everything the helper does, by hand. About 30 minutes. Mac commands are shown; Windows differences are noted. Each part ends with a check.</p>
+
+<h3>1. Install</h3>
+<ul>
+  <li><b>Roblox Studio</b>, latest version (open it once; it updates itself).</li>
+  <li><b>Claude Code</b>, installed and signed in. In Terminal (Mac) or PowerShell (Windows), <code>claude --version</code> should print a version.</li>
+  <li>A Roblox place you own. A fresh Baseplate is fine.</li>
+  <li>Optional: <b>git</b>, for undo history.</li>
+</ul>
+
+<h3>2. Unzip the kit into a project folder</h3>
+<p>Download the kit from your purchase page into your Downloads folder, then:</p>
+<div class="codewrap"><button type="button" class="copy">Copy</button><pre><code>mkdir -p ~/Projects/my-game
+cd ~/Downloads
+unzip roblox-teen-kit.zip
+cp -R roblox-claude-kit/. ~/Projects/my-game/
+cd ~/Projects/my-game
+ls -a
+git init &amp;&amp; git add -A &amp;&amp; git commit -m &quot;Starter kit&quot;   # optional</code></pre></div>
+<p>The <code>/.</code> copies hidden files too (<code>.claude</code>, <code>.mcp.json</code>). In Finder, press Cmd + Shift + . to see them.</p>
+<p><b>Windows:</b> right-click the zip › Extract All, move the contents into <code>%USERPROFILE%\Projects\my-game</code>, then rename <code>.mcp.windows.json</code> to <code>.mcp.json</code> (replace the Mac one).</p>
+<span class="check"><code>ls -a</code> lists <code>.claude</code>, <code>.mcp.json</code>, <code>CLAUDE.md</code>, <code>docs</code>, <code>src</code>.</span>
+
+<h3>3. Connect Claude Code to Studio</h3>
+<ol class="steps">
+  <li>Open your place in Studio. Go to <b>Assistant › ⋯ › Manage MCP Servers</b> and turn on <b>Enable Studio as MCP server</b>.</li>
+  <li>In the same panel, keep <b>Quick Connect for Claude Code off</b>. The kit's own <code>.mcp.json</code> connects instead, under the name <code>Roblox_Studio</code>, which the kit's permissions and helpers expect. Two connections also load every tool twice and waste tokens.</li>
+  <li>In Terminal: <code>cd ~/Projects/my-game</code> then <code>claude</code>. Approve the project's MCP server if asked.</li>
+  <li>Type <code>/mcp</code>.</li>
+</ol>
+<span class="check"><code>/mcp</code> shows <code>Roblox_Studio</code> connected, and Studio's panel shows a green indicator. Ask Claude: “List the top-level services in my place with search_game_tree, depth 1. Names only.”</span>
+
+<h3>4. Prepare the place</h3>
+<ol class="steps">
+  <li><b>File › Publish to Roblox.</b> Saving player data and safety logs only works in a published place.</li>
+  <li><b>Home › Game Settings › Security › Enable Studio Access to API Services</b>, then Save.</li>
+  <li>Complete the <b>Maturity &amp; Compliance questionnaire</b> for your experience in the Creator Dashboard, truthfully. Without it, your game shows as “Content May Vary” and isn't available to under-16s by default.</li>
+</ol>
+
+<h3>5. Get the code into Studio</h3>
+<p><b>Path A, Rojo (recommended).</b> Keeps scripts as files with history.</p>
+<div class="codewrap"><button type="button" class="copy">Copy</button><pre><code>curl -sSf https://raw.githubusercontent.com/rojo-rbx/rokit/main/scripts/install.sh | bash
+# close and reopen Terminal, then:
+cd ~/Projects/my-game
+rokit init
+rokit add rojo-rbx/rojo
+rokit add Kampfkarren/selene
+rokit add JohnnyMorganz/StyLua
+rojo plugin install
+rojo serve</code></pre></div>
+<p>Leave that window running and open a second Terminal tab for <code>claude</code>. In Studio: <b>Plugins › Rojo › Connect</b>. From now on, edit scripts as files in <code>src/</code>, never inside Studio; Rojo overwrites Studio-side edits.</p>
+<p><b>Windows Rokit install</b> (PowerShell):</p>
+<div class="codewrap"><button type="button" class="copy">Copy</button><pre><code>Invoke-RestMethod https://raw.githubusercontent.com/rojo-rbx/rokit/main/scripts/install.ps1 | Invoke-Expression</code></pre></div>
+<p><b>Path B, straight into Studio.</b> Ask Claude to create each script from <code>src/</code> with <code>multi_edit</code>, creating parent folders first. The README in the kit lists the exact destinations.</p>
+<span class="check">Explorer shows ServerScriptService › Server (Main, Lib, Safety, Services), ReplicatedStorage › Shared, and StarterPlayerScripts › Client.</span>
+
+<h3>6. Fill in the two files that are yours</h3>
+<ol class="steps">
+  <li><b><code>CLAUDE.md</code></b>: replace every bracket under <b>Game</b> (genre, platforms, server size, round length). With Rojo, add under Hard rules: <code>- Rojo is running: edit files in src/ only; never multi_edit a synced script</code>. Keep it under ~60 lines.</li>
+  <li><b><code>src/server/Safety/SafetyConfig.luau</code></b>: add your Roblox UserId (the number in <code>roblox.com/users/&lt;UserId&gt;/profile</code>) and any trusted adult moderators to <code>ModeratorUserIds</code>.</li>
+</ol>
+<span class="check">No brackets left under Game; your UserId is in <code>ModeratorUserIds</code>. Run <code>/clear</code> in Claude so it reloads the brief.</span>
+
+<h2 id="test">What gets tested</h2>
+<p>The setup helper runs the saving test and a safety-filter test for you. To repeat them yourself, open <b>View › Output</b> first.</p>
+<h3>Game and saving (one player, Play)</h3>
+<div class="tablewrap"><table>
+<tr><th>Do</th><th>Output shows</th></tr>
+<tr><td>Press Play</td><td><code>[Client] coins: 250 equipped:</code></td></tr>
+<tr><td>Click the game, press B</td><td><code>coins: 150</code></td></tr>
+<tr><td>Press B again</td><td>Nothing new (already owned)</td></tr>
+<tr><td>Press G</td><td><code>equipped: SpeedCoil</code></td></tr>
+<tr><td>Stop, wait 5 s, Play</td><td>Still <code>150</code> and <code>SpeedCoil</code>: saving works</td></tr>
+</table></div>
+<h3>Safety (two players: Test › Clients and Servers › 2 players)</h3>
+<div class="tablewrap"><table>
+<tr><th>Do</th><th>Expected</th></tr>
+<tr><td>Player 1 chats <code>call me 203 555 0147</code></td><td>Player 2 never sees it. Player 1 gets “That message wasn't sent”.</td></tr>
+<tr><td>Player 1 chats <code>gg that was fun</code></td><td>Delivered normally.</td></tr>
+<tr><td>Player 1 taps <b>Report a problem</b> › Player 2 › a reason</td><td>Thank-you screen with a Block button.</td></tr>
+<tr><td>Stop. In Studio's command bar: <code>require(game.ServerScriptService.Server.Safety.SafetyLog).printRecent(1)</code></td><td>Both incidents listed with time, users and action.</td></tr>
+</table></div>
+
+<h2 id="workflow">Daily workflow</h2>
+<p>One feature per session. Each command picks the right model, so you never switch by hand.</p>
+<div class="tablewrap"><table>
+<tr><th>Step</th><th>Type in Claude</th><th>Model</th></tr>
+<tr><td>Build from a plain-English idea</td><td><code>/make daily login reward</code></td><td>Sonnet</td></tr>
+<tr><td>Check the safety log (weekly)</td><td><code>/incidents</code></td><td>Sonnet</td></tr>
+<tr><td>Plan a big feature (no code)</td><td><code>/plan daily login reward, 7-day streak</code></td><td>Opus</td></tr>
+<tr><td>Build one plan step, then playtest</td><td><code>/build daily-login 1</code></td><td>Sonnet</td></tr>
+<tr><td>Fix a bug</td><td><code>/fix coins go negative | ShopService ~30 | read console</code></td><td>Sonnet</td></tr>
+<tr><td>Two fixes failed</td><td><code>/escalate tried X → Y; tried Z → W</code></td><td>Opus</td></tr>
+<tr><td>Clean up a script</td><td><code>/refactor src/server/Services/ShopService.luau</code></td><td>Sonnet</td></tr>
+<tr><td>Bulk Studio edits</td><td><code>/bulk Workspace.Checkpoints: 20 Parts, 8 studs apart</code></td><td>Sonnet</td></tr>
+<tr><td>Exploit review</td><td><code>/security all</code></td><td>Opus</td></tr>
+<tr><td>Child-safety review</td><td><code>/safety-review all</code></td><td>Opus</td></tr>
+<tr><td>End of session</td><td><code>/handoff</code>, then <code>/clear</code></td><td>Haiku</td></tr>
+</table></div>
+
+<h2 id="tokens">Saving tokens</h2>
+<p>Every message re-sends the whole session, so long chats cost more each turn. These habits matter most:</p>
+<ul>
+  <li><b>One feature per session</b>, ending with <code>/handoff</code> and <code>/clear</code>. The handoff rewrites “Current state” in CLAUDE.md so the next session starts small.</li>
+  <li><b>Let Claude read, don't paste.</b> It reads scripts, searches code and reads the console through Studio. Pasting whole scripts is the biggest waste.</li>
+  <li><b>Name the script.</b> “Look through the project” is the most expensive request there is.</li>
+  <li><b>Ask for changed lines only.</b> No full-file rewrites, no explanations you didn't ask for.</li>
+  <li><b>Screenshots only for visual bugs.</b> Images cost far more than text.</li>
+  <li><b>Check <code>/context</code></b>. Past about half full, hand off and clear.</li>
+</ul>
+
+<section class="safety">
+<h2 id="safety">Teen safety</h2>
+<p>This is the <strong>Teen Build Kit</strong>: for games made by and for players aged 13 to 17. It opens up the
+kinds of games teens actually play (combat, horror, trading, typed names) and keeps every
+protection against adults trying to reach them. The family handbook further down still applies:
+read sections 4 to 8 there for reviewing incidents, what to do if you see something, and evidence.</p>
+<h3>Who uses this kit</h3>
+<p>Claude accounts are for adults (18+). A <strong>parent or guardian owns the Claude account</strong>, runs setup,
+and is the game's safety moderator. The teen designs and builds alongside them. The teen can't use
+Claude on their own.</p>
+<h3>What's different from the family kit</h3>
+<div class="tablewrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Family kit</th>
+<th>Teen kit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content ceiling</td>
+<td>Roblox Minimal or Mild</td>
+<td>Roblox <strong>Moderate</strong> (13+)</td>
+</tr>
+<tr>
+<td>Combat</td>
+<td>Knockback only, nobody hurt</td>
+<td>Health, damage, knockouts, non-graphic weapons</td>
+</tr>
+<tr>
+<td>Blood</td>
+<td>None</td>
+<td>Light at most (default: sparks)</td>
+</tr>
+<tr>
+<td>Horror</td>
+<td>Left out</td>
+<td>Jump scares, creepy figures, chase monsters; no gore</td>
+</tr>
+<tr>
+<td>Trading</td>
+<td>None</td>
+<td>Through the Trade module only (see below)</td>
+</tr>
+<tr>
+<td>Typed names and signs</td>
+<td>No</td>
+<td>Yes, filtered by Roblox and checked by the kit</td>
+</tr>
+<tr>
+<td>"How old are you?" in chat</td>
+<td>Blocked</td>
+<td>Logged, not blocked</td>
+</tr>
+<tr>
+<td>Templates</td>
+<td>10</td>
+<td>11 (adds Haunted escape) and Battle mode in the arena</td>
+</tr>
+</tbody>
+</table></div>
+<h3>What never changes</h3>
+<ul>
+<li><strong>Blocked in chat:</strong> phone numbers, addresses, emails, school; moving to Discord, Snapchat,
+  Instagram and other apps; "where do you live" and meet-up asks; secrecy ("don't tell your
+  parents"), "are you alone", and requests for pictures. The tricks people use to sneak these
+  past filters (spaced letters, number swaps, look-alike letters, spelled-out numbers) are caught.</li>
+<li><strong>Repeat offenders</strong> are paused and remembered across every server of the game.</li>
+<li><strong>Report a problem</strong> button, the incident log, and live moderator alerts.</li>
+<li><strong>No private spaces</strong> where two players can be alone, no private messaging, no links or social
+  handles, no uploads.</li>
+<li><strong>Not allowed at all</strong> (Roblox 18+ or not legal or allowed for minors): romance or dating,
+  alcohol or drugs, strong language, gambling, paid random items (loot boxes), and gore.</li>
+</ul>
+<h3>Trading, safely</h3>
+<p>Grooming often starts with gifts. So in the teen kit:
+- A trade needs <strong>something on both sides</strong>. One-way "trades" are gifts and are blocked.
+- Both players must <strong>accept</strong>; any change to an offer resets both accepts.
+- <strong>Lopsided trades</strong> (one side worth 4 times the other or more) go through, but are logged and
+  <strong>you get an alert</strong>. One is usually a friend being generous. A pattern of one account making
+  generous trades with younger players is a warning sign: check <code>/incidents</code>.
+- Each player can trade at most once every 20 seconds. Every trade is in the log.</p>
+<h3>Robux items</h3>
+<p><code>ShopService</code> sells fixed items only: coin packs and perks like Double Coins. Every item gives
+exactly what its name says. No loot boxes, spins or mystery items bought with Robux.</p>
+<h3>Your content questionnaire</h3>
+<p>Combat with damage, blood effects and horror change your answers to Roblox's Maturity &amp; Compliance
+questionnaire. Answer it honestly whenever you add them; the game will usually be labelled
+<strong>Moderate</strong>, which Roblox shows to players 9 and up in its Select setting and to everyone 16 and up.</p>
+<h3>Opening the game</h3>
+<p>Same steps as the family kit (section 3b below): finish the questionnaire and <code>/safety-review</code>,
+open to <strong>Friends</strong> first, then to everyone when you're ready. Family mode (guest list only) stays on
+until you choose.</p>
+<h3>The protections in detail</h3>
+<p>Many Roblox players are children, and some adults use games to reach them. This kit adds a second layer of protection on top of Roblox's own, documents anything worrying so it can be reported, and tells you exactly what to do.</p>
+
+<h3>What Roblox already does</h3>
+<ul>
+  <li><b>Age checks for chat.</b> Since January 2026, every user worldwide must complete an age check (face estimation, or ID for 13+) before chatting.</li>
+  <li><b>Age-based chat.</b> By default players chat only with their own age group and the ones directly above and below (under 9, 9–12, 13–15, 16–17, 18–20, 21+). Chat is off for under-9s unless a parent turns it on.</li>
+  <li><b>Filtering and moderation.</b> Chat is filtered, most personal info is blocked, and reports reach Roblox's moderators.</li>
+</ul>
+
+<h3>What this kit adds</h3>
+<div class="tablewrap"><table>
+<tr><th>Protection</th><th>What it does</th></tr>
+<tr><td>Chat screening</td><td>Every message is checked on the server before delivery. Personal info, other-app contact, meet-up or location questions, and boundary-testing (age questions, secrecy, picture requests) are not delivered. Gifting offers are logged. Sees through spaced letters, number swaps (<code>d1sc0rd</code>), stretched letters, look-alike letters and spelled-out phone numbers.</td></tr>
+<tr><td>Auto-pause</td><td>After 3 flags, nothing that player sends is delivered for the rest of that server.</td></tr>
+<tr><td>Remembered across servers</td><td>Flag counts follow the account to every server of your game, so switching servers doesn't reset them. Moderators can block an account game-wide or clear it after review. No chat text is kept here.</td></tr>
+<tr><td>Family mode</td><td>While you build, only you, your Roblox friends and people you add can stay in the game. Anyone else is politely sent back to the menu, even if the game is opened by mistake.</td></tr>
+<tr><td>Report a problem</td><td>An always-visible button. Any child can report someone in three taps with plain-language reasons, then block them in one more. They're also told to use Roblox's Report and tell a trusted adult.</td></tr>
+<tr><td>Incident log</td><td>Every flag and report is documented: time (UTC), server, who, who else was there, category, what the game did, and the text. Kept 30 days, readable only by place editors.</td></tr>
+<tr><td>Moderator alerts</td><td>Adults in <code>ModeratorUserIds</code> get a live notification when something is flagged in their server.</td></tr>
+<tr><td>Safe text helper</td><td><code>FilterForEveryone</code> is the only approved way to show player-written text (signs, pet names); it is never shown if filtering fails.</td></tr>
+<tr><td>Rules for Claude</td><td>CLAUDE.md forbids risky features: private messaging, external links, uploads, voice, secluded rooms, gifting, collecting age or location. <code>/safety-review</code> audits the game.</td></tr>
+</table></div>
+<div class="callout"><strong>Limits</strong><p>The kit can't hear voice chat or see images, and determined people evade keyword checks. A quiet log means nothing was caught, not that nothing happened. Roblox's reporting and moderation remain the main line of defense.</p></div>
+
+<h3>Review the log</h3>
+<p>At least weekly, and the same day an alert or report comes in. Easiest: type <code>/incidents</code> in Claude. It explains the log in plain language and tells you what to do. By hand, in Studio's command bar:</p>
+<div class="codewrap"><button type="button" class="copy">Copy</button><pre><code>local L = require(game.ServerScriptService.Server.Safety.SafetyLog)
+L.printRecent(7)          -- last 7 days, newest first
+L.forUser(123456789, 30)  -- everything involving one UserId
+L.exportCsv(7)            -- CSV to copy into a report</code></pre></div>
+<p>Patterns matter more than single messages: one account flagged in several servers, or with several different children, is a strong signal. A child sharing their own details by mistake has already been protected; no further action is needed.</p>
+</section>
+
+<section class="safety">
+<h2 id="respond">If you see something</h2>
+<div class="callout danger"><strong>A child may be in immediate danger</strong><p>A meeting is planned, they say they're being threatened, or they talk about hurting themselves: call <b>911</b> in the US, or your local emergency number. Then follow the steps below.</p></div>
+<div class="tablewrap"><table>
+<tr><th>Situation</th><th>Do this</th></tr>
+<tr><td>An adult is sexual toward a child, asks for pictures, pushes to move to another app, offers gifts for secrecy, or asks where a child lives</td><td>1. Report the account to Roblox (in-game Menu › Report, or their profile › ⋯ › Report).<br>2. Report to your national hotline below.<br>3. Ban the account from your game.<br>4. Export the log rows (<code>exportCsv</code>) and keep them.</td></tr>
+<tr><td>Bullying, scams, spam</td><td>Report to Roblox if it breaks the rules; kick or ban by your game's rules.</td></tr>
+<tr><td>A child overshared their own info</td><td>Already blocked from delivery. Nothing more needed.</td></tr>
+</table></div>
+<h3>Hotlines (anyone can report)</h3>
+<div class="hotlines">
+  <div><b>United States</b>NCMEC CyberTipline<br><a href="https://report.cybertip.org">report.cybertip.org</a><br><span class="num">1-800-843-5678</span></div>
+  <div><b>United Kingdom</b>CEOP (National Crime Agency)<br><a href="https://www.ceop.police.uk/Safety-Centre/">ceop.police.uk</a></div>
+  <div><b>Canada</b>Cybertip.ca<br><a href="https://www.cybertip.ca">cybertip.ca</a></div>
+  <div><b>Australia</b>ACCCE<br><a href="https://www.accce.gov.au/report">accce.gov.au/report</a></div>
+  <div><b>Elsewhere</b>National police, plus Roblox's illegal-content forms at <a href="https://about.roblox.com/reporting-and-blocking">about.roblox.com</a></div>
+</div>
+<h3>Evidence rules</h3>
+<ul>
+  <li><b>Do</b> record usernames, UserIds, times (UTC), the server ID and the exported log rows. That's what investigators need.</li>
+  <li><b>Never</b> download, screenshot, save or forward a sexual image or video of a child, even to report it. Possessing or sharing it is a crime. Describe where you saw it and report that.</li>
+  <li><b>Never</b> contact or confront the suspect, pretend to be a child to investigate, or name them publicly. It can warn them and put a child at more risk.</li>
+  <li><b>Don't delete</b> records about a reported case. Keep the export in secure storage until the authorities say otherwise.</li>
+  <li>If you know the child's parent personally, tell them privately and give them the hotline details.</li>
+</ul>
+<h3>Privacy of the log</h3>
+<p>The log holds children's messages. Only trusted adult moderators should see it. It deletes itself after 30 days; keep exports only for reported cases, never send logs to Discord or other outside services, and use them for nothing but safety.</p>
+</section>
+
+<section class="safety">
+<h2 id="parents">For parents</h2>
+<p>Share this section with any parent whose child plays.</p>
+<ol class="steps">
+  <li><b>Link your account.</b> On your child's account: Settings › Parental Controls › Add parent, then enter your email. You'll verify your age with ID or a credit card.</li>
+  <li><b>Communication.</b> Parental Controls › Settings you manage › Communication: turn Experience Chat and Direct Chat on or off, and choose who your child can chat with.</li>
+  <li><b>Content.</b> Content restrictions › Content maturity: set the level you're comfortable with. You can also block specific games.</li>
+  <li><b>Spending and screen time.</b> Set a monthly spending limit with alerts, and a daily screen-time limit.</li>
+  <li><b>Connections.</b> Review your child's connections; block and report anyone you don't recognize.</li>
+</ol>
+<h3>Warning signs worth a calm conversation</h3>
+<ul>
+  <li>A new online “friend” your child won't talk about.</li>
+  <li>Gifts of Robux or items from someone online.</li>
+  <li>Being asked to move to another app, or to keep secrets.</li>
+  <li>Sudden secrecy about the device or time spent online.</li>
+</ul>
+<p><b>Tell your child:</b> they won't be in trouble for telling you. Show them the Report and Block buttons, and agree they'll come to you if anyone makes them uncomfortable.</p>
+</section>
+
+<h2 id="trouble">Troubleshooting</h2>
+<div class="tablewrap"><table>
+<tr><th>Symptom</th><th>Fix</th></tr>
+<tr><td><code>/mcp</code> shows Roblox_Studio failed</td><td>Open Studio and the place, re-enable the MCP toggle, <code>cd</code> into the project folder, restart <code>claude</code>. On Mac, check Studio is in Applications.</td></tr>
+<tr><td>Tools appear twice, context fills fast</td><td>Turn off Quick Connect for Claude Code; check with <code>claude mcp list</code>.</td></tr>
+<tr><td>Claude asks permission for every read</td><td>The server isn't named <code>Roblox_Studio</code>. Use the kit's <code>.mcp.json</code>.</td></tr>
+<tr><td>Slash commands missing</td><td>Claude was started outside the project folder.</td></tr>
+<tr><td>Kicked: “We couldn't load your data safely”, or coins reset every play</td><td>Publish the place and turn on Studio Access to API Services (Setup part 4).</td></tr>
+<tr><td>Safety log is empty after the test</td><td>Same as above, and wait 30 seconds or stop the test so the log saves.</td></tr>
+<tr><td>Normal chat is being blocked</td><td>Note the message, then move that category out of <code>BlockCategories</code> in SafetyConfig (keep <code>personal_info</code> and <code>off_platform</code> blocked).</td></tr>
+<tr><td>Studio edits disappear</td><td>Rojo overwrites synced scripts. Edit the files in <code>src/</code>.</td></tr>
+<tr><td>“Shared is not a valid member of ReplicatedStorage”</td><td>Rojo isn't connected, or a folder name doesn't match.</td></tr>
+</table></div>
+
+<h2 id="publish">Before publishing</h2>
+<ul>
+  <li>Set the starting coins in <code>DataService.luau</code> (the kit's 250 is a test grant).</li>
+  <li>Delete the two <code>DEMO ONLY</code> key bindings in <code>src/client/Main.client.luau</code>. Keep <code>SafetyClient</code>.</li>
+  <li>Run <code>/security all</code> and <code>/safety-review all</code>; fix every row.</li>
+  <li>Your UserId is in <code>ModeratorUserIds</code>; the Maturity &amp; Compliance questionnaire is complete and true.</li>
+  <li>Open in stages: first <b>Friends</b> (Creator Dashboard › your experience › Publish settings › Manage Audience › Manage access › Public tab › Friends), watch <code>/incidents</code> for a week, then ask Claude to "open my game to everyone" and choose Public. Family mode stays on until then.</li>
+  <li>Test with two players and on a phone layout (Test › Device).</li>
+  <li>Turn off <b>Enable Studio as MCP server</b> when you're not developing.</li>
+</ul>
+
+<h2 id="sources">Sources</h2>
+<ul>
+  <li><a href="https://www.nasdaq.com/press-release/roblox-requires-users-worldwide-age-check-access-chat-2026-01-07">Roblox requires users worldwide to age check to access chat (Jan 7, 2026)</a></li>
+  <li><a href="https://about.roblox.com/en-au/parental-controls">Roblox parental controls</a></li>
+  <li><a href="https://about.roblox.com/reporting-and-blocking">Roblox reporting and blocking</a></li>
+  <li><a href="https://en.help.roblox.com/hc/articles/8863284850196-Content-Maturity-FAQ">Roblox content maturity FAQ</a></li>
+  <li><a href="https://create.roblox.com/docs/safety">Roblox creator safety tools</a></li>
+  <li><a href="https://create.roblox.com/docs/chat/in-experience-text-chat">In-experience text chat (TextChatService)</a></li>
+  <li><a href="https://create.roblox.com/docs/reference/engine/classes/TextChatMessage">TextChatMessage reference</a></li>
+  <li><a href="https://create.roblox.com/docs/reference/engine/classes/StarterGui">StarterGui (PromptBlockPlayer)</a></li>
+  <li><a href="https://create.roblox.com/docs/studio/mcp">Connect to the Roblox Studio MCP server</a></li>
+  <li><a href="https://create.roblox.com/docs/cloud-services/data-stores">Data stores</a></li>
+  <li><a href="https://create.roblox.com/docs/scripting/security/security-tactics">Security and cheat mitigation tactics</a></li>
+  <li><a href="https://github.com/rojo-rbx/rokit">Rokit</a></li>
+  <li><a href="https://code.claude.com/docs/en/setup">Claude Code setup and requirements</a></li>
+  <li><a href="https://code.claude.com/docs/en/cli-reference">Claude Code CLI reference</a></li>
+</ul>
+<footer>Roblox Safe Build Kit · October 2026. Safety features reflect Roblox's published policies as of this date; check the sources for changes.<br>Build Kits are independent products and are not affiliated with, endorsed by, or sponsored by Roblox Corporation or Anthropic. Roblox and Roblox Studio are trademarks of Roblox Corporation. Claude and Claude Code are trademarks of Anthropic.</footer>
+</main>
+</div>
+
+<script>
+
+document.addEventListener('click', function (e) {
+  var btn = e.target.closest('button.copy');
+  if (!btn) return;
+  var pre = btn.dataset.target ? document.getElementById(btn.dataset.target) : btn.parentElement.querySelector('pre');
+  if (!pre) return;
+  var text = pre.innerText;
+  function selectIt() {
+    try { var r = document.createRange(); r.selectNodeContents(pre); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (err) {}
+    btn.textContent = 'Selected: press Ctrl/Cmd+C';
+  }
+  try {
+    navigator.clipboard.writeText(text).then(function () {
+      btn.textContent = 'Copied';
+      setTimeout(function () { btn.textContent = 'Copy'; }, 1800);
+    }, selectIt);
+  } catch (err) { selectIt(); }
+});
+</script>
+
+</html>

@@ -1,0 +1,104 @@
+/* Teen Build Kit page only (body.brick), loaded after kits.css.
+   Look: a toy-brick game lobby, matching the Teen Build Kit setup guide. The page sits on a
+   studded baseplate, panels are chunky outlined blocks with hard drop shadows, buttons press
+   down, and the "still locked" safety panel is fenced with caution tape. */
+body.brick {
+  --plate: #dfe5ee; --stud: #cbd3df; --surface: #ffffff; --fg: #1d2433; --muted: #475266;
+  --line: #1d2433; --hair: #d5dbe5; --ink: #1d2433;
+  --b-blue: #1d5fd6; --b-blue-soft: #e3edff; --b-green: #12813f; --b-green-hi: #22a55a;
+  --b-red: #d1352f; --b-link: #1d5fd6; --b-yellow: #ffc933; --b-safety: #9a4a00; --b-safety-soft: #fff4d6;
+  --teen: var(--b-green); --teen-soft: #e4f6ea;
+  --display: "Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+  --block: 0 6px 0 var(--ink); --block-sm: 0 4px 0 var(--ink);
+  background-color: var(--plate);
+  background-image: radial-gradient(circle at 12px 12px, var(--stud) 0 6px, transparent 7px);
+  background-size: 24px 24px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body.brick {
+    --plate: #1c2230; --stud: #252d3e; --surface: #2a3245; --fg: #eef2f8; --muted: #b4bfd0;
+    --line: #0b0f17; --hair: #3a445a; --ink: #0b0f17; --b-blue-soft: #25324d;
+    --b-link: #8db6ff; --b-safety: #ffc25c; --b-safety-soft: #3a2e12; --teen-soft: #1f3a2a;
+  }
+}
+body.brick :focus-visible { outline: 4px solid var(--b-yellow); outline-offset: 2px; border-radius: 8px; }
+body.brick h1, body.brick h2, body.brick h3 { font-weight: 400; letter-spacing: .005em; }
+body.brick h1 { font-size: clamp(38px, 5vw, 60px); line-height: 1.05; }
+body.brick h2 { display: flex; align-items: center; gap: 12px; }
+body.brick h2::before { content: ""; width: 22px; height: 22px; flex: none; border-radius: 5px; background: var(--b-green-hi); border: 3px solid var(--line); box-shadow: var(--block-sm); }
+body.brick .close h2 { justify-content: center; }
+body.brick code { background: var(--b-blue-soft); color: var(--fg); }
+
+/* buttons that press down */
+body.brick .btn { font: 400 19px/1 var(--display); letter-spacing: .01em; border: 3px solid var(--line); box-shadow: var(--block); transition: transform .06s, box-shadow .06s, filter .1s; }
+body.brick .btn:hover { filter: brightness(1.08); }
+body.brick .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--ink); }
+body.brick .btn.teen { background: var(--b-green); color: #fff; }
+body.brick .btn.teen:hover { background: var(--b-green); }
+body.brick .btn.line { background: var(--surface); color: var(--fg); border-color: var(--line); }
+body.brick .btn.small { box-shadow: var(--block-sm); font-size: 17px; }
+body.brick .btn .amt { font-weight: 400; opacity: 1; }
+
+/* top bar */
+body.brick .bar { background: var(--surface); color: var(--fg); border-bottom: 3px solid var(--line); backdrop-filter: none; }
+body.brick .brand { font: 400 21px var(--display); }
+body.brick .brand svg rect { fill: var(--b-green-hi); }
+body.brick .bar nav a { color: var(--fg); font-weight: 700; border: 2px solid transparent; }
+body.brick .bar nav a:hover { background: var(--b-blue-soft); border-color: var(--line); color: var(--fg); }
+body.brick .bar nav a[aria-current="page"] { background: var(--b-yellow); border-color: var(--line); color: #1d2433; }
+
+/* hero: the lobby screen */
+body.brick .stage { background: var(--b-blue-soft); color: var(--fg); border-bottom: 3px solid var(--line); }
+body.brick .hero h1 { color: var(--fg); text-shadow: 0 3px 0 var(--b-yellow); }
+body.brick .hero .lede { color: var(--muted); }
+body.brick .hero .btn.line { color: var(--fg); border-color: var(--line); }
+body.brick .facts { color: var(--fg); }
+body.brick .facts li { background: var(--surface); border: 2px solid var(--line); border-radius: 999px; padding: 3px 12px; font-weight: 600; }
+body.brick .facts li::before { background: var(--b-green-hi); border-radius: 2px; }
+body.brick .guide-link { margin: 18px 0 0; font-weight: 700; }
+body.brick .guide-link a { color: var(--b-link); text-underline-offset: 3px; }
+body.brick .demo { border: 3px solid var(--line); box-shadow: var(--block); }
+
+/* sequence steps as numbered bricks */
+body.brick .steps li { background: var(--surface); border: 3px solid var(--line); border-radius: 14px; box-shadow: var(--block-sm); padding: 18px 20px 20px; }
+body.brick .steps li::before { width: 48px; height: 42px; border-radius: 8px; background: var(--b-yellow); border: 3px solid var(--line); color: #1d2433; -webkit-text-stroke: 0; font: 400 26px/36px var(--display); text-align: center; box-shadow: inset 0 -5px 0 rgba(0,0,0,.18); margin-bottom: 14px; }
+body.brick .quote { background: var(--b-blue-soft); border: 2px solid var(--line); border-radius: 14px 14px 14px 4px; padding: 10px 14px; font-size: 17px; }
+
+/* game tiles */
+body.brick .games { gap: 16px; }
+body.brick .games li { background: var(--surface); border: 3px solid var(--line); border-radius: 14px; box-shadow: var(--block-sm); padding: 14px; grid-template-columns: 40px 1fr; }
+body.brick .games .ic { width: 40px; height: 40px; border-radius: 9px; border: 3px solid var(--line); background: var(--surface) !important; position: relative; }
+body.brick .games .ic svg { width: 20px; height: 20px; }
+body.brick .games .ic::after { content: ""; position: absolute; top: -8px; left: 9px; width: 14px; height: 6px; border: 3px solid var(--line); border-bottom: 0; border-radius: 3px 3px 0 0; background: inherit; }
+body.brick .games b { font: 400 19px/1.2 var(--display); }
+body.brick .games .teen-only b::after { white-space: nowrap; display: inline-block; font: 700 12px var(--body); color: #1d2433; background: var(--b-yellow); border: 2px solid var(--line); }
+
+/* panels */
+body.brick .panel { border: 3px solid var(--line); border-radius: 16px; box-shadow: var(--block-sm); }
+body.brick .panel.good h3 { color: var(--b-green); }
+body.brick .split .panel:not(.good) { background: var(--b-safety-soft); padding-top: 0; overflow: hidden; }
+body.brick .split .panel:not(.good)::before { content: ""; display: block; height: 14px; margin: 0 -28px 22px; border-bottom: 3px solid var(--line); background: repeating-linear-gradient(-45deg, var(--b-yellow) 0 14px, var(--ink) 14px 28px); }
+body.brick .split .panel:not(.good) h3 { color: var(--b-safety); }
+
+body.brick .loops div { background: var(--surface); border: 3px solid var(--line); border-radius: 14px; box-shadow: var(--block-sm); padding: 16px 18px; }
+body.brick .loopcmd { color: #eef2f8; background: #1d2433; border: 3px solid var(--line); box-shadow: var(--block-sm); }
+body.brick .cost { border: 3px solid var(--line); box-shadow: var(--block-sm); }
+body.brick .cost div { border-bottom: 2px solid var(--hair); }
+body.brick .cost div.total { background: var(--b-yellow); color: #1d2433; }
+
+/* FAQ as chunky toggles */
+body.brick .faq { display: grid; gap: 12px; }
+body.brick .faq details { background: var(--surface); border: 3px solid var(--line); border-radius: 14px; box-shadow: var(--block-sm); padding: 0 18px; }
+body.brick .faq summary { font: 400 19px var(--display); min-height: 44px; }
+body.brick .faq summary::after { border-color: var(--fg); }
+
+/* closing call to action */
+body.brick .close { background: var(--b-blue); border: 3px solid var(--line); box-shadow: var(--block); }
+body.brick .close h2 { color: #fff; }
+body.brick .close h2::before { background: var(--b-yellow); }
+body.brick .close p { color: #e7efff; }
+body.brick .close .btn.line { background: var(--surface); color: #1d2433; border-color: var(--line); }
+
+body.brick footer { background: var(--surface); border-top: 3px solid var(--line); }
+
+@media (prefers-reduced-motion: reduce) { body.brick .btn { transition: none; } }

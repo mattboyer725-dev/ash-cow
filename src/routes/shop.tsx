@@ -69,7 +69,7 @@ function ShopPage() {
               <h2 className="mt-2 font-display text-2xl tracking-tight">Build Kits for Roblox Studio</h2>
               <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted">
                 Build Roblox games with Claude Code, with protection for young players switched on. Safe Build
-                Kit for all ages, Teen Build Kit for 13 to 17, {money(9.99)} each. No Claude plan? Teen Build Kit Open, {money(14.99)}.
+                Kit for all ages, Teen Build Kit for 13 to 17, {money(9.99)} each. No Claude plan? Teen Build Kit Open, {money(11.11)}.
               </p>
             </div>
             <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">

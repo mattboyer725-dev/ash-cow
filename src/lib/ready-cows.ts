@@ -582,7 +582,7 @@ export const READY_COWS: CashCow[] = [
     buyer: "parents of teens (13–17) who want to make Roblox games",
     seedDelivery:
       "a double-click setup helper that works with a free AI helper, Claude pay-as-you-go or your own key, eleven starter games, a teen safety layer, safe trading, and a step-by-step guide",
-    price: 14.99,
+    price: 11.11,
     name: "Teen Build Kit Open — no Claude plan needed",
     oneLiner:
       "Build the Roblox games teens actually play (battles, horror, trading, tycoons) with your teen, in plain English, with every protection against predators switched on.",
@@ -638,12 +638,12 @@ export const READY_COWS: CashCow[] = [
       notFor:
         "Teens on their own, games for under-13s (get the Safe Build Kit), Chromebooks or iPads, or anyone wanting 18+ content.",
       guarantee: "7 days. If it doesn't work for you, reply to your payment receipt and the money comes back.",
-      cta: "Get the Teen Build Kit Open — $14.99.",
+      cta: "Get the Teen Build Kit Open — $11.11.",
     },
     posts: [
       {
         channel: "Parent group",
-        copy: "For parents of teens who want to make Roblox games: build battle, horror and trading games together in plain English, with the stuff predators use blocked (sharing info, moving to other apps, gifts). Works with a free AI helper, so no subscription. Double-click setup. $14.99.",
+        copy: "For parents of teens who want to make Roblox games: build battle, horror and trading games together in plain English, with the stuff predators use blocked (sharing info, moving to other apps, gifts). Works with a free AI helper, so no subscription. Double-click setup. $11.11.",
       },
     ],
     deliveryDoc: {

@@ -28,6 +28,15 @@ test("Teen Build Kit Open edition zip decodes and differs from the teen kit", as
   assert.notDeepEqual(bytes, teen, "open and teen kits must differ");
 });
 
+test("Safe Build Kit Open edition zip decodes and differs from the safe kit", async () => {
+  const bytes = await kitFileBytes("ready-safe-build-kit-open");
+  assert.ok(bytes, "expected bytes for the Safe Open edition");
+  assert.ok(bytes.length > 50_000, `zip looks too small: ${bytes.length} bytes`);
+  assert.deepEqual([...bytes.subarray(0, 4)], [0x50, 0x4b, 0x03, 0x04]);
+  const safe = await kitFileBytes("ready-safe-build-kit");
+  assert.notDeepEqual(bytes, safe, "open and safe kits must differ");
+});
+
 test("products without a file get null", async () => {
   assert.equal(await kitFileBytes("ready-ash-cow"), null);
 });

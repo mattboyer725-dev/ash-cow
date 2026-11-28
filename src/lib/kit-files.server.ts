@@ -12,5 +12,9 @@ export async function kitFileBytes(kitId: string): Promise<Uint8Array<ArrayBuffe
     const { TEEN_BUILD_KIT_OPEN_ZIP_BASE64 } = await import("./kit-files/teen-build-kit-open.zip.server.ts");
     return new Uint8Array(Buffer.from(TEEN_BUILD_KIT_OPEN_ZIP_BASE64, "base64"));
   }
+  if (kitId === "ready-safe-build-kit-open") {
+    const { SAFE_BUILD_KIT_OPEN_ZIP_BASE64 } = await import("./kit-files/safe-build-kit-open.zip.server.ts");
+    return new Uint8Array(Buffer.from(SAFE_BUILD_KIT_OPEN_ZIP_BASE64, "base64"));
+  }
   return null;
 }

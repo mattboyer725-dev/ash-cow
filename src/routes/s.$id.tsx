@@ -12,7 +12,7 @@ import { money } from "@/lib/utils";
 export const Route = createFileRoute("/s/$id")({ component: StallPage });
 
 /** Roblox Build Kits: their stall pages link back to the kits storefront (public/kits.html). */
-const BUILD_KIT_IDS = new Set(["ready-safe-build-kit", "ready-teen-build-kit", "ready-teen-build-kit-open"]);
+const BUILD_KIT_IDS = new Set(["ready-safe-build-kit", "ready-teen-build-kit", "ready-teen-build-kit-open", "ready-safe-build-kit-open"]);
 
 function StallPage() {
   const { id } = Route.useParams();
